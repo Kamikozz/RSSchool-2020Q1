@@ -11,6 +11,8 @@ const PATHS = {
   config: 'config/',
   fonts: 'fonts/',
   img: 'img/',
+  audio: 'audio/',
+  icons: 'icons/',
 };
 
 module.exports = {
@@ -39,7 +41,9 @@ module.exports = {
   module: {
     rules: [{
       test: /\.js$/,
-      exclude: '/node_modules/',
+      exclude: [
+        /(node_modules|dist|public)/,
+      ],
       use: [
         {
           loader: 'babel-loader',
@@ -141,8 +145,8 @@ module.exports = {
         to: `${PATHS.assets}${PATHS.fonts}`,
         ignore: ['*LICENSE*'],
       },
-      { from: `${PATHS.src}/${PATHS.assets}icons/`, to: `${PATHS.assets}icons/` },
-      { from: `${PATHS.src}/${PATHS.assets}music/`, to: `${PATHS.assets}music/` },
+      { from: `${PATHS.src}/${PATHS.assets}${PATHS.icons}`, to: `${PATHS.assets}${PATHS.icons}` },
+      { from: `${PATHS.src}/${PATHS.assets}${PATHS.audio}`, to: `${PATHS.assets}${PATHS.audio}` },
       { from: `${PATHS.src}/${PATHS.static}`, to: '' },
     ]),
   ],
