@@ -1,0 +1,19 @@
+@import "../scss/utils/libs";
+@import "../scss/utils/vars";
+@import "../scss/utils/mixins";
+@import "../scss/utils/reset-css";
+@import "../scss/utils/fonts";
+
+h1 {
+  color: red;
+}
+
+.wrapper {
+  background-color: lightcoral;
+}
+
+.new-class {
+  color: yellow;
+}
+
+// @import "./components/header/header"
