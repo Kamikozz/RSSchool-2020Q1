@@ -139,6 +139,7 @@ module.exports = {
       inject: true, // if true - to insert link & script tags into html
     }),
     new CopyWebpackPlugin([
+      { from: `${PATHS.src}/components/`, to: 'views/[name].[ext]', ignore: ['*.!(html|htm)'] },
       { from: `${PATHS.src}/${PATHS.assets}${PATHS.img}`, to: `${PATHS.assets}${PATHS.img}` },
       {
         from: `${PATHS.src}/${PATHS.assets}${PATHS.fonts}`,
