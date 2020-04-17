@@ -1,8 +1,12 @@
 /* CSS Reset */
-* {
+*,
+*::after,
+*::before {
+  box-sizing: inherit;
   margin: 0;
   padding: 0;
-  // line-height: 1;
+
+  line-height: 1; // TODO для продакшена поставить 0
 }
 
 li {

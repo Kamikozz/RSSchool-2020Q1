@@ -1,0 +1,226 @@
+/* ---------------- ANIMATIONS ------------- */
+@keyframes rainbow {
+  /* credits to Anna Stoma */
+  0% {
+      background-position: 0% 50%;
+  }
+  50% {
+      background-position: 100% 50%;
+  }
+  100% {
+      background-position: 0% 50%;
+  }
+}
+/* ---------------- ANIMATIONS END ---------------- */
+
+// .body__card-container {
+//   margin: 20px auto 0px;
+// }
+
+.cards-container__card-container {
+  margin: 20px;
+}
+
+.card-container {
+  width: 200px;
+  height: 200px;
+
+  perspective: 400px;
+}
+
+.card {
+  position: relative;
+  height: 200px;
+  width: 200px;
+
+  user-select: none;
+  cursor: pointer;
+
+  transform-style: preserve-3d;
+  transition: transform 1s;
+}
+
+.card_side_front { transform: rotateY(0deg); }
+.card_side_back { transform: rotateY(-180deg); }
+
+.card_side_front:hover { transform: rotateY(0deg) scale(1.03); }
+.card_side_back:hover { transform:  rotateY(-180deg) scale(1.03); }
+
+.card__side {
+  position: absolute;
+
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+
+  backface-visibility: hidden;
+  overflow-y: hidden;
+
+  border-radius: 10px; /* round box-shadow */
+  box-shadow: 0 0 7px 0 black;
+  transition: box-shadow 0.3s ease-out;
+}
+
+.card__side:hover {
+  box-shadow: 0 0 15px 0 black;
+}
+
+.card__side_side_front {
+  transform: rotateY(0deg);
+}
+.card__side_side_back {
+  transform: rotateY(180deg);
+}
+
+.card__side_hidden {
+  filter: blur(3px);
+}
+
+.card__img-container {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+.card__img {
+  display: block;
+  height: 100%;
+  width: 100%;
+
+  background-image: url("/assets/img/cards/blouse.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+.card__text-container {
+  display: flex;
+  width: 100%;
+  padding: 10px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  text-shadow: 0 0px 10px black;
+  font-size: 40px;
+  font-weight: 300;
+  line-height: 1;
+  color: white;
+
+  opacity: 1;
+  overflow-y: hidden;
+
+  background-size: 300% 300%;
+  animation: rainbow 5s ease-out infinite;
+  transition: all 0.3s ease-out;
+}
+
+.card__text-container_hidden {
+  padding: 0;
+
+  line-height: 0;
+
+  opacity: 0;
+
+  visibility: hidden;
+}
+
+.card__text-container_color_color1 {
+  background-image: linear-gradient(
+    45deg, rgba(63, 94, 251, 1) 0%, rgba(252, 70, 107, 1) 100%
+  ), linear-gradient(
+    90deg, rgba(63, 94, 251, 1) 0%, rgba(252, 70, 107, 1) 100%
+  );
+}
+.card__text-container_color_color2 {
+  background-image: linear-gradient(45deg, lightyellow 0%, lightblue 100%);
+}
+
+.card__text {
+  line-height: inherit;
+}
+
+.card__rotate-block {
+  position: absolute;
+  top: calc(50% - 30px / 2);
+  right: calc(-46px / 2); /* (width of the content + padding * 2) / 2 */
+
+  padding: 0 3px;
+
+  background-color: rgba(255, 255, 255, 0.7);
+  box-shadow: 0px 0px 10px -1px black;
+  border-radius: 5px;
+
+  backface-visibility: hidden;
+
+  transition: 0.3s ease-out;
+}
+
+.card__rotate-block_hidden {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(10px);
+}
+
+.card__rotate-button {
+  height: 30px;
+  width: 40px;
+
+  background-image: url("/assets/icons/rotate.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+
+  border: none;
+  outline: none;
+}
+
+.card__rotate-block:hover,
+.card__rotate-button:hover {
+  cursor: pointer;
+
+  background-color: lightgrey;
+  transition: background-color 0.3s ease-out;
+}
+
+.switch-button {
+  height: 50px;
+  margin-top: 50px;
+}
+
+.start-game-button {
+  height: 50px;
+}
+
+.start-game-button_hidden {
+  display: none;
+}
+
+.card-container__icon {
+  position: absolute;
+  top: -20px;
+  left: -20px;
+  z-index: 1;
+
+  height: 60px;
+  width: 60px;
+
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  box-shadow: 0 0 7px 0 black;
+  border-radius: 50%;
+}
+
+.card-container__icon_hidden {
+  display: none;
+}
+
+.icon-success {
+  background-image: url("/assets/icons/success.png");
+}
+
+.icon-error {
+  background-image: url("/assets/icons/error.png");
+}
