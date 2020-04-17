@@ -13,7 +13,13 @@ const PATHS = {
   img: 'img/',
   audio: 'audio/',
   icons: 'icons/',
+  views: 'views/',
+  components: 'components/',
 };
+
+const PAGES = [
+  'card',
+];
 
 module.exports = {
   externals: {
@@ -138,8 +144,17 @@ module.exports = {
       filename: './index.html',
       inject: true, // if true - to insert link & script tags into html
     }),
+    ...PAGES.map((page) => new HtmlWebpackPlugin({
+      template: `${PATHS.src}/${PATHS.components}${page}/${page}.html`,
+      filename: `${PATHS.views}${page}.html`,
+      inject: false,
+    })),
     new CopyWebpackPlugin([
-      { from: `${PATHS.src}/components/`, to: 'views/[name].[ext]', ignore: ['*.!(html|htm)'] },
+      // {
+      //   from: `${PATHS.src}/${PATHS.components}`,
+      //   to: `${PATHS.views}[name].[ext]`,
+      //   ignore: ['*.!(html|htm)'],
+      // },
       { from: `${PATHS.src}/${PATHS.assets}${PATHS.img}`, to: `${PATHS.assets}${PATHS.img}` },
       {
         from: `${PATHS.src}/${PATHS.assets}${PATHS.fonts}`,
