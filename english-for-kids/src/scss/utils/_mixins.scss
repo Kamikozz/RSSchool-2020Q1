@@ -12,6 +12,7 @@
       weight: $weight;
       display: $display;
     }
+
     // src:  url("#{$file-path}.eot"); /* IE 9 Compatibility Mode */
     src:  local($font-family),
           /* IE < 9 */
