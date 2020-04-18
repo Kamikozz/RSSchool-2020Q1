@@ -1,5 +1,10 @@
+/* eslint-disable no-unused-vars */
 import cardsData from '../js/cards.data';
 import cardComponent from './card/card';
+import categoryComponent from './category/category';
+// import cardsComponent from './cards-container/cards-container';
+import categoriesComponent from './categories-container/categories-container';
+
 // import trash from './trash';
 
 const add = (a, b) => a + b;
@@ -27,5 +32,5 @@ console.log(cardsData);
 // }, 5000);
 
 
-// console.log(cardComponent);
+categoriesComponent.initial();
 cardComponent.initial();

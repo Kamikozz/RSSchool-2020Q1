@@ -1,0 +1,61 @@
+.categories-container__category-container {
+  margin: 20px;
+}
+
+.category-container {
+  width: 200px;
+  height: 200px;
+}
+
+.category {
+  position: relative;
+  height: 100%;
+  width: 100%;
+
+  border-radius: 10px;
+
+  user-select: none;
+  cursor: pointer;
+  overflow-y: hidden;
+
+  box-shadow: 0 0 7px 0 black;
+  transition: transform 1s, box-shadow 0.3s ease-out;
+}
+
+.category:hover {
+  box-shadow: 0 0 15px 0 black;
+  transform: scale(1.03);
+}
+
+.category__img {
+  height: 100%;
+  width: 100%;
+
+  background-image: url("../assets/img/cards/blouse.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+.category__text-container {
+  position: absolute;
+  bottom: 0;
+
+  display: flex;
+  width: 100%;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+
+  text-shadow: 0 0px 10px black;
+  font-size: 25px;
+  font-weight: 300;
+  line-height: 1;
+  color: white;
+
+  background-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 1px 0 black;
+
+  backdrop-filter: blur(10px);
+
+  transition: all 0.3s ease-out;
+}

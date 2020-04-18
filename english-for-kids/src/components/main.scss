@@ -16,5 +16,7 @@ h1 {
   color: yellow;
 }
 
-// @import "./components/header/header"
+@import "./cards-container/cards-container";
 @import "./card/card";
+@import "./categories-container/categories-container";
+@import "./category/category";
