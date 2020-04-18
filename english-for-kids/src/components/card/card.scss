@@ -47,9 +47,8 @@
   }
 
   &_side {
-    & {
-      
-    }
+    // & {
+    // }
 
     &_front {
       & { transform: rotateY(0deg); }
@@ -238,8 +237,8 @@
   }
 
   &-start-game {
-    & {
-    }
+    // & {
+    // }
   
     &_hidden {
       display: none;
@@ -251,9 +250,8 @@
       background-color: lightcoral;
     }
 
-    &_play {
-      
-    }
+    // &_play {
+    // }
   }
 }
 
