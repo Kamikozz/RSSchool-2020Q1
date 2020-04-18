@@ -9,8 +9,8 @@ const classes = {
   CARD_SIDES: ['card_side_front', 'card_side_back'],
   CARD_ICON: 'card-container__icon',
 
-  SWITCH_BUTTON: 'switch-button',
-  START_GAME: 'start-game-button',
+  SWITCH_BUTTON: 'button-switch-mode',
+  START_GAME: 'button-start-game',
 
   ICON_SUCCESS: 'icon-success',
   ICON_ERROR: 'icon-error',
@@ -95,8 +95,12 @@ const handlerCardMouseClick = (e) => {
   }
 };
 
-// кнопка переключения режимов TRAIN / TEST
+// button modes switcher: TRAIN / TEST
 const switchMode = () => {
+  isTrain = !isTrain;
+  switchButton.textContent = isTrain ? 'TRAIN' : 'PLAY';
+  startGameButton.classList.toggle(`${classes.START_GAME}_${classes.HIDDEN}`);
+
   const cardTexts = card.querySelectorAll(`.${classes.CARD_TEXT}`);
   cardTexts.forEach((cardText) => {
     cardText.classList.toggle(`${classes.CARD_TEXT}_${classes.HIDDEN}`);
@@ -104,8 +108,6 @@ const switchMode = () => {
 
   const rotateBlock = card.querySelector(`.${classes.CARD_ROTATE_BLOCK}`);
   rotateBlock.classList.toggle(`${classes.CARD_ROTATE_BLOCK}_${classes.HIDDEN}`);
-
-  startGameButton.classList.toggle(`${classes.START_GAME}_${classes.HIDDEN}`);
 
   document.querySelectorAll('.card__side_hidden').forEach((item) => {
     item.classList.remove('card__side_hidden');
@@ -128,8 +130,6 @@ const switchMode = () => {
 
     isGameStart = !isGameStart;
   }
-  // isGameStart = false;
-  isTrain = !isTrain;
 };
 
 const handlerCardCheckAnswer = (e) => {
@@ -239,7 +239,7 @@ const initial = () => {
   isGameStart = false;
   currentAudioId = 0;
 
-  switchButton.textContent = 'SWITCH MODE';
+  switchButton.textContent = 'TRAIN';
   startGameButton.textContent = 'START GAME';
 
   card.classList.add(classes.CARD_SIDES[0]);
