@@ -18,7 +18,7 @@ const PATHS = {
 };
 
 const PAGES = [
-  'card',
+  // 'card',
 ];
 
 module.exports = {
