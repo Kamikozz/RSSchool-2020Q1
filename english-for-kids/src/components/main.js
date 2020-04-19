@@ -1,17 +1,20 @@
 /* eslint-disable no-unused-vars */
-import cardsData from '../js/cards.data';
+// import cards-data from '../js/cards-data';
+import headerComponent from './header/header';
+import BurgerMenu from './burger-menu/burger-menu';
 import cardComponent from './card/card';
 import categoryComponent from './category/category';
 // import cardsComponent from './cards-container/cards-container';
 import categoriesComponent from './categories-container/categories-container';
 
+headerComponent.initial(); // заполняются меню
+const burgerMenu = new BurgerMenu();
+burgerMenu.initial();
+categoriesComponent.initial();
+cardComponent.initial();
+
+
 // import trash from './trash';
-
-const add = (a, b) => a + b;
-
-console.log(add(2, 3));
-console.log('lol');
-console.log(cardsData);
 
 // trash();
 
@@ -30,7 +33,3 @@ console.log(cardsData);
 //       print();
 //   }, 5000);
 // }, 5000);
-
-
-categoriesComponent.initial();
-cardComponent.initial();

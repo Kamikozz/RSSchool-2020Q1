@@ -10,14 +10,27 @@
 
 <body>
   <div class="root">
-    <!-- menu instead of header__menu -->
     <header class="header">
       <div class="wrapper">
         <div class="header__container">
-          <div class="button-switch-mode-block">
-            <!-- <button class="switch-button"></button> -->
-            <button class="button button-switch-mode button_theme_train">
+          <div class="burger-button-block" tabindex="0">
+            <button class="burger-button-block__button">
+              <div class="burger-button-block__dash"></div>
             </button>
+          </div>
+
+          <nav class="header__nav nav">
+            <ul class="nav__list">
+            </ul>
+          </nav>
+
+          <div class="header__text-container">
+            <h1 class="header__title">English For Kids</h1>
+            <p class="header__description">приложение для изучения английских слов детьми</p>
+          </div>
+
+          <div class="button-switch-mode-block">
+            <button class="button button-switch-mode button_theme_train"></button>
           </div>
         </div>
       </div>
@@ -128,6 +141,10 @@
         </p>
       </div>
     </footer>
+
+    <!-- Modal windows -->
+    <!-- Burger menu open modal -->
+    <div class="burger-modal-window burger-modal-window_except-header hidden"></div>
   </div>
 </body>
 
