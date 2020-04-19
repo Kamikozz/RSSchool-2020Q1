@@ -20,7 +20,7 @@ const classes = {
 
 const [cardContainer] = document.getElementsByClassName(classes.CARD_CONTAINER);
 const [card] = document.getElementsByClassName(classes.CARD_CLASSNAME);
-const [cardRotateButton] = document.getElementsByClassName(classes.CARD_ROTATE_BUTTON);
+const [cardRotateButton] = document.getElementsByClassName(classes.CARD_ROTATE_BLOCK);
 const [switchButton] = document.getElementsByClassName(classes.SWITCH_BUTTON);
 const [startGameButton] = document.getElementsByClassName(classes.START_GAME);
 
