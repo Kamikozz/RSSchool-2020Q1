@@ -88,9 +88,14 @@ const handlerCardPlaySound = (cardName) => {
 };
 
 const playSound = () => {
-  const currentItem = shuffledAudios[currentAudioId];
-  console.log(currentItem);
-  currentItem.audio.play();
+  // TODO: near the implementation of the header burger menu
+  // there was an error of getting element of undefined
+  const isEnd = shuffledAudios.length === currentAudioId;
+  if (!isEnd) {
+    const currentItem = shuffledAudios[currentAudioId];
+    console.log(currentItem);
+    currentItem.audio.play();
+  }
 };
 
 const handlerGameOver = () => {
