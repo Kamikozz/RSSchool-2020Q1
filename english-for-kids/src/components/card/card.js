@@ -48,6 +48,15 @@ let isGameStart;
 let shuffledAudios;
 let currentAudioId;
 
+const createNewAudio = (url) => {
+  const audio = new Audio(url);
+  audio.volume = 0.1;
+  return audio;
+};
+
+const errorAudio = createNewAudio('assets/audio/cards/error.mp3');
+const correctAudio = createNewAudio('assets/audio/cards/correct.mp3');
+
 const handlerCardSwitchSide = () => {
   classes.CARD_SIDES.forEach((className) => card.classList.toggle(className));
 };
@@ -67,8 +76,7 @@ const handlerCardRotate = () => {
 
 const addNewSound = (cardName) => {
   const url = audios.find((item) => item.cardName === cardName).audioSrc;
-  const audio = new Audio(url);
-  audio.volume = 0.1;
+  const audio = createNewAudio(url);
   soundArray.push({ cardName, audio });
   return audio;
 };
@@ -83,6 +91,17 @@ const playSound = () => {
   const currentItem = shuffledAudios[currentAudioId];
   console.log(currentItem);
   currentItem.audio.play();
+};
+
+const handlerGameOver = () => {
+  const isEnd = shuffledAudios.length === currentAudioId;
+  if (isEnd) {
+    console.log('WINNER');
+    switchMode();
+    // TODO: window.location.href = '#/';
+  } else {
+    playSound();
+  }
 };
 
 const handlerCardMouseClick = (e) => {
@@ -162,31 +181,24 @@ const handlerCardCheckAnswer = (e) => {
     const currentItemQuestion = shuffledAudios[currentAudioId];
     console.log('Hey', currentItemQuestion);
 
-    let iconToHide;
     console.log(currentItemAnswer);
-    if (currentItemQuestion.cardName === currentItemAnswer
-      .querySelector('.card__side_side_front .card__text').textContent) {
-      iconToHide = currentItemAnswer.querySelector(`.${classes.CARD_ICON}.${classes.ICON_SUCCESS}`);
-
-      console.log('YES');
-    } else {
-      iconToHide = currentItemAnswer.querySelector(`.${classes.CARD_ICON}.${classes.ICON_ERROR}`);
-      console.log('NO');
-    }
 
     currentAudioId += 1;
     console.log(currentAudioId);
 
+    const clickedCardText = currentItemAnswer.querySelector('.card__side_side_front .card__text');
+    const isRightCard = currentItemQuestion.cardName === clickedCardText.textContent;
+
+    const iconToHide = currentItemAnswer.querySelector(
+      `.${classes.CARD_ICON}.${isRightCard ? classes.ICON_SUCCESS : classes.ICON_ERROR}`,
+    );
     iconToHide.classList.toggle(`${classes.CARD_ICON}_${classes.HIDDEN}`);
+    console.log(isRightCard ? 'YES' : 'NO');
+
+    (isRightCard ? correctAudio : errorAudio).play();
+
     currentItemAnswer.querySelector('.card__side_side_front').classList.add('card__side_hidden');
     currentItemAnswer.removeEventListener('click', handlerCardMouseClick);
-
-    if (currentAudioId === shuffledAudios.length) {
-      console.log('WINNER');
-      switchMode();
-    } else {
-      playSound();
-    }
   }
 };
 
@@ -204,11 +216,9 @@ const getSoundArray = () => {
   const arr = [];
   audios.forEach((item) => {
     const url = item.audioSrc;
-    const audio = new Audio(url);
-    audio.volume = 0.1;
     arr.push({
       cardName: item.cardName,
-      audio,
+      audio: createNewAudio(url),
     });
   });
 
@@ -232,6 +242,9 @@ const initHandlers = () => {
   cardRotateButton.addEventListener('click', handlerCardRotate);
   switchButton.addEventListener('click', switchMode);
   startGameButton.addEventListener('click', handlerStartGame);
+
+  correctAudio.addEventListener('ended', handlerGameOver);
+  errorAudio.addEventListener('ended', handlerGameOver);
 };
 
 const initial = () => {
