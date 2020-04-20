@@ -39,8 +39,8 @@ const renderLinks = (categories) => {
 const initial = () => {
   headerMenu.innerHTML = `
     <li class="nav__list-item nav__list-item_active">
-      <a class="nav__list-item-link nav__list-item-link_active" 
-         href="#/"
+      <a class="nav__list-item-link nav__list-item-link_active"
+         href="/"
          title="Go to main page">Main Page</a>
     </li>
   `;

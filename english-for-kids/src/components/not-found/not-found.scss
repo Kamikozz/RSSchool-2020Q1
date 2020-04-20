@@ -1,0 +1,19 @@
+.main-content__not-found {
+  margin: 20px 0;
+}
+
+.not-found {
+  &__text {
+    text : {
+      align: center;
+      shadow: 1px 1px 1px black;
+    }
+    color: white;
+    font-size: 2rem;
+  }
+
+  &__link {
+    color: #f08080;
+    text-decoration: none;
+  }
+}
