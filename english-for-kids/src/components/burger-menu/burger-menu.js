@@ -1,3 +1,5 @@
+import data from '../../js/cards.data';
+
 class BurgerMenu {
   constructor() {
     this.classes = {
@@ -14,14 +16,19 @@ class BurgerMenu {
       MODAL_WINDOW: 'burger-modal-window',
     };
 
-    this.elements = {};
+    this.elements = {
+      headerNav: document.getElementsByClassName(this.classes.HEADER_NAV)[0],
+    };
 
     this.lastHeaderMenuActiveTab = null;
     this.lastHeaderMenuClickedTab = null;
   }
 
   initial() {
+    this.elements.headerNav.innerHTML = '<ul class="nav__list"></ul>';
     this.initElements();
+    this.initData();
+    this.render();
 
     // set default active class to ul > li > a:first-child
     this.lastHeaderMenuActiveTab = this.elements.headerMenu.firstElementChild.firstElementChild;
@@ -47,6 +54,10 @@ class BurgerMenu {
     });
   }
 
+  initData() {
+    [this.data] = data;
+  }
+
   initHandlers() {
     this.elements.headerMenu.addEventListener('click', this.handlerHeaderMenu.bind(this));
     this.elements.burgerMenuButton.addEventListener('click', this.handlerHeaderBurgerMenuButton.bind(this));
@@ -58,16 +69,62 @@ class BurgerMenu {
     );
   }
 
+  render() {
+    this.elements.headerMenu.innerHTML = `
+      <li class="nav__list-item">
+        <a class="nav__list-item-link nav__list-item-link_active"
+          href="/"
+          title="Go to main page">Main Page</a>
+      </li>
+    `;
+
+    const renderLinks = () => {
+      const fragment = new DocumentFragment();
+
+      this.data.forEach((category, id) => {
+        const template = document.createElement('template');
+        template.innerHTML = `
+          <li class="nav__list-item">
+            <a class="nav__list-item-link"
+              href="#/categories/${id + 1}"
+              title="Open words from ${category}">${category}</a>
+          </li>
+        `;
+        fragment.append(template.content);
+      });
+      this.elements.headerMenu.append(fragment);
+    };
+    renderLinks();
+  }
+
   /**
    * Deletes active className and sets to new activated tab
-   * @param {HTMLElement} previousTab last tab
    * @param {HTMLElement} nextTab event.target or other new activated tab
    */
-  toggleActiveTab(previousTab, nextTab) {
+  toggleActiveTab(nextTab) {
+    let nextTabTo;
+
+    if (arguments.length) {
+      nextTabTo = nextTab;
+    } else {
+      const path = window.location.hash.substring(1).split('/');
+      const id = path[path.length - 1];
+      const children = [...this.elements.headerMenu.children].slice(1);
+      if (id > 0 && id <= children.length) {
+        nextTabTo = children[id - 1].firstElementChild;
+      } else {
+        return;
+      }
+    }
+
     const c = this.classes;
     const HEADER_MENU_ITEM_LINK_ACTIVE = `${c.HEADER_MENU_ITEM_LINK}_${c.ACTIVE}`;
-    previousTab.classList.remove(HEADER_MENU_ITEM_LINK_ACTIVE);
-    nextTab.classList.add(HEADER_MENU_ITEM_LINK_ACTIVE);
+
+    this.lastHeaderMenuActiveTab.classList.remove(HEADER_MENU_ITEM_LINK_ACTIVE);
+    nextTabTo.classList.add(HEADER_MENU_ITEM_LINK_ACTIVE);
+
+    this.lastHeaderMenuActiveTab = nextTabTo;
+    this.lastHeaderMenuClickedTab = this.lastHeaderMenuActiveTab;
   }
 
   handlerHeaderBurgerMenuButton() {
@@ -107,10 +164,7 @@ class BurgerMenu {
 
     if (this.lastHeaderMenuActiveTab === target) return;
 
-    this.toggleActiveTab(this.lastHeaderMenuActiveTab, target);
-
-    this.lastHeaderMenuActiveTab = target;
-    this.lastHeaderMenuClickedTab = this.lastHeaderMenuActiveTab;
+    this.toggleActiveTab(target);
 
     target.click(); // click on the item, to cause default event on the anchor
     this.handlerHeaderBurgerMenuButton(); // close burger menu

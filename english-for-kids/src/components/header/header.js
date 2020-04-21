@@ -1,55 +1,63 @@
-import data from '../../js/cards.data';
+// import data from '../../js/cards.data';
 
-const HEADER_NAV = 'header__nav'; // <nav>
-const HEADER_MENU = 'nav__list'; // <ul>
-const headerMenu = document.querySelector(`.${HEADER_NAV} .${HEADER_MENU}`);
+// class Header {
+//   constructor() {
+//     this.classes = {
+//       HEADER_NAV: 'header__nav', // <nav>
+//       HEADER_MENU: 'nav__list', // <ul>
+//     };
 
-// const handlerCategoriesOpenCards = (e) => {
-// };
+//     this.elements = {};
 
-const createTemplate = (str) => {
-  const template = document.createElement('template');
-  template.innerHTML = str;
-  return template.content;
-};
+//     this.initial();
+//   }
 
-const initData = () => data[0];
+//   initial() {
+//     this.initElements();
+//     this.initData();
+//   }
 
-const renderLinks = (categories) => {
-  const fragment = new DocumentFragment();
+//   initElements() {
+//     const headerMenu = document
+//       .querySelector(`.${this.classes.HEADER_NAV} .${this.classes.HEADER_MENU}`);
 
-  categories.forEach((category, id) => {
-    const template = createTemplate(`
-      <li class="nav__list-item">
-        <a class="nav__list-item-link"
-          href="#/categories/${id + 1}"
-          title="Open words from ${category}">${category}</a>
-      </li>
-    `);
-    fragment.append(template);
-  });
+//     Object.assign(this.elements, {
+//       headerMenu,
+//     });
+//   }
 
-  headerMenu.append(fragment);
-};
+//   initData() {
+//     [this.data] = data;
+//   }
 
-// const initHandlers = () => {
-//   categoriesContainer.addEventListener('click', handlerCategoriesOpenCards);
-// };
+//   renderLinks(categories) {
+//     const fragment = new DocumentFragment();
 
-const initial = () => {
-  headerMenu.innerHTML = `
-    <li class="nav__list-item nav__list-item_active">
-      <a class="nav__list-item-link nav__list-item-link_active"
-         href="/"
-         title="Go to main page">Main Page</a>
-    </li>
-  `;
-  const categories = initData();
-  renderLinks(categories);
+//     categories.forEach((category, id) => {
+//       const template = document.createElement('template');
+//       template.innerHTML = `
+//         <li class="nav__list-item">
+//           <a class="nav__list-item-link"
+//             href="#/categories/${id + 1}"
+//             title="Open words from ${category}">${category}</a>
+//         </li>
+//       `;
+//       fragment.append(template.content);
+//     });
 
-  // initHandlers();
-};
+//     this.elements.headerMenu.append(fragment);
+//   }
 
-export default {
-  initial,
-};
+//   render() {
+//     this.elements.headerMenu.innerHTML = `
+//       <li class="nav__list-item">
+//         <a class="nav__list-item-link nav__list-item-link_active"
+//           href="/"
+//           title="Go to main page">Main Page</a>
+//       </li>
+//     `;
+//     this.renderLinks(this.data);
+//   }
+// }
+
+// export default Header;
