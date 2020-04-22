@@ -12,6 +12,7 @@ class CardsContainer {
       mainElem: document.querySelector('.main-content .wrapper'),
     };
 
+    this.children = [];
     // this.initial();
   }
 
@@ -21,7 +22,7 @@ class CardsContainer {
         <div class="progress-container__star icon-star-outline progress-container__star_success"></div>
         <div class="progress-container__star icon-star progress-container__star_error"></div>
       </div>
-      <div class="game-controllers-container">
+      <div class="game-controllers-container main-content__game-controllers-container">
         <button class="button button-start-game button-start-game_hidden button_theme_train">START GAME</button>
       </div>
 
@@ -59,17 +60,32 @@ class CardsContainer {
 
     const cards = categories[id - 1];
     this.data = cards;
+
+    cards.forEach((card) => {
+      const newCard = new Card(card);
+      this.children.push(newCard);
+    });
   }
 
   render() {
     const fragment = new DocumentFragment();
 
-    this.data.forEach((card) => {
-      const newCard = new Card(card);
-      fragment.append(newCard.rootEl);
+    this.children.forEach((card) => {
+      fragment.append(card.rootEl);
     });
+    // this.data.forEach((card) => {
+    //   const newCard = new Card(card);
+    //   fragment.append(newCard.rootEl);
+    // });
 
     this.elements.cardsContainer.append(fragment);
+  }
+
+  detachChildrenEvents() {
+    console.log('DETACHED');
+    this.children.forEach((card) => {
+      card.detachEvents();
+    });
   }
 
   // render() {

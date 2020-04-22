@@ -5,16 +5,6 @@ const createNewAudio = (url) => {
   return audio;
 };
 
-function handlerCardMouseLeave() {
-  const el = this.elements;
-  const c = this.classes;
-
-  if (el.card.classList.contains(c.CARD_SIDE_BACK)) {
-    this.handlerCardSwitchSide();
-    el.cardContainer.removeEventListener('mouseleave', this.handlerCardMouseLeave);
-  }
-}
-
 class Card {
   constructor(data) {
     this.classes = {
@@ -28,9 +18,6 @@ class Card {
       CARD_SIDE_BACK: 'card_side_back',
       CARD_ICON: 'card-container__icon',
 
-      SWITCH_BUTTON: 'button-switch-mode',
-      START_GAME: 'button-start-game',
-
       ICON_SUCCESS: 'icon-success',
       ICON_ERROR: 'icon-error',
 
@@ -39,13 +26,12 @@ class Card {
 
     this.elements = {};
     this.data = data;
+    this.events = null;
 
     this.initial();
   }
 
   initial() {
-    this.handlerCardMouseLeave = handlerCardMouseLeave.bind(this);
-
     this.initData();
 
     this.render();
@@ -118,7 +104,7 @@ class Card {
     // div.style.height = '500px';
     // div.style.backgroundColor = '#123123';
     // fragment.append(div);
-    // const handler = () => { console.log('CYKA'); };
+    // const handler = () => { console.log('CHE'); };
     // fragment.querySelector('.lol').addEventListener('click', handler);
     // document.body.append(fragment);
     // document.querySelector('.lol').removeEventListener('click', handler);
@@ -128,22 +114,33 @@ class Card {
     const cardContainer = this.rootEl;
     const [card] = this.rootEl.getElementsByClassName(this.classes.CARD_CLASSNAME);
     const [cardRotateButton] = this.rootEl.getElementsByClassName(this.classes.CARD_ROTATE_BLOCK);
-    // const [switchButton] = this.rootEl.getElementsByClassName(this.classes.SWITCH_BUTTON);
-    // const [startGameButton] = this.rootEl.getElementsByClassName(this.classes.START_GAME);
 
     Object.assign(this.elements, {
       cardContainer,
       card,
       cardRotateButton,
-      // switchButton,
-      // startGameButton,
     });
   }
 
   initHandlers() {
-    this.elements.card.addEventListener('click', this.handlerCardMouseClick.bind(this));
-    this.elements.cardRotateButton.addEventListener('click', this.handlerCardRotate.bind(this));
-    // this.elements.switchButton.addEventListener('click', switchMode);
+    this.handlerCardMouseLeave = this.handlerCardMouseLeave.bind(this);
+
+    const handlerCardMouseClick = this.handlerCardMouseClick.bind(this);
+    const handlerCardRotate = this.handlerCardRotate.bind(this);
+
+    const { card, cardRotateButton } = this.elements;
+    this.events = [{
+      el: card,
+      type: 'click',
+      handler: handlerCardMouseClick,
+    }, {
+      el: cardRotateButton,
+      type: 'click',
+      handler: handlerCardRotate,
+    }];
+    this.elements.card.addEventListener('click', handlerCardMouseClick);
+    this.elements.cardRotateButton.addEventListener('click', handlerCardRotate);
+    // -----------------------
     // this.elements.startGameButton.addEventListener('click', handlerStartGame);
 
     // this.elements.correctAudio.addEventListener('ended', handlerGameOver);
@@ -154,13 +151,14 @@ class Card {
     return this.markup;
   }
 
-  // TODO: remove
-  // addNewSound(cardName) {
-  //   const url = this.audios.find((item) => item.cardName === cardName).audioSrc;
-  //   const audio = createNewAudio(url);
-  //   this.soundArray.push({ cardName, audio });
-  //   return audio;
-  // }
+  detachEvents() {
+    if (this.events) {
+      this.events.forEach((event) => {
+        const { el, type, handler } = event;
+        el.removeEventListener(type, handler);
+      });
+    }
+  }
 
   handlerCardSwitchSide() {
     this.elements.card.classList.toggle(this.classes.CARD_SIDE_FRONT);
@@ -171,27 +169,18 @@ class Card {
     const el = this.elements;
 
     this.handlerCardSwitchSide();
-    console.log(this);
     el.cardContainer.addEventListener('mouseleave', this.handlerCardMouseLeave);
   }
 
-  // TODO: remove
-  // handlerCardPlaySound(cardName) {
-  //   const searchResult = this.soundArray.find((item) => item.cardName === cardName);
-  //   const audio = searchResult ? searchResult.audio : this.addNewSound(cardName);
-  //   audio.play();
-  // }
+  handlerCardMouseLeave() {
+    const el = this.elements;
+    const c = this.classes;
 
-  // const playSound = () => {
-  //   // TODO: near the implementation of the header burger menu
-  //   // there was an error of getting element of undefined
-  //   const isEnd = shuffledAudios.length === currentAudioId;
-  //   if (!isEnd) {
-  //     const currentItem = shuffledAudios[currentAudioId];
-  //     console.log(currentItem);
-  //     currentItem.audio.play();
-  //   }
-  // };
+    if (el.card.classList.contains(c.CARD_SIDE_BACK)) {
+      this.handlerCardSwitchSide();
+      el.cardContainer.removeEventListener('mouseleave', this.handlerCardMouseLeave);
+    }
+  }
 
   // const handlerGameOver = () => {
   //   const isEnd = shuffledAudios.length === currentAudioId;
@@ -204,57 +193,9 @@ class Card {
   //   }
   // };
 
-  // const handlerCardMouseClick = (e) => {
-  //   console.log(e);
-  //   if (isTrain) {
-  //     handlerCardPlaySound('front');
-  //     console.log(soundArray);
-  //   } else if (isGameStart) {
-  //     handlerCardCheckAnswer(e);
-  //   }
-  // };
-
   handlerCardMouseClick() {
     this.audio.play();
-    // this.handlerCardPlaySound('front'); // TODO: remove
   }
-
-  // // button modes switcher: TRAIN / TEST
-  // const switchMode = () => {
-  //   isTrain = !isTrain;
-  //   switchButton.textContent = isTrain ? 'TRAIN' : 'PLAY';
-  //   startGameButton.classList.toggle(`${classes.START_GAME}_${classes.HIDDEN}`);
-
-  //   const cardTexts = card.querySelectorAll(`.${classes.CARD_TEXT}`);
-  //   cardTexts.forEach((cardText) => {
-  //     cardText.classList.toggle(`${classes.CARD_TEXT}_${classes.HIDDEN}`);
-  //   });
-
-  //   const rotateBlock = card.querySelector(`.${classes.CARD_ROTATE_BLOCK}`);
-  //   rotateBlock.classList.toggle(`${classes.CARD_ROTATE_BLOCK}_${classes.HIDDEN}`);
-
-  //   document.querySelectorAll('.card__side_hidden').forEach((item) => {
-  //     item.classList.remove('card__side_hidden');
-  //   });
-
-  //   document.querySelectorAll(`.${classes.CARD_ICON}`).forEach((item) => {
-  //     item.classList.add(`${classes.CARD_ICON}_${classes.HIDDEN}`);
-  //   });
-
-  //   if (isGameStart) {
-  //     const cardsList = [...document.body
-  //       .querySelectorAll(`.${classes.CARD_CONTAINER} .${classes.CARD_CLASSNAME}`)];
-  //     cardsList.forEach((currentCard) => {
-  //       currentCard.addEventListener('click', handlerCardMouseClick);
-  //     });
-  //     // console.log(cardsList);
-  //     currentAudioId = 0;
-
-  //     startGameButton.textContent = 'START GAME';
-
-  //     isGameStart = !isGameStart;
-  //   }
-  // };
 
   // const handlerCardCheckAnswer = (e) => {
   //   // TODO: ПОМЕНЯТЬ ФЛОУ, ДЛЯ ПРИМЕРА СМОТРИ https://vigorous-mcclintock-800815.netlify.app/
