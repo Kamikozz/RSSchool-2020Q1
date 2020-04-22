@@ -203,58 +203,6 @@
   justify-content: center;
 }
 
-.button {
-  & {
-    height: 30px;
-    padding: 0px 20px;
-
-    font: {
-      weight: 300;
-      size: 2rem;
-    }
-
-    text: {
-      transform: uppercase;
-      shadow: 1px 1px 1px black;
-    }
-
-    color: white;
-
-    border-radius: 5px;
-    box-shadow: 0 0 7px 0 black;
-    cursor: pointer;
-  }
-
-  &-switch-mode {
-    &-block {
-      width: 70px;
-    }
-
-    & {
-      padding: 0;
-      width: 100%;
-    }
-  }
-
-  &-start-game {
-    // & {
-    // }
-  
-    &_hidden {
-      display: none;
-    }
-  }
-
-  &_theme {
-    &_train {
-      background-color: lightcoral;
-    }
-
-    // &_play {
-    // }
-  }
-}
-
 .icon {
   &-success { background-image: url("/assets/icons/success.png"); }
   &-error { background-image: url("/assets/icons/error.png"); }

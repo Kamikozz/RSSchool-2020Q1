@@ -40,10 +40,16 @@ body {
 
 @import "./header/header";
 @import "./burger-menu/burger-menu";
+@import "./button/button";
+@import "./button-switch-mode/button-switch-mode";
+@import "./button-start-game/button-start-game";
 
 @import "./cards-container/cards-container";
 @import "./card/card";
+
 @import "./categories-container/categories-container";
 @import "./category/category";
-@import "./not-found/not-found.scss";
+
 @import "./footer/footer";
+
+@import "./not-found/not-found";

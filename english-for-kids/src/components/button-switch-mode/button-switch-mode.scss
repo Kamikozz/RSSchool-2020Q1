@@ -1,0 +1,12 @@
+.button {
+  &-switch-mode {
+    &-block {
+      width: 70px;
+    }
+
+    & {
+      padding: 0;
+      width: 100%;
+    }
+  }
+}
