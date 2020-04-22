@@ -12,8 +12,6 @@ class CategoriesContainer {
     this.elements = {
       mainElem: document.querySelector('.main-content .wrapper'),
     };
-
-    // this.initial();
   }
 
   initial() {

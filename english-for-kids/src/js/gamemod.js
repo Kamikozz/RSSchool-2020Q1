@@ -37,13 +37,10 @@ class GameMod {
     this.currentAudioId = 0;
     this.cardsContainer = null;
     this.shuffledAudios = null;
-
-    // this.initial();
   }
 
   initial() {
     this.initData();
-    // this.render();
     this.initElements();
     this.initHandlers();
   }
@@ -63,21 +60,11 @@ class GameMod {
   }
 
   initHandlers() {
-    this.events = [
-    //   {
-    //   el: card,
-    //   type: 'click',
-    //   handler: handlerCardMouseClick,
-    // }
-    ];
+    this.events = [];
 
     this.elements.switchButton.addEventListener('click', this.handlerSwitchMode.bind(this));
     this.correctAudio.addEventListener('ended', this.handlerGameOver.bind(this));
     this.errorAudio.addEventListener('ended', this.handlerGameOver.bind(this));
-  }
-
-  detachEvent(listener) {
-    console.log('so, i`m going to delete some listener here', listener, this);
   }
 
   setDefault(isDefaultPage = true) {
@@ -85,7 +72,6 @@ class GameMod {
   }
 
   handlerSwitchMode() {
-    console.log('SWITCH MODE CLICKED', this);
     const TRAIN = 'TRAIN';
     const PLAY = 'PLAY';
 
@@ -98,7 +84,6 @@ class GameMod {
       if (this.isTrain) {
         // if before click it was not Train (Play) -> then it was already displayed and initialized
         // then need to remove event listener
-        console.log('REMOVE startGame from StartGame');
         const listener = this.events.find(
           (event) => event.name === 'startGameButton-click-handlerStartGame',
         );
@@ -106,7 +91,6 @@ class GameMod {
           this.elements.startGameButton.removeEventListener('click', listener.handler);
         }
       } else {
-        console.log('ADD startGame from StartGame');
         const listener = this.events.find(
           (event) => event.name === 'startGameButton-click-handlerStartGame',
         );
@@ -145,7 +129,6 @@ class GameMod {
       });
     }
 
-    // TODO: THIS IS FOR THE FUTURE currentItemAnswer blur effect
     const CARD_SIDE_HIDDEN = 'card__side_hidden';
     const hiddenCards = document.querySelectorAll(`.${CARD_SIDE_HIDDEN}`);
     if (hiddenCards.length) {
@@ -154,7 +137,6 @@ class GameMod {
       });
     }
 
-    // TODO: THIS IS FOR THE FUTURE currentItemAnswer clear all of the icons
     const CARD_ICON_HIDDEN = `${this.classes.CARD_ICON}_${this.classes.HIDDEN}`;
     const icons = document.querySelectorAll(`.${this.classes.CARD_ICON}`);
     if (icons.length) {
@@ -164,7 +146,6 @@ class GameMod {
     }
 
     if (this.isTrain && this.isGameStart) {
-      console.log('DELETE handlerCardCheckAnswer');
       // remove handler game handlerCardCheckAnswer(e);
       const CARD = `.${this.classes.CARD_CONTAINER} .${this.classes.CARD_CLASSNAME}`;
       const cardsList = document.querySelectorAll(CARD);
@@ -179,12 +160,10 @@ class GameMod {
           });
         }
       }
-      // this.elements.startGameButton.addEventListener('click', this.handlerCardCheckAnswer);
     }
 
     if (!this.isTrain && !this.isDefaultPage) {
       // if it was Play -> remove basic cards EventListener
-      console.log('HELLO');
       this.cardsContainer.detachChildrenEvents();
 
       const listener = this.events.find(
@@ -211,7 +190,6 @@ class GameMod {
         });
       }
     } else {
-      console.log('BYE BYE KITTY');
       // if it was Play -> remove basic cards EventListener
       const listener = this.events.find(
         (event) => event.name === 'card-click-handlerCardCheckAnswer',
@@ -234,13 +212,10 @@ class GameMod {
   }
 
   handlerStartGame() {
-    console.log('START GAME');
     if (!this.isGameStart) {
       this.isGameStart = true;
-      // currentAudioId = 0;
 
       this.elements.startGameButton.textContent = 'REPEAT';
-      // this.elements.startGameButton.addEventListener('click', this.handlerCardCheckAnswer);
 
       this.shuffledAudios = this.getSoundArray();
     }
@@ -279,9 +254,6 @@ class GameMod {
 
         (isRightCard ? this.correctAudio : this.errorAudio).play();
 
-        // currentItemAnswer
-        // .querySelector('.card__side_side_front').classList.add('card__side_hidden');
-
         if (isRightCard) {
           const iconsFalse = document.querySelectorAll(`.${c.CARD_ICON}.${c.ICON_ERROR}`);
           iconsFalse.forEach((item) => {
@@ -302,10 +274,7 @@ class GameMod {
   handlerGameOver() {
     const isEnd = this.shuffledAudios.length === this.currentAudioId;
     if (isEnd) {
-      console.log('WINNER');
-      // this.handlerSwitchMode();
       window.location.href = '/';
-      // TODO: window.location.href = '#/';
     } else {
       this.playSound();
     }
@@ -316,12 +285,9 @@ class GameMod {
   }
 
   playSound() {
-    // TODO: near the implementation of the header burger menu
-    // there was an error of getting element of undefined
     const isEnd = this.shuffledAudios.length === this.currentAudioId;
     if (!isEnd) {
       const currentItem = this.shuffledAudios[this.currentAudioId];
-      console.log(currentItem);
       currentItem.audio.play();
     }
   }

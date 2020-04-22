@@ -14,15 +14,9 @@ class ButtonSwitchMode {
   }
 
   initial() {
-    // this.initData();
     this.render();
     this.initElements();
-    // this.initHandlers();
   }
-
-  // initData() {
-  //   this.data = null;
-  // }
 
   render() {
     const fragment = new DocumentFragment();
@@ -47,14 +41,6 @@ class ButtonSwitchMode {
       switchButton,
     });
   }
-
-  // initHandlers() {
-  //   this.elements.switchButton.addEventListener('click', this.handlerSwitchMode.bind(this));
-  // }
-
-  // handlerSwitchMode() {
-  //   console.log('WTF', this);
-  // }
 }
 
 export default ButtonSwitchMode;

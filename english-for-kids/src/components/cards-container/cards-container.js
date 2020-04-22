@@ -13,7 +13,6 @@ class CardsContainer {
     };
 
     this.children = [];
-    // this.initial();
   }
 
   initial() {
@@ -30,7 +29,6 @@ class CardsContainer {
     `;
 
     this.initElements();
-    // this.initHandlers();
     this.initData();
     this.render();
   }
@@ -42,11 +40,6 @@ class CardsContainer {
       cardsContainer,
     });
   }
-
-  // initHandlers() {
-  //   this.elements.categoriesContainer
-  //     .addEventListener('click', this.handlerCategoriesOpenCards.bind(this));
-  // }
 
   initData() {
     const path = window.location.hash.substring(1).split('/');
@@ -73,42 +66,15 @@ class CardsContainer {
     this.children.forEach((card) => {
       fragment.append(card.rootEl);
     });
-    // this.data.forEach((card) => {
-    //   const newCard = new Card(card);
-    //   fragment.append(newCard.rootEl);
-    // });
 
     this.elements.cardsContainer.append(fragment);
   }
 
   detachChildrenEvents() {
-    console.log('DETACHED');
     this.children.forEach((card) => {
       card.detachEvents();
     });
   }
-
-  // render() {
-  //   const fragment = new DocumentFragment();
-
-  //   this.data.forEach((category) => {
-  //     const template = document.createElement('template');
-  //     template.innerHTML = new Card(card).getMarkup();
-  //     fragment.append(template.content);
-  //   });
-
-  //   this.elements.categoriesContainer.append(fragment);
-  // }
-
-  // handlerCategoriesOpenCards(e) {
-  //   if (e.target.parentElement.classList.contains(this.classes.CATEGORY)) {
-  //     const currentCategory = e.target.parentElement.parentElement;
-  //     const categories = [...currentCategory.parentElement.children];
-  //     const idx = categories.findIndex((categoryItem) => categoryItem === currentCategory);
-
-  //     window.location.href = `#/categories/${idx + 1}`;
-  //   }
-  // }
 }
 
 export default CardsContainer;

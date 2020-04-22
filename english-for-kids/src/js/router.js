@@ -11,7 +11,7 @@ class Router {
 
       this.init();
     } catch (e) {
-      // console.error(e);
+      console.error(e);
     }
   }
 
@@ -34,7 +34,6 @@ class Router {
       ? this.routes.find((routeLocal) => routeLocal.isActiveRoute())
       : this.routes.find((routeLocal) => routeLocal.default);
 
-    console.log('CURRENT ROUTE', route);
     if (route) {
       route.goToRoute();
     } else {

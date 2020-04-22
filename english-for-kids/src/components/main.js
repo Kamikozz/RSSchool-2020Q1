@@ -20,7 +20,6 @@ const router = new Router([
 
     const categories = new CategoriesContainer();
     categories.initial();
-    // gamemod.revert();
   }, true),
   new Route('/categories/{id}', () => {
     gamemod.setDefault(false);
@@ -29,30 +28,7 @@ const router = new Router([
     const cards = new CardsContainer();
     cards.initial();
     gamemod.cardsContainer = cards;
-    // gamemod.revert(); // TODO: here BUG
   }),
 ]);
 
 gamemod.initial();
-
-console.log('FULLY RELOAD!'); // TODO: remove
-
-// import trash from './trash';
-
-// trash();
-
-// Lazy Loading
-// let print;
-
-// setTimeout(() => {
-//   import(/* webpackChunkName: 'trash' */ './trash').then(module => {
-//     print = module.default;
-//     // console.log(module);
-//     // module();
-//     print();
-//   });
-
-//   setTimeout(() => {
-//       print();
-//   }, 5000);
-// }, 5000);

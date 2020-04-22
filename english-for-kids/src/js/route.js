@@ -9,7 +9,7 @@ class Route {
       this.callback = callback;
       this.default = defaultRoute;
     } catch (e) {
-      // console.log(e);
+      console.log(e);
     }
   }
 

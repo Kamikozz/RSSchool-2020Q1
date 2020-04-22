@@ -47,9 +47,6 @@
   }
 
   &_side {
-    // & {
-    // }
-
     &_front {
       & { transform: rotateY(0deg); }
       &:hover {transform: rotateY(0deg) scale(1.03); }
