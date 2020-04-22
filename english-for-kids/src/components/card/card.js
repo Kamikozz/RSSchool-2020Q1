@@ -1,8 +1,7 @@
-/* eslint-disable no-use-before-define */
-/* eslint-disable no-console */
 const createNewAudio = (url) => {
   const audio = new Audio(url);
-  audio.volume = 0.1;
+  audio.preload = 'none';
+  audio.volume = 0.35;
   return audio;
 };
 
@@ -57,15 +56,15 @@ class Card {
 
   initData() {
     this.audio = createNewAudio(this.data.audioSrc);
-
-    this.audios = [{
-      cardName: 'front',
-      audioSrc: 'https://sound-pack.net/download/Sound_17211.mp3',
-    }, {
-      cardName: 'windows',
-      audioSrc: 'https://sound-pack.net/download/Sound_04669.mp3',
-    }];
-    this.soundArray = [];
+    // TODO: remove
+    // this.audios = [{
+    //   cardName: 'front',
+    //   audioSrc: 'https://sound-pack.net/download/Sound_17211.mp3',
+    // }, {
+    //   cardName: 'windows',
+    //   audioSrc: 'https://sound-pack.net/download/Sound_04669.mp3',
+    // }];
+    // this.soundArray = [];
 
     // this.errorAudio = createNewAudio('assets/audio/cards/error.mp3');
     // this.correctAudio = createNewAudio('assets/audio/cards/correct.mp3');
@@ -108,7 +107,6 @@ class Card {
     fragment.append(template.content);
 
     this.rootEl = fragment.firstElementChild;
-    console.log('jopa', this);
     this.markup = fragment.firstElementChild.outerHTML;
 
     // this.elements.categoriesContainer.append(fragment);
@@ -156,12 +154,13 @@ class Card {
     return this.markup;
   }
 
-  addNewSound(cardName) {
-    const url = this.audios.find((item) => item.cardName === cardName).audioSrc;
-    const audio = createNewAudio(url);
-    this.soundArray.push({ cardName, audio });
-    return audio;
-  }
+  // TODO: remove
+  // addNewSound(cardName) {
+  //   const url = this.audios.find((item) => item.cardName === cardName).audioSrc;
+  //   const audio = createNewAudio(url);
+  //   this.soundArray.push({ cardName, audio });
+  //   return audio;
+  // }
 
   handlerCardSwitchSide() {
     this.elements.card.classList.toggle(this.classes.CARD_SIDE_FRONT);
@@ -176,11 +175,12 @@ class Card {
     el.cardContainer.addEventListener('mouseleave', this.handlerCardMouseLeave);
   }
 
-  handlerCardPlaySound(cardName) {
-    const searchResult = this.soundArray.find((item) => item.cardName === cardName);
-    const audio = searchResult ? searchResult.audio : this.addNewSound(cardName);
-    audio.play();
-  }
+  // TODO: remove
+  // handlerCardPlaySound(cardName) {
+  //   const searchResult = this.soundArray.find((item) => item.cardName === cardName);
+  //   const audio = searchResult ? searchResult.audio : this.addNewSound(cardName);
+  //   audio.play();
+  // }
 
   // const playSound = () => {
   //   // TODO: near the implementation of the header burger menu
@@ -215,7 +215,8 @@ class Card {
   // };
 
   handlerCardMouseClick() {
-    this.handlerCardPlaySound('front');
+    this.audio.play();
+    // this.handlerCardPlaySound('front'); // TODO: remove
   }
 
   // // button modes switcher: TRAIN / TEST
