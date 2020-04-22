@@ -2,24 +2,13 @@
 import Route from '../js/route';
 import Router from '../js/router';
 
-// import cards-data from '../js/cards-data';
-// import Header from './header/header';
 import BurgerMenu from './burger-menu/burger-menu';
 import CategoriesContainer from './categories-container/categories-container';
-import cardComponent from './card/card';
-
-// import categoryComponent from './category/category';
-// import cardsComponent from './cards-container/cards-container';
-
-// const header = new Header();
-// header.render(); // fills the menu with list items & links
+import CardsContainer from './cards-container/cards-container';
 
 const burgerMenu = new BurgerMenu();
 burgerMenu.initial();
-cardComponent.initial();
-// categoriesComponent.initial();
 
-// TODO callback
 const router = new Router([
   new Route('/', () => {
     const categories = new CategoriesContainer();
@@ -27,8 +16,8 @@ const router = new Router([
   }, true),
   new Route('/categories/{id}', () => {
     burgerMenu.toggleActiveTab();
-    // const cards = new CardsContainer();
-    // cards.initial();
+    const cards = new CardsContainer();
+    cards.initial();
   }),
   // new Route('/categories', () => {
 
