@@ -33,6 +33,7 @@ class PageMain {
       PAGINATION: 'pagination__list',
       PAGE: 'pagination__item',
       ACTIVE_PAGE: 'pagination__item_active',
+      RESTART_BUTTON: 'controls__restart-button',
     };
     this.elements = {};
     this.data = null;
@@ -124,12 +125,14 @@ class PageMain {
   }
 
   initElements() {
+    const [restartButton] = document.getElementsByClassName(this.classes.RESTART_BUTTON);
     const [speakButton] = document.getElementsByClassName(this.classes.SPEAK_BUTTON);
     const [audioPlayer] = document.getElementsByClassName(this.classes.AUDIO_PLAYER);
     const [gallery] = document.getElementsByClassName(this.classes.IMAGE);
     const [translation] = document.getElementsByClassName(this.classes.TRANSLATION);
 
     Object.assign(this.elements, {
+      restartButton,
       speakButton,
       audioPlayer,
       gallery,
@@ -138,12 +141,11 @@ class PageMain {
   }
 
   initHandlers() {
+    this.elements.restartButton.addEventListener('click', this.handlerRestartButton.bind(this));
     this.elements.speakButton.addEventListener('click', this.handlerSpeakButton.bind(this));
-
     this.elements.wordsContainer.children.forEach((card) => {
       card.addEventListener('click', this.handlerCardClick.bind(this));
     });
-
     this.elements.pagination.addEventListener('click', this.handlerSwitchDifficulty.bind(this));
   }
 
@@ -163,17 +165,29 @@ class PageMain {
       });
 
       mainPage.init();
-      console.log(this);
-      console.log(event.target);
     }
   }
 
-  handlerSpeakButton() {
-    console.log(this);
+  handlerRestartButton() {
+    this.speechRecognition.abort();
+    this.speechRecognition.addEventListener('end', this.speechRecognition.abort);
+  }
 
+  handlerSpeakButton() {
     const SpeechRecognition = window.webkitSpeechRecognition;
-    const speechRecognition = new SpeechRecognition();
-    speechRecognition.lang = 'en-US';
+    this.speechRecognition = new SpeechRecognition();
+    this.speechRecognition.lang = 'en-US';
+
+    this.speechRecognition.addEventListener('result', this.recognize.bind(this));
+    this.speechRecognition.addEventListener('end', this.speechRecognition.start);
+    this.speechRecognition.start();
+  }
+
+  recognize(event) {
+    const translations = Object.entries(event.results).map((item) => item[1][0].transcript);
+
+    this.elements.translation.textContent = translations;
+    console.log(this, translations);
   }
 
   handlerCardClick(event) {
