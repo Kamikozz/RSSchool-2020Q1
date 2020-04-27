@@ -6,6 +6,17 @@ const getWords = async (page, group) => {
   return json.slice(0, 10);
 };
 
+const getTranslation = async (word) => {
+  const baseUrl = 'https://translate.yandex.net/api/v1.5/tr.json/translate?key=';
+  const key = 'trnsl.1.1.20200427T065631Z.0c10983194239a87.e571e7bd7d82365b43142a166f902ab5f37ea1dd';
+  const params = `&text=${word}&lang=en-ru`;
+  const url = `${baseUrl}${key}${params}`;
+  const res = await fetch(url);
+  const json = await res.json();
+
+  return json;
+};
+
 class PageMain {
   constructor() {
     this.classes = {
@@ -16,6 +27,8 @@ class PageMain {
       WORD_CARD_ACTIVE: 'words-container__card_active',
       AUDIO_PLAYER: 'audio-player',
       IMAGE: 'current-word-container__image',
+      TRANSLATION: 'current-word-container__translation',
+      WORD: 'words-container__word',
     };
     this.elements = {};
     this.data = null;
@@ -30,65 +43,13 @@ class PageMain {
   }
 
   async initData() {
-    console.log(this);
     this.data = await getWords(0, 0);
-    // console.log(this.data);
   }
 
   render() {
     // const c = this.classes;
     const fragment = new DocumentFragment();
     const template = document.createElement('template');
-
-    // <div class="words-container__card">
-    //   <span class="words-container__icon"></span>
-    //   <div class="words-container__word-container">
-    //     <p class="words-container__word">view</p>
-    //     <p class="words-container__transcription">[vjuː]</p>
-    //   </div>
-    // </div>
-    // <div class="words-container__card">
-    //   <span class="words-container__icon"></span>
-    //   <div class="words-container__word-container">
-    //     <p class="words-container__word">calm</p>
-    //     <p class="words-container__transcription">[kɑːm]</p>
-    //   </div>
-    // </div>
-    // <div class="words-container__card">
-    //   <span class="words-container__icon"></span>
-    //   <div class="words-container__word-container">
-    //     <p class="words-container__word">cat</p>
-    //     <p class="words-container__transcription">[kæt]</p>
-    //   </div>
-    // </div>
-    // <div class="words-container__card">
-    //   <span class="words-container__icon"></span>
-    //   <div class="words-container__word-container">
-    //     <p class="words-container__word">dog</p>
-    //     <p class="words-container__transcription">[dɔːg]</p>
-    //   </div>
-    // </div>
-    // <div class="words-container__card">
-    //   <span class="words-container__icon"></span>
-    //   <div class="words-container__word-container">
-    //     <p class="words-container__word">friend</p>
-    //     <p class="words-container__transcription">[frend]</p>
-    //   </div>
-    // </div>
-    // <div class="words-container__card">
-    //   <span class="words-container__icon"></span>
-    //   <div class="words-container__word-container">
-    //     <p class="words-container__word">horse</p>
-    //     <p class="words-container__transcription">[hɔːrs]</p>
-    //   </div>
-    // </div>
-    // <div class="words-container__card">
-    //   <span class="words-container__icon"></span>
-    //   <div class="words-container__word-container">
-    //     <p class="words-container__word">hear</p>
-    //     <p class="words-container__transcription">[hiər]</p>
-    //   </div>
-    // </div>
 
     template.innerHTML = `
       <div class="page-main">
@@ -126,7 +87,6 @@ class PageMain {
     [this.elements.wordsContainer] = this.elements.root
       .getElementsByClassName(this.classes.WORDS_CONTAINER);
 
-    // console.log('wtf', this.data);
     this.data.forEach((item) => {
       const {
         word, transcription, image, audio,
@@ -143,7 +103,6 @@ class PageMain {
       `;
       this.elements.wordsContainer.append(cardTemplate.content);
     });
-
     fragment.append(template.content);
     document.body.append(fragment);
   }
@@ -152,11 +111,13 @@ class PageMain {
     const [speakButton] = document.getElementsByClassName(this.classes.SPEAK_BUTTON);
     const [audioPlayer] = document.getElementsByClassName(this.classes.AUDIO_PLAYER);
     const [gallery] = document.getElementsByClassName(this.classes.IMAGE);
+    const [translation] = document.getElementsByClassName(this.classes.TRANSLATION);
 
     Object.assign(this.elements, {
       speakButton,
       audioPlayer,
       gallery,
+      translation,
     });
   }
 
@@ -192,6 +153,7 @@ class PageMain {
 
     this.playSound(target);
     this.changeImage(target);
+    this.translateWord(target);
   }
 
   playSound(card) {
@@ -205,6 +167,19 @@ class PageMain {
     const { gallery } = this.elements;
     const imageSrc = card.dataset.image.replace('files/', '');
     gallery.src = `${this.baseUrl}${imageSrc}`;
+  }
+
+  async translateWord(card) {
+    const [word] = card.getElementsByClassName(this.classes.WORD);
+
+    const response = await getTranslation(word.textContent);
+    let translation = '';
+
+    if (response.code === 200) {
+      [translation] = response.text;
+    }
+
+    this.elements.translation.textContent = translation;
   }
 }
 
