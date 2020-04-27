@@ -1,5 +1,21 @@
 /* ---------------- ANIMATIONS ------------- */
 /* ---------------- COMMON ----------------- */
+@keyframes change-colors {
+  0% {
+    background-color: rgba(32, 178, 170, 0.75);
+  }
+  50% {
+    background-color: rgba(184, 134, 11, 0.75);
+  }
+  100% {
+    background-color: rgba(240, 128, 128, 0.75);
+  }
+}
+
+.change-colors {
+  animation: change-colors 10s linear alternate-reverse infinite;
+}
+
 @keyframes rainbow {
   /* credits to Anna Stoma */
   0% {
