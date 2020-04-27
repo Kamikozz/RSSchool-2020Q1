@@ -2,14 +2,23 @@ class PageMain {
   constructor() {
     this.classes = {
       ROOT: 'page-main',
+      SPEAK_BUTTON: 'controls__speak-button',
+      WORDS_CONTAINER: 'words-container',
+      WORD_CARD: 'words-container__card',
+      WORD_CARD_ACTIVE: 'words-container__card_active',
     };
     this.elements = {};
   }
 
   init() {
+    this.initData();
     this.render();
     this.initElements();
     this.initHandlers();
+  }
+
+  initData() {
+    console.log(this);
   }
 
   render() {
@@ -100,6 +109,7 @@ class PageMain {
               <button class="controls__button controls__speak-button">Speak it</button>
               <button class="controls__button controls__results-button">Results</button>
             </div>
+            <audio preload="none" src=""></audio>
           </div>
         </main>
       </div>
@@ -110,11 +120,49 @@ class PageMain {
   }
 
   initElements() {
-    console.log(this);
+    const [speakButton] = document.getElementsByClassName(this.classes.SPEAK_BUTTON);
+    const [wordsContainer] = document.getElementsByClassName(this.classes.WORDS_CONTAINER);
+
+    Object.assign(this.elements, {
+      speakButton,
+      wordsContainer,
+    });
   }
 
   initHandlers() {
+    this.elements.speakButton.addEventListener('click', this.handlerSpeakButton.bind(this));
+
+    this.elements.wordsContainer.children.forEach((card) => {
+      card.addEventListener('click', this.handlerCardClick.bind(this));
+    });
+  }
+
+  handlerSpeakButton() {
     console.log(this);
+
+    const SpeechRecognition = window.webkitSpeechRecognition;
+    const speechRecognition = new SpeechRecognition();
+    speechRecognition.lang = 'en-US';
+  }
+
+  handlerCardClick(event) {
+    let { target } = event;
+
+    while (target && !target.classList.contains(this.classes.WORD_CARD)) {
+      target = target.parentElement;
+    }
+
+    if (target) {
+      this.elements.wordsContainer.children.forEach((wordCard) => {
+        wordCard.classList.remove(this.classes.WORD_CARD_ACTIVE);
+      });
+      target.classList.add(this.classes.WORD_CARD_ACTIVE);
+    }
+    this.playSound();
+  }
+
+  playSound() {
+    console.log('WTF', this);
   }
 }
 

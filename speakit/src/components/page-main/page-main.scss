@@ -138,15 +138,21 @@
   }
 
   &__card {
-    display: flex;
-    padding: 10px 10px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-
-    border-radius: 5px;
-    border: 1px solid black;
-
-    cursor: pointer;
+    & {
+      display: flex;
+      padding: 10px 10px;
+      margin-right: 10px;
+      margin-bottom: 10px;
+  
+      border-radius: 5px;
+      border: 1px solid black;
+  
+      cursor: pointer;
+    }
+    
+    &_active {
+      background-color: rgba(0, 0, 0, 0.25);
+    }
   }
 
   &__card:hover {
