@@ -280,7 +280,11 @@ class PageMain {
     const { audioPlayer } = this.elements;
     const audioSrc = card.dataset.audio;
     audioPlayer.src = `${this.baseUrl}${audioSrc}`;
-    audioPlayer.play();
+    try {
+      audioPlayer.play();
+    } catch (e) {
+      // DOMException: The play() request was interrupted by a new load request. https://goo.gl/LdLk22
+    }
   }
 
   changeImage(card) {
