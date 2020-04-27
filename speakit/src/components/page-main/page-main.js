@@ -189,6 +189,7 @@ class PageMain {
 
     this.speechRecognition = new SpeechRecognition();
     this.speechRecognition.lang = 'en-US';
+    this.speechRecognition.maxAlternatives = 10;
     this.speechRecognition.addEventListener('result', this.recognize.bind(this));
     this.speechRecognition.addEventListener('end', this.speechRecognition.start);
     this.speechRecognition.start();
@@ -198,24 +199,33 @@ class PageMain {
   }
 
   recognize(event) {
-    const translations = Object.entries(event.results).map((item) => item[1][0].transcript);
+    const [translationAlternatives] = [...event.results];
+    const translations = [...translationAlternatives].map((item) => item.transcript.toLowerCase());
 
-    this.elements.translation.textContent = translations;
-    this.checkRecognizedWord();
+    console.log('SOURCE', translations);
+
+    this.checkRecognizedWord(translations);
   }
 
-  checkRecognizedWord() {
-    const searchCard = [...this.elements.wordsContainer.children].find((item) => {
-      const cardWordText = item.querySelector('.words-container__word').textContent.toLowerCase();
-      const translationText = this.elements.translation.textContent.toLowerCase();
+  checkRecognizedWord(translations) {
+    const searchCard = [...this.elements.wordsContainer.children].find((card) => {
+      let [cardWordText] = card.getElementsByClassName(this.classes.WORD);
 
-      return cardWordText === translationText;
+      cardWordText = cardWordText.textContent.toLowerCase();
+
+      return translations.find((translation) => cardWordText === translation);
     });
 
     if (searchCard) {
+      const [word] = searchCard.getElementsByClassName(this.classes.WORD);
+      const wordText = word.textContent;
+
+      this.elements.translation.textContent = wordText;
       this.changeImage(searchCard);
       searchCard.style.pointerEvents = 'none';
       searchCard.style.backgroundColor = '#90ee90';
+    } else {
+      [this.elements.translation.textContent] = translations;
     }
   }
 
