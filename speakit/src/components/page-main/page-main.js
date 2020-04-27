@@ -160,9 +160,10 @@ class PageMain {
       const currentPage = Array.prototype.findIndex.call(this.elements.pagination.children,
         (item) => event.target === item);
 
-      this.elements.root.remove();
+      this.handlerRestartButton(); // remove added handlers to speech recognition
+      this.elements.root.remove(); // remove the whole page
 
-      loader.toggleLoader();
+      loader.toggleLoader(); // place loader gif
 
       const mainPage = new PageMain({
         page: currentPage,
@@ -173,15 +174,17 @@ class PageMain {
   }
 
   handlerRestartButton() {
-    this.speechRecognition.abort();
-    this.speechRecognition.removeEventListener('end', this.speechRecognition.start);
+    if (this.speechRecognition) {
+      this.speechRecognition.abort();
+      this.speechRecognition.removeEventListener('end', this.speechRecognition.start);
 
-    [...this.elements.wordsContainer.children].forEach((card) => {
-      card.removeAttribute('style');
-    });
+      [...this.elements.wordsContainer.children].forEach((card) => {
+        card.removeAttribute('style');
+      });
 
-    this.elements.restartButton.classList.add(this.classes.BUTTON_DISABLED);
-    this.elements.speakButton.classList.remove(this.classes.BUTTON_DISABLED);
+      this.elements.restartButton.classList.add(this.classes.BUTTON_DISABLED);
+      this.elements.speakButton.classList.remove(this.classes.BUTTON_DISABLED);
+    }
   }
 
   handlerSpeakButton() {
