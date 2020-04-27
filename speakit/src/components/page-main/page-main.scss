@@ -158,6 +158,11 @@
     &:active {
       transform: scale(1.05);
     }
+
+    &_disabled {
+      background-color: $primary-color;
+      pointer-events: none;
+    }
   }
 
   &__speak-button {

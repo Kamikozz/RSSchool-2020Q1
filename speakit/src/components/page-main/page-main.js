@@ -34,10 +34,12 @@ class PageMain {
       PAGE: 'pagination__item',
       ACTIVE_PAGE: 'pagination__item_active',
       RESTART_BUTTON: 'controls__restart-button',
+      BUTTON_DISABLED: 'controls__button_disabled',
     };
     this.elements = {};
     this.data = null;
     this.baseUrl = 'https://raw.githubusercontent.com/kamikozz/rslang-data/master/data/';
+    this.speechRecognition = null;
   }
 
   async init() {
@@ -84,17 +86,15 @@ class PageMain {
             <div class="page-main__words-container words-container">
             </div>
             <div class="page-main__controls controls">
-              <button class="controls__button controls__restart-button">Restart</button>
+              <button class="controls__button controls__restart-button controls__button_disabled">Restart</button>
               <button class="controls__button controls__speak-button">Speak it</button>
-              <button class="controls__button controls__results-button">Results</button>
+              <button class="controls__button controls__results-button controls__button_disabled">Results</button>
             </div>
             <audio class="audio-player" preload="none" src=""></audio>
           </div>
         </main>
       </div>
     `;
-
-    // pagination__item_active
 
     this.elements.root = template.content.firstElementChild;
 
@@ -170,17 +170,27 @@ class PageMain {
 
   handlerRestartButton() {
     this.speechRecognition.abort();
-    this.speechRecognition.addEventListener('end', this.speechRecognition.abort);
+    this.speechRecognition.removeEventListener('end', this.speechRecognition.start);
+
+    [...this.elements.wordsContainer.children].forEach((card) => {
+      card.removeAttribute('style');
+    });
+
+    this.elements.restartButton.classList.add(this.classes.BUTTON_DISABLED);
+    this.elements.speakButton.classList.remove(this.classes.BUTTON_DISABLED);
   }
 
   handlerSpeakButton() {
     const SpeechRecognition = window.webkitSpeechRecognition;
+
     this.speechRecognition = new SpeechRecognition();
     this.speechRecognition.lang = 'en-US';
-
     this.speechRecognition.addEventListener('result', this.recognize.bind(this));
     this.speechRecognition.addEventListener('end', this.speechRecognition.start);
     this.speechRecognition.start();
+
+    this.elements.restartButton.classList.remove(this.classes.BUTTON_DISABLED);
+    this.elements.speakButton.classList.add(this.classes.BUTTON_DISABLED);
   }
 
   recognize(event) {
