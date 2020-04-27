@@ -31,7 +31,12 @@ class PageIntro {
   handlerStartButton() {
     this.elements.root.remove();
 
-    const pageMain = new PageMain();
+    const [loader] = document.body.getElementsByClassName('loader');
+    loader.classList.toggle('loader_hidden');
+
+    const pageMain = new PageMain({
+      page: 0,
+    });
     pageMain.init();
   }
 }

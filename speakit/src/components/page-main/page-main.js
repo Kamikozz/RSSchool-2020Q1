@@ -18,7 +18,8 @@ const getTranslation = async (word) => {
 };
 
 class PageMain {
-  constructor() {
+  constructor(props) {
+    this.props = props;
     this.classes = {
       ROOT: 'page-main',
       SPEAK_BUTTON: 'controls__speak-button',
@@ -29,6 +30,9 @@ class PageMain {
       IMAGE: 'current-word-container__image',
       TRANSLATION: 'current-word-container__translation',
       WORD: 'words-container__word',
+      PAGINATION: 'pagination__list',
+      PAGE: 'pagination__item',
+      ACTIVE_PAGE: 'pagination__item_active',
     };
     this.elements = {};
     this.data = null;
@@ -36,6 +40,8 @@ class PageMain {
   }
 
   async init() {
+    this.props.page = this.props.page > 5 || this.props.page < 0 ? 0 : this.props.page;
+
     await this.initData();
     this.render();
     this.initElements();
@@ -43,7 +49,10 @@ class PageMain {
   }
 
   async initData() {
-    this.data = await getWords(0, 0);
+    this.data = await getWords(0, this.props.page);
+
+    const [loader] = document.body.getElementsByClassName('loader');
+    loader.classList.toggle('loader_hidden');
   }
 
   render() {
@@ -57,7 +66,7 @@ class PageMain {
           <div class="wrapper">
             <div class="page-main__pagination pagination">
               <ul class="pagination__list">
-                <li class="pagination__item pagination__item_active">1</li>
+                <li class="pagination__item">1</li>
                 <li class="pagination__item">2</li>
                 <li class="pagination__item">3</li>
                 <li class="pagination__item">4</li>
@@ -83,7 +92,14 @@ class PageMain {
         </main>
       </div>
     `;
+
+    // pagination__item_active
+
     this.elements.root = template.content.firstElementChild;
+
+    [this.elements.pagination] = this.elements.root.getElementsByClassName(this.classes.PAGINATION);
+    this.elements.pagination.children[this.props.page].classList.add(this.classes.ACTIVE_PAGE);
+
     [this.elements.wordsContainer] = this.elements.root
       .getElementsByClassName(this.classes.WORDS_CONTAINER);
 
@@ -127,6 +143,29 @@ class PageMain {
     this.elements.wordsContainer.children.forEach((card) => {
       card.addEventListener('click', this.handlerCardClick.bind(this));
     });
+
+    this.elements.pagination.addEventListener('click', this.handlerSwitchDifficulty.bind(this));
+  }
+
+  handlerSwitchDifficulty(event) {
+    const isPage = event.target.classList.contains(this.classes.PAGE);
+    const isActivePage = event.target.classList.contains(this.classes.ACTIVE_PAGE);
+    if (event.target && isPage && !isActivePage) {
+      const currentPage = Array.prototype.findIndex.call(this.elements.pagination.children,
+        (item) => event.target === item);
+      this.elements.root.remove();
+
+      const [loader] = document.body.getElementsByClassName('loader');
+      loader.classList.toggle('loader_hidden');
+
+      const mainPage = new PageMain({
+        page: currentPage,
+      });
+
+      mainPage.init();
+      console.log(this);
+      console.log(event.target);
+    }
   }
 
   handlerSpeakButton() {
