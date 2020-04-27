@@ -187,7 +187,23 @@ class PageMain {
     const translations = Object.entries(event.results).map((item) => item[1][0].transcript);
 
     this.elements.translation.textContent = translations;
-    console.log(this, translations);
+    this.checkRecognizedWord();
+    // console.log(this, translations);
+  }
+
+  checkRecognizedWord() {
+    const searchCard = [...this.elements.wordsContainer.children].find((item) => {
+      const cardWordText = item.querySelector('.words-container__word').textContent.toLowerCase();
+      const translationText = this.elements.translation.textContent.toLowerCase();
+
+      return cardWordText === translationText;
+    });
+
+    if (searchCard) {
+      this.changeImage(searchCard);
+      searchCard.style.pointerEvents = 'none';
+      searchCard.style.backgroundColor = '#123123';
+    }
   }
 
   handlerCardClick(event) {
