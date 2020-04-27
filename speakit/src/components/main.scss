@@ -33,4 +33,9 @@ body {
   @include for-desktop { padding: 0 40px; }
 }
 
+.hidden {
+  display: none;
+  // opacity: 0;
+}
+
 @import "./page-intro/page-intro";
