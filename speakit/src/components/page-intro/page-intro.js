@@ -1,4 +1,5 @@
 import PageMain from '../page-main/page-main';
+import loader from '../../js/loader';
 
 class PageIntro {
   constructor(rootClassName) {
@@ -31,8 +32,7 @@ class PageIntro {
   handlerStartButton() {
     this.elements.root.remove();
 
-    const [loader] = document.body.getElementsByClassName('loader');
-    loader.classList.toggle('loader_hidden');
+    loader.toggleLoader();
 
     const pageMain = new PageMain({
       page: 0,

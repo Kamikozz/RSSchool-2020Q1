@@ -1,3 +1,5 @@
+import loader from '../../js/loader';
+
 const getWords = async (page, group) => {
   const url = `https://afternoon-falls-25894.herokuapp.com/words?page=${page}&group=${group}`;
   const res = await fetch(url);
@@ -54,8 +56,7 @@ class PageMain {
   async initData() {
     this.data = await getWords(0, this.props.page);
 
-    const [loader] = document.body.getElementsByClassName('loader');
-    loader.classList.toggle('loader_hidden');
+    loader.toggleLoader();
   }
 
   render() {
@@ -131,6 +132,8 @@ class PageMain {
     const [gallery] = document.getElementsByClassName(this.classes.IMAGE);
     const [translation] = document.getElementsByClassName(this.classes.TRANSLATION);
 
+    audioPlayer.volume = 0.2;
+
     Object.assign(this.elements, {
       restartButton,
       speakButton,
@@ -152,13 +155,14 @@ class PageMain {
   handlerSwitchDifficulty(event) {
     const isPage = event.target.classList.contains(this.classes.PAGE);
     const isActivePage = event.target.classList.contains(this.classes.ACTIVE_PAGE);
+
     if (event.target && isPage && !isActivePage) {
       const currentPage = Array.prototype.findIndex.call(this.elements.pagination.children,
         (item) => event.target === item);
+
       this.elements.root.remove();
 
-      const [loader] = document.body.getElementsByClassName('loader');
-      loader.classList.toggle('loader_hidden');
+      loader.toggleLoader();
 
       const mainPage = new PageMain({
         page: currentPage,
@@ -198,7 +202,6 @@ class PageMain {
 
     this.elements.translation.textContent = translations;
     this.checkRecognizedWord();
-    // console.log(this, translations);
   }
 
   checkRecognizedWord() {
@@ -212,7 +215,7 @@ class PageMain {
     if (searchCard) {
       this.changeImage(searchCard);
       searchCard.style.pointerEvents = 'none';
-      searchCard.style.backgroundColor = '#123123';
+      searchCard.style.backgroundColor = '#90ee90';
     }
   }
 
