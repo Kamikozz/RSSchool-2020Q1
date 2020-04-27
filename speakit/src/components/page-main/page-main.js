@@ -2,12 +2,8 @@ const getWords = async (page, group) => {
   const url = `https://afternoon-falls-25894.herokuapp.com/words?page=${page}&group=${group}`;
   const res = await fetch(url);
   const json = await res.json();
-  // console.log(json);
 
-  return json;
-  // console.log(json);
-  // console.log(JSON.stringify(json, null, 1));
-  // console.log(JSON.stringify(json, null, 1));
+  return json.slice(0, 10);
 };
 
 class PageMain {
@@ -19,9 +15,11 @@ class PageMain {
       WORD_CARD: 'words-container__card',
       WORD_CARD_ACTIVE: 'words-container__card_active',
       AUDIO_PLAYER: 'audio-player',
+      IMAGE: 'current-word-container__image',
     };
     this.elements = {};
     this.data = null;
+    this.baseUrl = 'https://raw.githubusercontent.com/kamikozz/rslang-data/master/data/';
   }
 
   async init() {
@@ -153,10 +151,12 @@ class PageMain {
   initElements() {
     const [speakButton] = document.getElementsByClassName(this.classes.SPEAK_BUTTON);
     const [audioPlayer] = document.getElementsByClassName(this.classes.AUDIO_PLAYER);
+    const [gallery] = document.getElementsByClassName(this.classes.IMAGE);
 
     Object.assign(this.elements, {
       speakButton,
       audioPlayer,
+      gallery,
     });
   }
 
@@ -196,18 +196,15 @@ class PageMain {
 
   playSound(card) {
     const { audioPlayer } = this.elements;
-    const baseUrl = 'https://raw.githubusercontent.com/kamikozz/rslang-data/master/data/';
     const audioSrc = card.dataset.audio.replace('files/', '');
-    // const imageSrc =
-    console.log(card);
-    console.log(this.elements.audioPlayer);
-    audioPlayer.src = `${baseUrl}${audioSrc}`;
+    audioPlayer.src = `${this.baseUrl}${audioSrc}`;
     audioPlayer.play();
-    console.log('WTF', this);
   }
 
-  changeImage(target) {
-    console.log(target, this);
+  changeImage(card) {
+    const { gallery } = this.elements;
+    const imageSrc = card.dataset.image.replace('files/', '');
+    gallery.src = `${this.baseUrl}${imageSrc}`;
   }
 }
 
