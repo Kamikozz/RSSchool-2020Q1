@@ -37,6 +37,7 @@ class PageMain {
       ACTIVE_PAGE: 'pagination__item_active',
       RESTART_BUTTON: 'controls__restart-button',
       BUTTON_DISABLED: 'controls__button_disabled',
+      SCORE: 'score__total',
     };
     this.elements = {};
     this.data = null;
@@ -46,6 +47,7 @@ class PageMain {
 
   async init() {
     this.props.page = this.props.page > 5 || this.props.page < 0 ? 0 : this.props.page;
+    this.score = 0;
 
     await this.initData();
     this.render();
@@ -55,12 +57,18 @@ class PageMain {
 
   async initData() {
     this.data = await getWords(0, this.props.page);
+    this.data = await this.data.map((item) => {
+      const processedItem = item;
+
+      processedItem.audio = processedItem.audio.replace('files/', '');
+      processedItem.image = processedItem.image.replace('files/', '');
+      return processedItem;
+    });
 
     loader.toggleLoader();
   }
 
   render() {
-    // const c = this.classes;
     const fragment = new DocumentFragment();
     const template = document.createElement('template');
 
@@ -70,13 +78,19 @@ class PageMain {
           <div class="wrapper">
             <div class="page-main__pagination pagination">
               <ul class="pagination__list">
-                <li class="pagination__item">1</li>
-                <li class="pagination__item">2</li>
-                <li class="pagination__item">3</li>
-                <li class="pagination__item">4</li>
-                <li class="pagination__item">5</li>
-                <li class="pagination__item">6</li>
+                <li class="pagination__item">Very Easy</li>
+                <li class="pagination__item">Easy</li>
+                <li class="pagination__item">Normal</li>
+                <li class="pagination__item">Hard</li>
+                <li class="pagination__item">Very hard</li>
+                <li class="pagination__item">You truly speak english!</li>
               </ul>
+            </div>
+            <div class="page-main__score score">
+              <p class="score__title">Score:</p>
+              <div class="score__total">
+                ${this.score}
+              </div>
             </div>
             <div class="page-main__current-word-container current-word-container">
               <div class="current-word-container__image-container">
@@ -131,6 +145,7 @@ class PageMain {
     const [audioPlayer] = document.getElementsByClassName(this.classes.AUDIO_PLAYER);
     const [gallery] = document.getElementsByClassName(this.classes.IMAGE);
     const [translation] = document.getElementsByClassName(this.classes.TRANSLATION);
+    const [score] = document.getElementsByClassName(this.classes.SCORE);
 
     audioPlayer.volume = 0.2;
 
@@ -140,6 +155,7 @@ class PageMain {
       audioPlayer,
       gallery,
       translation,
+      score,
     });
   }
 
@@ -177,6 +193,8 @@ class PageMain {
     if (this.speechRecognition) {
       this.speechRecognition.abort();
       this.speechRecognition.removeEventListener('end', this.speechRecognition.start);
+      this.score = 0;
+      this.elements.score.textContent = this.score;
 
       [...this.elements.wordsContainer.children].forEach((card) => {
         card.removeAttribute('style');
@@ -225,10 +243,17 @@ class PageMain {
 
       this.elements.translation.textContent = wordText;
       this.changeImage(searchCard);
+
+      const searchCardStyle = searchCard.getAttribute('style');
+      const isEmpty = searchCardStyle === null || searchCardStyle === '';
+
+      if (isEmpty) {
+        this.increaseScore();
+      }
       searchCard.style.pointerEvents = 'none';
       searchCard.style.backgroundColor = '#90ee90';
     } else {
-      [this.elements.translation.textContent] = translations;
+      [this.elements.translation.textContent] = translations; // get first recognition
     }
   }
 
@@ -253,14 +278,14 @@ class PageMain {
 
   playSound(card) {
     const { audioPlayer } = this.elements;
-    const audioSrc = card.dataset.audio.replace('files/', '');
+    const audioSrc = card.dataset.audio;
     audioPlayer.src = `${this.baseUrl}${audioSrc}`;
     audioPlayer.play();
   }
 
   changeImage(card) {
     const { gallery } = this.elements;
-    const imageSrc = card.dataset.image.replace('files/', '');
+    const imageSrc = card.dataset.image;
     gallery.src = `${this.baseUrl}${imageSrc}`;
   }
 
@@ -275,6 +300,11 @@ class PageMain {
     }
 
     this.elements.translation.textContent = translation;
+  }
+
+  increaseScore() {
+    this.score += 1;
+    this.elements.score.textContent = this.score;
   }
 }
 
