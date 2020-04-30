@@ -1,0 +1,41 @@
+@import "../scss/utils/libs";
+@import "../scss/utils/vars";
+@import "../scss/utils/mixins";
+@import "../scss/utils/reset-css";
+@import "../scss/utils/fonts";
+@import "../scss/animations";
+
+html {
+  box-sizing: border-box;
+
+  font-size: 10px;
+}
+
+body {
+  min-width: $small-phone-width;
+
+  font: {
+    family: $main-font;
+    weight: $main-font-weight;
+  }
+
+  overflow-x: hidden;
+
+  background-color: lightpink; // #226912;
+  @include for-small-phone { background-color: lightseagreen; }
+  @include for-tablet { background-color: lightcoral; }
+  @include for-desktop { background-color: darkgoldenrod; }
+  @include for-big-desktop { background-color: lightpink; }
+}
+
+.wrapper {
+  margin: 0 auto;
+
+  transition: padding 0.5s ease-out, margin 0.5s ease-out;
+
+  @include for-small-phone { padding: 0 10px; }
+  @include for-tablet { padding: 0 20px; }
+  @include for-desktop { padding: 0 40px; }
+}
+
+// @import "./header/header"
