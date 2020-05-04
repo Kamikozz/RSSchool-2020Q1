@@ -67,7 +67,7 @@ module.exports = {
         {
           loader: 'eslint-loader',
           options: {
-            cache: true,
+            // cache: false,
             // configFile: `${PATHS.config}.eslintrc.js`,
           },
         },
