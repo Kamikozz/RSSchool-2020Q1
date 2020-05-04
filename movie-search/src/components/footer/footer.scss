@@ -1,0 +1,87 @@
+.footer {
+  & {
+    position: absolute;
+    bottom: 0;
+    z-index: 1;
+
+    width: 100%;
+    padding: 10px 0;
+
+    font-size: 1.5rem;
+    color: white;
+
+    background-color: $primary-color;
+    box-shadow: 0 0 7px 0 black;
+    overflow: hidden; // prevent scroll appearance when transform: rotate()
+
+    transition: padding 0.5s ease-out;
+  }
+
+  &__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__rss-logo-container {
+    & {
+      position: relative;
+
+      // 10 % source size + translateX shift (-50.2px)
+      width: calc(647px * 0.1 + (50.2px * 2) * 0.1);
+      height: calc(545px * 0.1); // 10% source size
+
+      transition: filter 0.5s ease-out;
+    }
+
+    &:hover {
+      filter: drop-shadow(0px 0px 5px $secondary-color);
+    }
+  }
+
+  &__github-logo-container {
+    & {
+      position: relative;
+
+      width: 57px;
+      height: 54.5px;
+
+      fill: white;
+
+      transition: filter 0.5s ease-out;
+    }
+
+    &:hover {
+      filter: drop-shadow(0px 0px 5px $secondary-color);
+    }
+  }
+
+  &__image {
+    & {
+      position: absolute;
+
+      width: 100%;
+      height: 100%;
+
+      transition: transform 0.5s ease-out;
+    }
+
+    &_hover {
+      transform: scale(1.1);
+    }
+
+    &_active {
+      animation: rotate 10s linear infinite;
+    }
+
+    &_animation-paused {
+      animation: rotate-zoomed 10s linear infinite;
+    }
+  }
+
+  &__copyright {
+    & {
+      font-size: 0.8em;
+    }
+  }
+}

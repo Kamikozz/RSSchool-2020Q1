@@ -1,4 +1,13 @@
 import trash from './trash';
+// import Header from './header/header';
+import Footer from './footer/footer';
+
+// const header = new Header();
+const footer = new Footer();
+
+// header.init();
+footer.init();
+
 
 const add = (a, b) => a + b;
 

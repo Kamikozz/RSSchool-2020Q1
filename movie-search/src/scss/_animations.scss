@@ -1,5 +1,29 @@
 /* ---------------- ANIMATIONS ------------- */
 /* ---------------- COMMON ----------------- */
+@keyframes rotate {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+
+  100% {
+    transform: scale(1) rotate(360deg);
+  }
+}
+
+@keyframes rotate-zoomed {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+
+  5% {
+    transform: scale(1.1) rotate(18deg);
+  }
+
+  100% {
+    transform: scale(1.1) rotate(360deg);
+  }
+}
+
 @keyframes change-colors {
   0% {
     background-color: rgba(32, 178, 170, 0.75);
