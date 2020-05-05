@@ -7,6 +7,7 @@
   padding: 0;
 
   font-family: inherit;
+  font-weight: inherit;
   line-height: 1;
 }
 
@@ -14,7 +15,8 @@ li {
   list-style: none;
 }
 
-// textarea {
-//   border: none;
-//   outline: none;
-// }
+fieldset,
+input,
+button {
+  border: none;
+}

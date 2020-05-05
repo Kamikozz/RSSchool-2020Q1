@@ -21,8 +21,8 @@ body {
 
   overflow-x: hidden;
 
-  background-color: lightpink;
-  @include for-small-phone { background-color: lightseagreen; }
+  background-color: lightseagreen;
+  @include for-small-phone { background-color: indianred; }
   @include for-tablet { background-color: $secondary-color; }
   @include for-desktop { background-color: darkgoldenrod; }
   @include for-big-desktop { background-color: lightpink; }
@@ -39,4 +39,5 @@ body {
 }
 
 @import "./header/header";
+@import "./main-component/main-component";
 @import "./footer/footer";
