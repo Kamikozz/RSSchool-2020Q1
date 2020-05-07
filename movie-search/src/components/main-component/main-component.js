@@ -1,3 +1,44 @@
+import { imdbApi } from '../credentials';
+
+const getMoviesList = async ({ search, page = 1 }) => {
+  const { baseUrl, apiKey } = imdbApi;
+  const params = `apikey=${apiKey}&s=${search}&page=${page}`;
+  const url = `${baseUrl}?${params}`;
+  const res = await fetch(url);
+  const json = await res.json();
+
+  return json;
+};
+
+const processMoviesList = (response) => {
+  // Type can be: 'movie, series, episode, game'
+  const movieSeriesEpisodeSelector = ({ Type }) => Type !== 'game';
+
+  response.Search = response.Search.filter(movieSeriesEpisodeSelector);
+
+  return response;
+};
+
+const getMovie = async ({ movieId }, plot = 'short') => {
+  const { baseUrl, apiKey } = imdbApi;
+  const params = `apikey=${apiKey}&i=${movieId}&plot=${plot}`;
+  const url = `${baseUrl}?${params}`;
+  const res = await fetch(url);
+  const json = await res.json();
+
+  return json;
+};
+
+const performRequests = async (promises) => {
+  document.getElementById('swaggaboy').style.opacity = '0';
+
+  const result = await Promise.all(promises);
+
+  document.getElementById('swaggaboy').style.opacity = '1';
+
+  return result;
+};
+
 class MainComponent {
   constructor(props) {
     this.props = props;
@@ -11,13 +52,16 @@ class MainComponent {
       ACTIVE_BUTTON: 'search-box__button_active',
       HIDDEN_BUTTON: 'search-box__button_hidden',
       KEYBOARD_BUTTON: 'keyboard-button',
+      SEARCH_INFO_MESSAGE: 'search-container__info-message',
     };
     this.elements = {};
+    this.data = {};
   }
 
   init() {
     // this.render();
     this.initElements();
+    this.initData();
     this.initHandlers();
   }
 
@@ -74,6 +118,7 @@ class MainComponent {
       SEARCH_BUTTON,
       CLEAR_BUTTON,
       KEYBOARD_BUTTON,
+      SEARCH_INFO_MESSAGE,
     } = this.classes;
     const [root] = document.getElementsByClassName(ROOT);
     const [searchField] = root.getElementsByClassName(SEARCH_FIELD);
@@ -81,6 +126,14 @@ class MainComponent {
     const [searchButton] = root.getElementsByClassName(SEARCH_BUTTON);
     const [clearButton] = root.getElementsByClassName(CLEAR_BUTTON);
     const [keyboardButton] = root.getElementsByClassName(KEYBOARD_BUTTON);
+    const [searchInfoMessage] = root.getElementsByClassName(SEARCH_INFO_MESSAGE);
+
+    // TODO: delete this in the future
+    const element = document.createElement('img');
+
+    element.src = '/assets/img/loading.gif';
+    element.id = 'swaggaboy';
+    document.body.append(element);
 
     Object.assign(this.elements, {
       root,
@@ -89,7 +142,21 @@ class MainComponent {
       searchButton,
       clearButton,
       keyboardButton,
+      searchInfoMessage,
     });
+  }
+
+  async initData(defaultMovie = 'Bad Boys') {
+    const [responseMoviesList] = await performRequests([this.fetchMoviesList(defaultMovie)]);
+    const { Response } = responseMoviesList;
+    const isError = Response !== 'True';
+
+    if (!isError) {
+      // if moviesList is completely fetched with Response: 'True' then fetchEachMovie
+      await performRequests(this.fetchMovies(responseMoviesList));
+    }
+
+    console.log(this.data, responseMoviesList);
   }
 
   initHandlers() {
@@ -145,7 +212,7 @@ class MainComponent {
     }
   }
 
-  handlerSearchButton(event) {
+  async handlerSearchButton(event) {
     if (event) {
       event.preventDefault();
     }
@@ -156,7 +223,16 @@ class MainComponent {
     const isEmptyField = searchField && !searchField.value.length;
 
     if (!isEmptyField) {
-      console.log('Fetch movies!');
+      const [responseMoviesList] = await performRequests([this.fetchMoviesList(searchField.value)]);
+      const { Response } = responseMoviesList;
+      const isError = Response !== 'True';
+
+      if (!isError) {
+        // if moviesList is completely fetched with Response: 'True' then fetchEachMovie
+        await performRequests(this.fetchMovies(responseMoviesList));
+      }
+
+      console.log(this.data, responseMoviesList);
     }
   }
 
@@ -183,6 +259,83 @@ class MainComponent {
     }
 
     console.log('Keyboard initialized', this);
+  }
+
+  async fetchMoviesList(search, page = 1) {
+    console.log('Fetch movies!');
+
+    const isFirstPage = page === 1;
+
+    if (isFirstPage) {
+      this.data.MoviesList = undefined;
+      this.data.totalResults = undefined;
+      this.data.lastPage = undefined;
+    }
+
+    const response = await getMoviesList({ search, page });
+
+    console.log('@getMoviesList', response);
+
+    const { Response, Error } = response;
+    const isError = Response !== 'True';
+
+    this.elements.searchInfoMessage.textContent = isError ? Error : '';
+
+    if (!isError) {
+      const processedResponse = processMoviesList(response); // exclude type: 'game'
+      const { Search, totalResults } = processedResponse;
+      const { MoviesList = [] } = this.data;
+
+      this.data.MoviesList = MoviesList.concat(Search);
+      this.elements.searchInfoMessage.textContent = this.data.MoviesList.length;
+
+      if (this.data.totalResults === undefined) {
+        this.data.totalResults = totalResults;
+      }
+
+      if (this.data.lastPage === undefined) {
+        this.data.lastPage = page;
+      }
+
+      return processedResponse;
+    }
+
+    return response;
+  }
+
+  fetchMovies({ Search }) {
+    const isFirstPage = this.data.lastPage === 1;
+
+    if (isFirstPage) {
+      this.data.Movies = undefined;
+    }
+
+    const arr = [];
+
+    Search.forEach(({ imdbID }) => {
+      arr.push(this.fetchMovie(imdbID));
+    });
+
+    return arr;
+  }
+
+  async fetchMovie(movieId) {
+    const response = await getMovie({ movieId });
+
+    console.log('@getMovie', response);
+
+    const { Response } = response;
+    const isError = Response !== 'True';
+
+    if (!isError) {
+      const { Movies = [] } = this.data;
+
+      this.data.Movies = [...Movies, response];
+
+      return response;
+    }
+
+    return response;
   }
 }
 
