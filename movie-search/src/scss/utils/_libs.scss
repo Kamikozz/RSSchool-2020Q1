@@ -1,7 +1,21 @@
-// Sass libraries example:
-// @import '../../node_modules/spinners/stylesheets/spinners';
+// Sass libraries:
+/**
+ * Swiper 5.3.8
+ * Most modern mobile touch slider and framework with hardware accelerated transitions
+ * http://swiperjs.com
+ *
+ * Copyright 2014-2020 Vladimir Kharlampidi
+ *
+ * Released under the MIT License
+ *
+ * Released on: April 24, 2020
+ */
+@import "swiper/swiper";
+@import "swiper/components/navigation/navigation";
+@import "swiper/components/pagination/pagination";
+// @import "swiper/components/scrollbar/scrollbar";
 
-// CSS libraries example:
-// @import '../../node_modules/flickity/dist/flickity.css';
+// CSS libraries:
+// @import "swiper/css/swiper";
 
 // @import '../../node_modules/normalize.css/normalize.css';

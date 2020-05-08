@@ -1,4 +1,95 @@
+import Swiper from 'swiper';
 import { imdbApi } from '../credentials';
+// yandexTranslateApi
+
+const mySwiper = new Swiper('.swiper-container', {
+  // Prevent initialize to delayed initialization
+  init: false,
+
+  // Slides Settings
+  // centeredSlides: true,
+  // centeredSlidesBounds: true,
+  speed: 500,
+  centerInsufficientSlides: true,
+  slidesPerView: 1,
+  spaceBetween: 20,
+
+  // Responsive breakpoints
+  breakpoints: {
+    // when window width is >= 480px
+    560: {
+      slidesPerView: 2,
+      spaceBetween: 20,
+    },
+    // when window width is >= 640px
+    // 640: {
+    //   slidesPerView: 2,
+    //   spaceBetween: 20,
+    // },
+    // 768: {
+    //   slidesPerView: 3,
+    //   spaceBetween: 20,
+    // },
+    1020: {
+      slidesPerView: 3,
+      spaceBetween: 20,
+    },
+    1440: {
+      slidesPerView: 4,
+      spaceBetween: 20,
+    },
+  },
+
+  // Grab Cursor (improve PC usability)
+  grabCursor: true,
+
+  // Allow keyboard interactions
+  keyboard: {
+    enabled: true,
+  },
+
+  // Autoplay
+  // autoplay: {
+  //   delay: 2500,
+  //   disableOnInteraction: false,
+  // },
+
+  // If we need pagination
+  pagination: {
+    el: '.swiper-pagination',
+    clickable: true,
+  },
+
+  // Navigation arrows
+  navigation: {
+    nextEl: '.swiper-button-next',
+    prevEl: '.swiper-button-prev',
+  },
+
+  // // And if we need scrollbar
+  // scrollbar: {
+  //   el: '.swiper-scrollbar',
+  // },
+});
+
+mySwiper.init();
+
+mySwiper.appendSlide('<div class="swiper-slide">Slide 1</div>');
+// mySwiper.appendSlide('<div class="swiper-slide">Slide 2</div>');
+// mySwiper.appendSlide('<div class="swiper-slide">Slide 3</div>');
+// mySwiper.appendSlide('<div class="swiper-slide">Slide 4</div>');
+
+mySwiper.on('reachEnd', (swag) => {
+  console.log(swag);
+});
+
+// mySwiper.allowSlideNext = false;
+mySwiper.navigation.update();
+
+
+// mySwiper.on('slideNextTransitionStart', (swag) => {
+//   console.log(swag);
+// });
 
 const getMoviesList = async ({ search, page = 1 }) => {
   const { baseUrl, apiKey } = imdbApi;
