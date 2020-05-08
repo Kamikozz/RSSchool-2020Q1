@@ -12,11 +12,21 @@ html {
 }
 
 body {
-  min-width: $small-phone-width;
+  & {
+    min-width: $small-phone-width;
 
-  font: {
-    family: $main-font;
-    weight: $main-font-weight;
+    font: {
+      family: $main-font;
+      weight: $main-font-weight;
+    }
+
+    overflow-x: hidden;
+
+    background-color: lightseagreen;
+    @include for-small-phone { background-color: indianred; }
+    @include for-tablet { background-color: $secondary-color; }
+    @include for-desktop { background-color: darkgoldenrod; }
+    @include for-big-desktop { background-color: lightpink; }
   }
 
   overflow-x: hidden;
@@ -30,12 +40,14 @@ body {
 
 .wrapper {
   margin: 0 auto;
+  padding: 0 10px;
+  // @include for-small-phone { padding: 0 10px; }
+  @include for-tablet { padding: 0 60px; }
+  @include for-desktop { padding: 0 100px; }
+  // @include for-big-desktop { padding: 0 100px; }
+  max-width: $big-desktop-width;
 
   transition: padding 0.5s ease-out, margin 0.5s ease-out;
-
-  @include for-small-phone { padding: 0 10px; }
-  @include for-tablet { padding: 0 20px; }
-  @include for-desktop { padding: 0 40px; }
 }
 
 @import "./header/header";
