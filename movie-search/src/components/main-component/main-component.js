@@ -93,7 +93,8 @@ mySwiper.navigation.update();
 
 const getMoviesList = async ({ search, page = 1 }) => {
   const { baseUrl, apiKey } = imdbApi;
-  const params = `apikey=${apiKey}&s=${search}&page=${page}`;
+  const processSearch = encodeURIComponent(String(search).trim());
+  const params = `apikey=${apiKey}&s=${processSearch}&page=${page}`;
   const url = `${baseUrl}?${params}`;
   const res = await fetch(url);
   const json = await res.json();
@@ -369,8 +370,18 @@ class MainComponent {
 
     const { Response, Error } = response;
     const isError = Response !== 'True';
+    const processError = () => {
+      const defaultNotFoundAPIMessage = 'Movie not found!';
+      const processedErrorMessage = `No results for "${search}"`;
 
-    this.elements.searchInfoMessage.textContent = isError ? Error : '';
+      return Error === defaultNotFoundAPIMessage ? processedErrorMessage : Error;
+    };
+
+    response.Error = processError(); // make 'Movie not found!' be like 'No results for ...'
+
+    this.elements.searchInfoMessage.textContent = isError
+      ? processError()
+      : `Showing results for "${search}"`;
 
     if (!isError) {
       const processedResponse = processMoviesList(response); // exclude type: 'game'
@@ -378,7 +389,7 @@ class MainComponent {
       const { MoviesList = [] } = this.data;
 
       this.data.MoviesList = MoviesList.concat(Search);
-      this.elements.searchInfoMessage.textContent = this.data.MoviesList.length;
+      // this.elements.searchInfoMessage.textContent = this.data.MoviesList.length;
 
       if (this.data.totalResults === undefined) {
         this.data.totalResults = totalResults;
