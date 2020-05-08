@@ -29,13 +29,39 @@ body {
     @include for-big-desktop { background-color: lightpink; }
   }
 
-  overflow-x: hidden;
+  /* styling scrollbar */
+  &::-webkit-scrollbar-thumb {
+    border-radius: 5px;
 
-  background-color: lightseagreen;
-  @include for-small-phone { background-color: indianred; }
-  @include for-tablet { background-color: $secondary-color; }
-  @include for-desktop { background-color: darkgoldenrod; }
-  @include for-big-desktop { background-color: lightpink; }
+    background-color: $primary-color;
+  }
+
+  &::-webkit-scrollbar {
+    width: 8px;
+
+    background-image: repeating-linear-gradient(
+        -45deg, white, white 10px, lightseagreen 10px, lightseagreen 20px);
+
+    @include for-small-phone {
+      background-image: repeating-linear-gradient(
+      -45deg, white, white 10px, indianred 10px, indianred 20px);
+    }
+
+    @include for-tablet {
+      background-image: repeating-linear-gradient(
+        -45deg, white, white 10px, $secondary-color 10px, $secondary-color 20px);
+    }
+
+    @include for-desktop {
+      background-image: repeating-linear-gradient(
+        -45deg, white, white 10px, darkgoldenrod 10px, darkgoldenrod 20px);
+    }
+
+    @include for-big-desktop {
+      background-image: repeating-linear-gradient(
+        -45deg, white, white 10px, lightpink 10px, lightpink 20px);
+    }
+  }
 }
 
 .wrapper {
