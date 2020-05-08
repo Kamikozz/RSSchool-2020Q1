@@ -2,99 +2,10 @@ import Swiper from 'swiper';
 import { imdbApi } from '../credentials';
 // yandexTranslateApi
 
-const mySwiper = new Swiper('.swiper-container', {
-  // Prevent initialize to delayed initialization
-  init: false,
-
-  // Slides Settings
-  // centeredSlides: true,
-  // centeredSlidesBounds: true,
-  speed: 500,
-  centerInsufficientSlides: true,
-  slidesPerView: 1,
-  spaceBetween: 20,
-
-  // Responsive breakpoints
-  breakpoints: {
-    // when window width is >= 480px
-    560: {
-      slidesPerView: 2,
-      spaceBetween: 20,
-    },
-    // when window width is >= 640px
-    // 640: {
-    //   slidesPerView: 2,
-    //   spaceBetween: 20,
-    // },
-    // 768: {
-    //   slidesPerView: 3,
-    //   spaceBetween: 20,
-    // },
-    1020: {
-      slidesPerView: 3,
-      spaceBetween: 20,
-    },
-    1440: {
-      slidesPerView: 4,
-      spaceBetween: 20,
-    },
-  },
-
-  // Grab Cursor (improve PC usability)
-  grabCursor: true,
-
-  // Allow keyboard interactions
-  keyboard: {
-    enabled: true,
-  },
-
-  // Autoplay
-  // autoplay: {
-  //   delay: 2500,
-  //   disableOnInteraction: false,
-  // },
-
-  // If we need pagination
-  pagination: {
-    el: '.swiper-pagination',
-    clickable: true,
-  },
-
-  // Navigation arrows
-  navigation: {
-    nextEl: '.swiper-button-next',
-    prevEl: '.swiper-button-prev',
-  },
-
-  // // And if we need scrollbar
-  // scrollbar: {
-  //   el: '.swiper-scrollbar',
-  // },
-});
-
-mySwiper.init();
-
-mySwiper.appendSlide('<div class="swiper-slide">Slide 1</div>');
-// mySwiper.appendSlide('<div class="swiper-slide">Slide 2</div>');
-// mySwiper.appendSlide('<div class="swiper-slide">Slide 3</div>');
-// mySwiper.appendSlide('<div class="swiper-slide">Slide 4</div>');
-
-mySwiper.on('reachEnd', (swag) => {
-  console.log(swag);
-});
-
-// mySwiper.allowSlideNext = false;
-mySwiper.navigation.update();
-
-
-// mySwiper.on('slideNextTransitionStart', (swag) => {
-//   console.log(swag);
-// });
-
-const getMoviesList = async ({ search, page = 1 }) => {
+const getMoviesList = async ({ search, page = 1, type = 'movie' }) => {
   const { baseUrl, apiKey } = imdbApi;
   const processSearch = encodeURIComponent(String(search).trim());
-  const params = `apikey=${apiKey}&s=${processSearch}&page=${page}`;
+  const params = `apikey=${apiKey}&s=${processSearch}&type=${type}&page=${page}`;
   const url = `${baseUrl}?${params}`;
   const res = await fetch(url);
   const json = await res.json();
@@ -102,14 +13,14 @@ const getMoviesList = async ({ search, page = 1 }) => {
   return json;
 };
 
-const processMoviesList = (response) => {
-  // Type can be: 'movie, series, episode, game'
-  const movieSeriesEpisodeSelector = ({ Type }) => Type !== 'game';
+// const processMoviesList = (response) => {
+//   // Type can be: 'movie, series, episode, game'
+//   const movieSeriesEpisodeSelector = ({ Type }) => Type !== 'game';
 
-  response.Search = response.Search.filter(movieSeriesEpisodeSelector);
+//   response.Search = response.Search.filter(movieSeriesEpisodeSelector);
 
-  return response;
-};
+//   return response;
+// };
 
 const getMovie = async ({ movieId }, plot = 'short') => {
   const { baseUrl, apiKey } = imdbApi;
@@ -121,6 +32,15 @@ const getMovie = async ({ movieId }, plot = 'short') => {
   return json;
 };
 
+// const processMovie = (allData) => {
+//   const data = allData;
+//   const { searchResults, Movies = [] } = allData;
+//   const foundMovies = searchResults.Search;
+
+//   data.Movies = Movies.concat(foundMovies);
+// };
+
+// TODO: вынести в utils
 const performRequests = async (promises) => {
   document.getElementById('swaggaboy').style.opacity = '0';
 
@@ -151,6 +71,77 @@ class MainComponent {
   }
 
   init() {
+    this.swiper = new Swiper('.swiper-container', {
+      // Prevent initialize to delayed initialization
+      init: false,
+
+      // Slides Settings
+      // centeredSlides: true,
+      // centeredSlidesBounds: true,
+      speed: 500,
+      centerInsufficientSlides: true,
+      slidesPerView: 1,
+      spaceBetween: 20,
+
+      // Responsive breakpoints
+      breakpoints: {
+        // when window width is >= 480px
+        560: {
+          slidesPerView: 2,
+          spaceBetween: 20,
+        },
+        // when window width is >= 640px
+        // 640: {
+        //   slidesPerView: 2,
+        //   spaceBetween: 20,
+        // },
+        // 768: {
+        //   slidesPerView: 3,
+        //   spaceBetween: 20,
+        // },
+        1020: {
+          slidesPerView: 3,
+          spaceBetween: 20,
+        },
+        1440: {
+          slidesPerView: 4,
+          spaceBetween: 20,
+        },
+      },
+
+      // Grab Cursor (improve PC usability)
+      grabCursor: true,
+
+      // Allow keyboard interactions
+      keyboard: {
+        enabled: true,
+      },
+
+      // Autoplay
+      // autoplay: {
+      //   delay: 2500,
+      //   disableOnInteraction: false,
+      // },
+
+      // If we need pagination
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+
+      // Navigation arrows
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+
+      // // And if we need scrollbar
+      // scrollbar: {
+      //   el: '.swiper-scrollbar',
+      // },
+    });
+
+    this.swiper.init();
     // this.render();
     this.initElements();
     this.initData();
@@ -239,16 +230,9 @@ class MainComponent {
   }
 
   async initData(defaultMovie = 'Bad Boys') {
-    const [responseMoviesList] = await performRequests([this.fetchMoviesList(defaultMovie)]);
-    const { Response } = responseMoviesList;
-    const isError = Response !== 'True';
+    this.data.searchQuery = defaultMovie;
 
-    if (!isError) {
-      // if moviesList is completely fetched with Response: 'True' then fetchEachMovie
-      await performRequests(this.fetchMovies(responseMoviesList));
-    }
-
-    console.log(this.data, responseMoviesList);
+    await this.renderMoviesCards();
   }
 
   initHandlers() {
@@ -278,6 +262,19 @@ class MainComponent {
 
       if (isEnter) {
         this.handlerSearchButton();
+      }
+    });
+    this.swiper.on('reachEnd', async () => {
+      const MAX_MOVIES_PER_PAGE = 10;
+      const currentResults = this.data.lastPage * MAX_MOVIES_PER_PAGE;
+      const hasMoreData = currentResults < this.data.totalResults;
+
+      if (hasMoreData) {
+        this.data.lastPage += 1;
+
+        await this.renderMoviesCards({
+          page: this.data.lastPage,
+        });
       }
     });
   }
@@ -315,16 +312,12 @@ class MainComponent {
     const isEmptyField = searchField && !searchField.value.length;
 
     if (!isEmptyField) {
-      const [responseMoviesList] = await performRequests([this.fetchMoviesList(searchField.value)]);
-      const { Response } = responseMoviesList;
-      const isError = Response !== 'True';
+      this.data.searchQuery = searchField.value;
 
-      if (!isError) {
-        // if moviesList is completely fetched with Response: 'True' then fetchEachMovie
-        await performRequests(this.fetchMovies(responseMoviesList));
-      }
-
-      console.log(this.data, responseMoviesList);
+      await this.renderMoviesCards({
+        page: 1,
+        removeSlides: true,
+      });
     }
   }
 
@@ -384,11 +377,12 @@ class MainComponent {
       : `Showing results for "${search}"`;
 
     if (!isError) {
-      const processedResponse = processMoviesList(response); // exclude type: 'game'
-      const { Search, totalResults } = processedResponse;
-      const { MoviesList = [] } = this.data;
+      // const processedResponse = processMoviesList(response); // exclude type: 'game'
+      const { Search, totalResults } = response;
+      // const { MoviesList = [] } = this.data;
 
-      this.data.MoviesList = MoviesList.concat(Search);
+      // this.data.MoviesList = MoviesList.concat(Search); // TODO: возможно, нужно вернуть обратно
+      this.data.MoviesList = Search;
       // this.elements.searchInfoMessage.textContent = this.data.MoviesList.length;
 
       if (this.data.totalResults === undefined) {
@@ -398,19 +392,20 @@ class MainComponent {
       if (this.data.lastPage === undefined) {
         this.data.lastPage = page;
       }
-
-      return processedResponse;
     }
 
     return response;
   }
 
   fetchMovies({ Search }) {
-    const isFirstPage = this.data.lastPage === 1;
+    // TODO: возможно в будущем добавить
+    // const isFirstPage = this.data.lastPage === 1;
 
-    if (isFirstPage) {
-      this.data.Movies = undefined;
-    }
+    // if (isFirstPage) {
+    //   this.data.Movies = undefined;
+    // }
+
+    this.data.Movies = undefined;
 
     const arr = [];
 
@@ -438,6 +433,43 @@ class MainComponent {
     }
 
     return response;
+  }
+
+  async renderMoviesCards({ page = 1, removeSlides = false } = {}) {
+    const [responseMoviesList] = await performRequests([
+      this.fetchMoviesList(this.data.searchQuery, page),
+    ]);
+    const { Response } = responseMoviesList;
+    const isError = Response !== 'True';
+
+    if (!isError) {
+      // if moviesList is completely fetched with Response: 'True' then fetchEachMovie
+      await performRequests(this.fetchMovies(responseMoviesList));
+
+      if (removeSlides) {
+        this.swiper.removeAllSlides();
+      }
+
+      const defaultNoPosterImage = '/assets/img/no-poster.jpg';
+
+      this.data.Movies.forEach(({
+        Title, Year, Poster, imdbID, Genre, imdbRating,
+      }) => {
+        this.swiper.appendSlide(`
+          <div class="swiper-slide">
+            <a href="https://www.imdb.com/title/${imdbID}/videogallery/">${Title}</a>
+            <img
+              src="${Poster === 'N/A' ? defaultNoPosterImage : Poster}"
+              ${Poster === 'N/A' ? 'style="width: 50%;' : ''}">
+            <p>${Year}</p>
+            <p>${Genre}</p>
+            <h3>${imdbRating}</h3>
+          </div>
+        `);
+      });
+    }
+
+    console.log(this.data, responseMoviesList);
   }
 }
 
