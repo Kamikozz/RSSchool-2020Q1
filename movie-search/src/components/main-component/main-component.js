@@ -45,6 +45,9 @@ class MainComponent {
       // Prevent initialize to delayed initialization
       init: false,
 
+      // Enable lazy loading
+      lazy: true,
+
       // Slides Settings
       // centeredSlides: true,
       // centeredSlidesBounds: true,
@@ -391,8 +394,10 @@ class MainComponent {
   }
 
   async renderMoviesCards({ page = 1, removeSlides = false } = {}) {
+    const isFirstPage = page === 1;
     const [responseMoviesList] = await performRequests({
       promises: [this.fetchMoviesList(this.data.searchQuery, page)],
+      setPreloader: isFirstPage,
       preloaderEl: this.elements.sliderPreloader,
     });
 
@@ -403,7 +408,7 @@ class MainComponent {
       // if moviesList is completely fetched with Response: 'True' then fetchEachMovie
       await performRequests({
         promises: this.fetchMovies(responseMoviesList),
-        setPreloader: true,
+        setPreloader: isFirstPage,
         preloaderEl: this.elements.sliderPreloader,
       });
 
@@ -420,11 +425,13 @@ class MainComponent {
           <div class="swiper-slide">
             <a href="https://www.imdb.com/title/${imdbID}/videogallery/">${Title}</a>
             <img
-              src="${Poster === 'N/A' ? defaultNoPosterImage : Poster}"
+              class="swiper-lazy"
+              data-src="${Poster === 'N/A' ? defaultNoPosterImage : Poster}"
               ${Poster === 'N/A' ? 'style="width: 50%;' : ''}">
             <p>${Year}</p>
             <p>${Genre}</p>
-            <h3>${imdbRating}</h3>
+            ${imdbRating !== 'N/A' ? `<h3>${imdbRating}</h3>` : ''}
+            <div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
           </div>
         `);
       });
