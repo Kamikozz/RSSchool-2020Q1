@@ -231,7 +231,7 @@
     text-align: center;
     font-size: 18px;
 
-    background-color: lightsalmon;
+    background-color: transparent;//lightsalmon;
 
     border-radius: 5px;
 
@@ -273,6 +273,8 @@
     visibility: hidden;
     background-color: rgba(0, 0, 0, 0.25);
     transition: opacity 0.35s ease-out,  background-color 0.35s ease-out;
+
+    user-select: none;
   }
 
   &_loading {
