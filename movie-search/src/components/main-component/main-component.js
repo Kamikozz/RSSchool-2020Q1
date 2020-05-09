@@ -1,17 +1,7 @@
 import Swiper from 'swiper';
-import { imdbApi } from '../credentials';
+import { performRequests } from '../../js/utils/perform-requests';
+import { getMoviesList, getMovie } from '../../js/api/omdb-service';
 // yandexTranslateApi
-
-const getMoviesList = async ({ search, page = 1, type = 'movie' }) => {
-  const { baseUrl, apiKey } = imdbApi;
-  const processSearch = encodeURIComponent(String(search).trim());
-  const params = `apikey=${apiKey}&s=${processSearch}&type=${type}&page=${page}`;
-  const url = `${baseUrl}?${params}`;
-  const res = await fetch(url);
-  const json = await res.json();
-
-  return json;
-};
 
 // const processMoviesList = (response) => {
 //   // Type can be: 'movie, series, episode, game'
@@ -22,16 +12,6 @@ const getMoviesList = async ({ search, page = 1, type = 'movie' }) => {
 //   return response;
 // };
 
-const getMovie = async ({ movieId }, plot = 'short') => {
-  const { baseUrl, apiKey } = imdbApi;
-  const params = `apikey=${apiKey}&i=${movieId}&plot=${plot}`;
-  const url = `${baseUrl}?${params}`;
-  const res = await fetch(url);
-  const json = await res.json();
-
-  return json;
-};
-
 // const processMovie = (allData) => {
 //   const data = allData;
 //   const { searchResults, Movies = [] } = allData;
@@ -39,17 +19,6 @@ const getMovie = async ({ movieId }, plot = 'short') => {
 
 //   data.Movies = Movies.concat(foundMovies);
 // };
-
-// TODO: вынести в utils
-const performRequests = async (promises) => {
-  document.getElementById('swaggaboy').style.opacity = '0';
-
-  const result = await Promise.all(promises);
-
-  document.getElementById('swaggaboy').style.opacity = '1';
-
-  return result;
-};
 
 class MainComponent {
   constructor(props) {
@@ -65,6 +34,7 @@ class MainComponent {
       HIDDEN_BUTTON: 'search-box__button_hidden',
       KEYBOARD_BUTTON: 'keyboard-button',
       SEARCH_INFO_MESSAGE: 'search-container__info-message',
+      SLIDER_PRELOADER: 'slider-container__preloader',
     };
     this.elements = {};
     this.data = {};
@@ -202,6 +172,7 @@ class MainComponent {
       CLEAR_BUTTON,
       KEYBOARD_BUTTON,
       SEARCH_INFO_MESSAGE,
+      SLIDER_PRELOADER,
     } = this.classes;
     const [root] = document.getElementsByClassName(ROOT);
     const [searchField] = root.getElementsByClassName(SEARCH_FIELD);
@@ -210,13 +181,7 @@ class MainComponent {
     const [clearButton] = root.getElementsByClassName(CLEAR_BUTTON);
     const [keyboardButton] = root.getElementsByClassName(KEYBOARD_BUTTON);
     const [searchInfoMessage] = root.getElementsByClassName(SEARCH_INFO_MESSAGE);
-
-    // TODO: delete this in the future
-    const element = document.createElement('img');
-
-    element.src = '/assets/img/loading.gif';
-    element.id = 'swaggaboy';
-    document.body.append(element);
+    const [sliderPreloader] = root.getElementsByClassName(SLIDER_PRELOADER);
 
     Object.assign(this.elements, {
       root,
@@ -226,6 +191,7 @@ class MainComponent {
       clearButton,
       keyboardButton,
       searchInfoMessage,
+      sliderPreloader,
     });
   }
 
@@ -436,15 +402,21 @@ class MainComponent {
   }
 
   async renderMoviesCards({ page = 1, removeSlides = false } = {}) {
-    const [responseMoviesList] = await performRequests([
-      this.fetchMoviesList(this.data.searchQuery, page),
-    ]);
+    const [responseMoviesList] = await performRequests({
+      promises: [this.fetchMoviesList(this.data.searchQuery, page)],
+      preloaderEl: this.elements.sliderPreloader,
+    });
+
     const { Response } = responseMoviesList;
     const isError = Response !== 'True';
 
     if (!isError) {
       // if moviesList is completely fetched with Response: 'True' then fetchEachMovie
-      await performRequests(this.fetchMovies(responseMoviesList));
+      await performRequests({
+        promises: this.fetchMovies(responseMoviesList),
+        setPreloader: true,
+        preloaderEl: this.elements.sliderPreloader,
+      });
 
       if (removeSlides) {
         this.swiper.removeAllSlides();

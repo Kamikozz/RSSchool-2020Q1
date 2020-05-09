@@ -1,5 +1,5 @@
 module.exports = {
-  imdbApi: {
+  omdbApi: {
     baseUrl: 'https://www.omdbapi.com/',
     apiKey: 3937336,
   },

@@ -14,7 +14,8 @@
   }
 
   &__info-message {
-    margin-top: 5px;
+    margin: 10px 0;
+
     text-align: center;
 
     font-weight: 700;
@@ -174,10 +175,24 @@
 }
 
 .slider-container {
-  position: relative;
+  & {
+    position: relative;
 
-  width: 100%;
-  height: 600px;
+    width: 100%;
+    height: 600px;
+  }
+
+  &__preloader {
+    position: absolute;
+    top: 0;
+    z-index: 5;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
 }
 
 .swiper-container {
@@ -249,5 +264,20 @@
     & {
       opacity: 0;
     }
+  }
+}
+
+.preloader {
+  & {
+    opacity: 0;
+    visibility: hidden;
+    background-color: rgba(0, 0, 0, 0.25);
+    transition: opacity 0.35s ease-out,  background-color 0.35s ease-out;
+  }
+
+  &_loading {
+    opacity: 1;
+    visibility: initial;
+    background-color: initial;
   }
 }
