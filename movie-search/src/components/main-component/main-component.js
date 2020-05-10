@@ -43,12 +43,15 @@ class MainComponent {
   }
 
   init() {
+    // Swiper initialization
     this.swiper = new Swiper('.swiper-container', {
       // Prevent initialize to delayed initialization
       init: false,
 
       // Enable lazy loading
-      lazy: true,
+      lazy: {
+        loadPrevNex: true,
+      },
 
       // Slides Settings
       // centeredSlides: true,
@@ -256,6 +259,9 @@ class MainComponent {
           page: this.data.lastPage,
         });
       }
+    });
+    this.swiper.on('lazyImageReady', () => {
+      console.log('LOADED');
     });
   }
 
@@ -472,19 +478,37 @@ class MainComponent {
       this.data.Movies.forEach(({
         Title, Year, Poster, imdbID, Genre, imdbRating,
       }) => {
-        this.swiper.appendSlide(`
-          <div class="swiper-slide">
-            <a href="https://www.imdb.com/title/${imdbID}/videogallery/">${Title}</a>
+        const swiperSlide = document.createElement('div');
+
+        swiperSlide.classList.add('swiper-slide');
+        swiperSlide.innerHTML = `
+          <a
+            class="swiper-slide__link"
+            href="https://www.imdb.com/title/${imdbID}/videogallery/">${Title}</a>
+          <div class="swiper-slide__img-container">
             <img
-              class="swiper-lazy"
-              data-src="${Poster === 'N/A' ? defaultNoPosterImage : Poster}"
-              ${Poster === 'N/A' ? 'style="width: 50%;' : ''}">
-            <p>${Year}</p>
-            <p>${Genre}</p>
-            ${imdbRating !== 'N/A' ? `<h3>${imdbRating}</h3>` : ''}
-            <div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
+              class="swiper-lazy swiper-slide__img"
+              data-src="${Poster === 'N/A' ? defaultNoPosterImage : Poster}">
           </div>
-        `);
+          <p class="swiper-slide__movie-year">${Year}</p>
+          <p class="swiper-slide__movie-genre">${Genre}</p>
+          ${imdbRating !== 'N/A' ? `<h3 class="swiper-slide__movie-rating">${imdbRating}</h3>` : ''}
+          <div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
+        `;
+
+        const [swiperSlideImg] = swiperSlide.getElementsByClassName('swiper-lazy');
+
+        swiperSlideImg.onload = () => {
+          console.log('Изображение загружено');
+        };
+        this.swiper.appendSlide(swiperSlide);
+
+        // [].forEach.call(document.querySelectorAll('img[data-src]'),    function(img) {
+        //   img.setAttribute('src', img.getAttribute('data-src'));
+        //   img.onload = function() {
+        //     img.removeAttribute('data-src');
+        //   };
+        // });
       });
     }
 

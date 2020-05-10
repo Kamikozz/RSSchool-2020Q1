@@ -290,3 +290,43 @@
     background-color: initial;
   }
 }
+
+.swiper-slide {
+  & {
+
+  }
+
+  &__link {
+    // padding-top: 10px;
+    // padding-bottom: 10px;
+    padding: 10px 10px 10px 10px;
+
+    font-weight: 700;
+  }
+
+  &__img-container {
+    & {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+
+      overflow: hidden;
+    }
+  }
+
+  &__img {
+    width: 100%;
+  }
+
+  &__movie-year {
+    padding-top: 10px;
+  }
+
+  &__movie-genre {
+  }
+
+  &__movie-rating {
+    padding-bottom: 10px;
+  }
+}
