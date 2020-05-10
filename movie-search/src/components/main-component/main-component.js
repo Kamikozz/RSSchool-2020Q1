@@ -1,5 +1,6 @@
 import Swiper from 'swiper';
 import Keyboard from '../../libs/keyboard/script';
+import Draggable from '../../js/draggable';
 import { performRequests } from '../../js/utils/perform-requests';
 import { getMoviesList, getMovie } from '../../js/api/omdb-service';
 import getTranslation from '../../js/api/yandex-translate-service';
@@ -339,6 +340,11 @@ class MainComponent {
       key.addEventListener('mouseup', () => {
         this.handlerSearchButton();
       });
+
+      const [newKeyboard] = document.getElementsByClassName(KEYBOARD);
+      const draggableKeyboard = new Draggable(newKeyboard);
+
+      draggableKeyboard.init();
     }
   }
 
