@@ -1,7 +1,7 @@
 import Swiper from 'swiper';
 import { performRequests } from '../../js/utils/perform-requests';
 import { getMoviesList, getMovie } from '../../js/api/omdb-service';
-// yandexTranslateApi
+import getTranslation from '../../js/api/yandex-translate-service';
 
 // const processMoviesList = (response) => {
 //   // Type can be: 'movie, series, episode, game'
@@ -270,7 +270,8 @@ class MainComponent {
     const isEmptyField = searchField && !searchField.value.length;
 
     if (!isEmptyField) {
-      this.data.searchQuery = searchField.value;
+      const { text: [translatedSentence] } = await getTranslation(searchField.value);
+      this.data.searchQuery = translatedSentence;
 
       await this.renderMoviesCards({
         page: 1,
