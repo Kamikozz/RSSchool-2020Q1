@@ -1,4 +1,4 @@
-const Keyboard = () => {
+const Keyboard = ({ inputClassName }) => {
   const variables = {
     specialKeys: {
       ESC: 'Esc',
@@ -29,7 +29,7 @@ const Keyboard = () => {
       SHIFT: 'Shift',
       ARROW_UP: '↑',
       CTRL: 'Ctrl',
-      FN: 'Fn',
+      FN: 'LANG',
       ALT: 'Alt',
       SPACE: '- -',
       ALTGR: 'Altgr',
@@ -303,38 +303,11 @@ const Keyboard = () => {
   }
 
   function createTree() {
-    const main = document.createElement('main');
-
-    const sectionTextarea = createSection('section-textarea');
-    const { TEXTAREA } = classes;
-    const textarea = document.createElement(TEXTAREA);
-
-    textarea.setAttribute('placeholder',
-      'There will be displayed everything that you enter on the keyboard...');
-    sectionTextarea.append(textarea);
-
+    const [textarea] = document.getElementsByClassName(inputClassName);
     const sectionKeyboard = createSection('section-keyboard');
     const keyboard = createKeyboard();
 
     sectionKeyboard.append(keyboard);
-
-    const note = document.createElement('div');
-
-    note.classList.add('section-keyboard__note');
-
-    const textDeveloped = document.createElement('p');
-    const textSwitchKeyboardLayout = document.createElement('p');
-
-    textDeveloped.textContent = 'Developed on Microsoft© Windows.';
-    textSwitchKeyboardLayout
-      .textContent = 'CTRL + SHIFT; CTRL + ALT; SHIFT + ALT to switch keyboard layout.';
-
-    note.append(textDeveloped);
-    note.append(textSwitchKeyboardLayout);
-    sectionKeyboard.append(note);
-
-    main.append(sectionTextarea.parentElement);
-    main.append(sectionKeyboard.parentElement);
 
     const returnObject = {
       textarea,
@@ -387,7 +360,7 @@ const Keyboard = () => {
       }
     }
 
-    document.body.append(main);
+    document.body.append(sectionKeyboard.parentElement);
 
     return returnObject;
   }
@@ -489,7 +462,7 @@ const Keyboard = () => {
   }
 
   const playKeypressSound = () => {
-    const audio = new Audio('assets/sound/key-press.mp3');
+    const audio = new Audio('assets/audio/key-press.mp3');
 
     audio.volume = 0.5;
     audio.autoplay = true;
@@ -848,7 +821,7 @@ const Keyboard = () => {
   // ///////////////////////// KEYBOARD HANDLERS ///////////////////////////
   const handlerKeyDown = (e) => {
     if (!e.repeat) {
-      playKeypressSound();
+      // playKeypressSound();
 
       const isCtrlShiftPressed = e.ctrlKey && e.shiftKey
         && (e.code === 'ControlLeft' || e.code === 'ShiftLeft');
@@ -921,8 +894,9 @@ const Keyboard = () => {
       const isCtrlShiftPressed = (e.ctrlKey && isShift(text)) || (e.shiftKey && isCtrl(text));
       const isCtrlAltPressed = (e.ctrlKey && isAlt(text)) || (e.altKey && isCtrl(text));
       const isAltShiftPressed = (e.altKey && isShift(text)) || (e.shiftKey && isAlt(text));
+      const isFn = text === FN;
 
-      if (isCtrlShiftPressed || isCtrlAltPressed || isAltShiftPressed) {
+      if (isCtrlShiftPressed || isCtrlAltPressed || isAltShiftPressed || isFn) {
         changeLanguage();
       }
 

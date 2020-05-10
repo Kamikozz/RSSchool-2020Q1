@@ -329,3 +329,38 @@
   &__movie-rating {
   }
 }
+
+
+// Do not score this, because it's necessary hard code due to errors in the virtual-keyboard lib :D
+.section-keyboard {
+  & {
+    position: absolute;
+    bottom: 95px;
+    z-index: 2;
+  }
+}
+
+@media (min-width: 1400px) {
+  .section-keyboard .keyboard .row-a,
+  .section-keyboard .keyboard .row-b,
+  .section-keyboard .keyboard .row-c,
+  .section-keyboard .keyboard .row-d,
+  .section-keyboard .keyboard .row-e,
+  .section-keyboard .keyboard .row-k {
+      display: flex;
+      justify-content: center;
+  }
+
+  .section-keyboard .keyboard .row-k .key:nth-last-child(-n + 4),
+  .section-keyboard .keyboard .row-e .key:nth-last-child(-n + 4),
+  .section-keyboard .keyboard .row-d .key:nth-last-child(-n + 4),
+  .section-keyboard .keyboard .row-c .key:nth-last-child(-n + 3),
+  .section-keyboard .keyboard .row-b .key:nth-last-child(-n + 4),
+  .section-keyboard .keyboard .row-a .key:nth-last-child(-n + 2) {
+    display: none;
+  }
+}
+
+.section-keyboard .keyboard .row-a .key[data-keycode="Fn"] {
+  background-color: transparent;
+}

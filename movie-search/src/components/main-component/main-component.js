@@ -37,6 +37,7 @@ class MainComponent {
       KEYBOARD_BUTTON: 'keyboard-button',
       SEARCH_INFO_MESSAGE: 'search-container__info-message',
       SLIDER_PRELOADER: 'slider-container__preloader',
+      KEYBOARD: 'section-keyboard',
     };
     this.elements = {};
     this.data = {};
@@ -319,9 +320,26 @@ class MainComponent {
       event.preventDefault();
     }
 
-    console.log('Keyboard initialized', this);
-    console.log(Keyboard);
-    Keyboard();
+    console.log('Keyboard initialized');
+
+    const { KEYBOARD } = this.classes;
+    const [keyboard] = document.getElementsByClassName(KEYBOARD);
+
+    if (keyboard) {
+      const isHidden = keyboard.style.display === 'none';
+
+      keyboard.style.display = isHidden ? 'block' : 'none';
+    } else {
+      Keyboard({
+        inputClassName: 'search-box__search-field',
+      });
+
+      const key = document.querySelector('.key[data-keycode="Enter"]');
+
+      key.addEventListener('mouseup', () => {
+        this.handlerSearchButton();
+      });
+    }
   }
 
   handlerSpeechRecognitionButton(event) {
