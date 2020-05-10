@@ -1,0 +1,51 @@
+// Functions, mixins, etc.
+// @use "scss:list";
+// make horizontal numpad margins
+@mixin numpad-margins($row-letters, $positions-list) {
+  %numpad-margin {
+    margin-right: $base-row-margins * 3;
+  }
+  @each $letter in $row-letters {
+    .row-#{$letter} .key:nth-child(
+      #{list.nth($positions-list, list.index($row-letters, $letter))}
+    ) {
+      @extend %numpad-margin;
+    }
+  }
+}
+
+// make vertical margins
+@mixin row-margins() {
+  %row-margins {
+    margin-bottom: $base-row-margins;
+  }
+  @each $letter in $row-letters {
+    .row-#{$letter} {
+      @extend %row-margins;
+    }
+  }
+}
+
+// make row-k margins
+@mixin row-k-margins() {
+  $margins-row-k: 1, 5, 9, 13; // margin esc, and each 4th Functional key
+  %row-k-horizontal-margins {
+    margin-right: $base-row-margins * 2;
+  }
+  
+  @each $position in $margins-row-k {
+    .key:nth-child(#{$position}) {
+      @extend %row-k-horizontal-margins;
+    }
+  }
+}
+
+// change color, width & height of windows-logo-icon.svg
+@function svg-factory-windows-logo($fill-color, $width, $height) {
+  @return '<svg width="#{$width}" height="#{$height}" viewBox="0 0 256 257" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid"><path fill="#{$fill-color}" d="M0 36.357L104.62 22.11l.045 100.914-104.57.595L0 36.358zm104.57 98.293l.08 101.002L.081 221.275l-.006-87.302 104.494.677zm12.682-114.405L255.968 0v121.74l-138.716 1.1V20.246zM256 135.6l-.033 121.191-138.716-19.578-.194-101.84L256 135.6z"/></svg>';
+}
+
+// change color, width & height of apple-logo-icon.svg
+@function svg-factory-apple-logo($fill-color, $width, $height) {
+  @return '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" width="#{$width}" height="#{$height}" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve" fill="#{$fill-color}"><g><path d="M200,200h-72c-39.701,0-72-32.299-72-72s32.299-72,72-72s72,32.299,72,72V200z M128,72c-30.879,0-56,25.122-56,56   s25.121,56,56,56h56v-56C184,97.122,158.879,72,128,72z"/></g><g><path d="M384,200h-72v-72c0-39.701,32.299-72,72-72s72,32.299,72,72S423.701,200,384,200z M328,184h56c30.879,0,56-25.122,56-56   s-25.121-56-56-56s-56,25.122-56,56V184z"/></g><g><path d="M384,456c-39.701,0-72-32.299-72-72v-72h72c39.701,0,72,32.299,72,72S423.701,456,384,456z M328,328v56   c0,30.878,25.121,56,56,56s56-25.122,56-56s-25.121-56-56-56H328z"/></g><g><path d="M128,456c-39.701,0-72-32.299-72-72s32.299-72,72-72h72v72C200,423.701,167.701,456,128,456z M128,328   c-30.879,0-56,25.122-56,56s25.121,56,56,56s56-25.122,56-56v-56H128z"/></g><g><path d="M328,328H184V184h144V328z M200,312h112V200H200V312z"/></g></svg>';
+}

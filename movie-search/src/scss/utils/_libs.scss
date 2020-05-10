@@ -15,7 +15,11 @@
 @import "swiper/components/pagination/pagination";
 @import "swiper/components/lazy/lazy";
 
+// Keyboard Library
+// @import "../../libs/keyboard/sass/style.scss";
+
 // CSS libraries:
-// @import "swiper/css/swiper";
+// Keyboard Library
+@import "../libs/keyboard/css/style.css";
 
 // @import '../../node_modules/normalize.css/normalize.css';

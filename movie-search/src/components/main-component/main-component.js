@@ -1,4 +1,5 @@
 import Swiper from 'swiper';
+import Keyboard from '../../libs/keyboard/script';
 import { performRequests } from '../../js/utils/perform-requests';
 import { getMoviesList, getMovie } from '../../js/api/omdb-service';
 import getTranslation from '../../js/api/yandex-translate-service';
@@ -319,6 +320,8 @@ class MainComponent {
     }
 
     console.log('Keyboard initialized', this);
+    console.log(Keyboard);
+    Keyboard();
   }
 
   handlerSpeechRecognitionButton(event) {

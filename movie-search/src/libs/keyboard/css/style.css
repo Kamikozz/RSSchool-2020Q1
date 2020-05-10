@@ -1,0 +1,349 @@
+/* CSS Reset */
+* {
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+}
+
+li {
+  list-style: none;
+}
+
+textarea {
+  border: none;
+  outline: none;
+}
+
+@font-face {
+  font-family: "1979";
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url("../assets/fonts/1979.eot");
+  /* IE 9 Compatibility Mode */
+  src: local("1979"), url("../assets/fonts/1979.eot?#iefix") format("embedded-opentype"), url("../assets/fonts/1979.woff2") format("woff2"), url("../assets/fonts/1979.woff") format("woff"), url("../assets/fonts/1979.ttf") format("truetype"), url("../assets/fonts/1979.svg#a979") format("svg");
+}
+body {
+  background-color: #e5e5e5;
+}
+@media (max-width: 1399px) {
+  body {
+    min-width: 965px;
+  }
+}
+@media (min-width: 1400px) {
+  body {
+    min-width: 1400px;
+  }
+}
+
+.wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 40px;
+  box-sizing: border-box;
+}
+
+.center, .section-keyboard .keyboard .row-e .key:nth-child(15), .section-keyboard .keyboard .row-e .key:nth-child(14), .section-keyboard .keyboard .row-k .key:nth-child(20), .section-keyboard .keyboard .row-k .key:nth-child(19), .section-keyboard .keyboard .row-k .key:nth-child(18), .section-keyboard .keyboard .row-k .key:nth-child(17), .section-keyboard .keyboard .row-k .key:nth-child(16), .section-keyboard .keyboard .row-k .key:nth-child(15), .section-keyboard .keyboard .row-k .key:nth-child(14) {
+  text-align: center;
+}
+
+.center-flex, .section-keyboard .keyboard .row-a .key, .section-keyboard .keyboard .row-b .key, .section-keyboard .keyboard .row-c .key, .section-keyboard .keyboard .row-d .key, .section-keyboard .keyboard .row-e .key {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.section-keyboard .keyboard .row-a, .section-keyboard .keyboard .row-b, .section-keyboard .keyboard .row-c, .section-keyboard .keyboard .row-d, .section-keyboard .keyboard .row-e, .section-textarea textarea {
+  font-size: 25px;
+}
+
+.section-textarea {
+  background-color: initial;
+}
+.section-textarea textarea {
+  width: 98.4848484848%;
+  height: 100px;
+  margin-top: 50px;
+  margin-bottom: 25px;
+  padding: 10px;
+  font-family: Consolas, monospace;
+  resize: none;
+  word-break: break-all;
+  box-shadow: 0 0 20px 0px #e5e5e5 inset;
+}
+
+.section-keyboard {
+  background-color: initial;
+}
+.section-keyboard .keyboard {
+  padding: 0 50px;
+  background-color: initial;
+  font-family: "1979", sans-serif;
+  font-size: 10px;
+  letter-spacing: -1px;
+}
+.section-keyboard .keyboard .key {
+  position: relative;
+  margin-right: 5px;
+  color: #B90303;
+  background-color: #131313;
+  border-radius: 5px;
+  box-shadow: 2px 3px 3px 2px #B90303;
+  cursor: pointer;
+  user-select: none;
+}
+.section-keyboard .keyboard .row-b, .section-keyboard .keyboard .row-c, .section-keyboard .keyboard .row-d, .section-keyboard .keyboard .row-e, .section-keyboard .keyboard .row-k {
+  margin-bottom: 5px;
+}
+.section-keyboard .keyboard .row-b .key:nth-child(13), .section-keyboard .keyboard .row-c .key:nth-child(13), .section-keyboard .keyboard .row-d .key:nth-child(14), .section-keyboard .keyboard .row-e .key:nth-child(14), .section-keyboard .keyboard .row-k .key:nth-child(16) {
+  margin-right: 15px;
+}
+@media (max-width: 1399px) {
+  .section-keyboard .keyboard .row-a, .section-keyboard .keyboard .row-b, .section-keyboard .keyboard .row-c, .section-keyboard .keyboard .row-d, .section-keyboard .keyboard .row-e, .section-keyboard .keyboard .row-k {
+    display: flex;
+    justify-content: center;
+  }
+}
+@media (min-width: 1400px) {
+  .section-keyboard .keyboard .row-a, .section-keyboard .keyboard .row-b, .section-keyboard .keyboard .row-c, .section-keyboard .keyboard .row-d, .section-keyboard .keyboard .row-e, .section-keyboard .keyboard .row-k {
+    display: flex;
+  }
+}
+.section-keyboard .keyboard .row-a .key, .section-keyboard .keyboard .row-b .key, .section-keyboard .keyboard .row-c .key, .section-keyboard .keyboard .row-d .key, .section-keyboard .keyboard .row-e .key, .section-keyboard .keyboard .row-k .key {
+  width: 50px;
+  height: 28px;
+  padding: 4px 2px;
+}
+.section-keyboard .keyboard .row-k .key:nth-child(13), .section-keyboard .keyboard .row-k .key:nth-child(9), .section-keyboard .keyboard .row-k .key:nth-child(5), .section-keyboard .keyboard .row-k .key:nth-child(1) {
+  margin-right: 10px;
+}
+@media (max-width: 1399px) {
+  .section-keyboard .keyboard .row-k .key:nth-last-child(-n+4) {
+    display: none;
+  }
+}
+@media (min-width: 1400px) {
+  .section-keyboard .keyboard .row-k .key:nth-last-child(-n+4) {
+    width: 50px;
+  }
+}
+.section-keyboard .keyboard .row-e .key {
+  width: 53.78px;
+  height: 46px;
+}
+@media (max-width: 1399px) {
+  .section-keyboard .keyboard .row-e .key:nth-last-child(-n+4) {
+    display: none;
+  }
+}
+@media (min-width: 1400px) {
+  .section-keyboard .keyboard .row-e .key:nth-last-child(-n+4) {
+    width: 50px;
+  }
+}
+.section-keyboard .keyboard .row-e .key:nth-child(1) {
+  position: relative;
+  width: 88.34px;
+}
+.section-keyboard .keyboard .row-e .key:nth-child(1) span {
+  position: absolute;
+  top: 16px;
+}
+.section-keyboard .keyboard .row-e .key:nth-child(7), .section-keyboard .keyboard .row-e .key:nth-child(8) {
+  font-family: sans-serif;
+}
+.section-keyboard .keyboard .row-e .key:nth-child(12), .section-keyboard .keyboard .row-e .key:nth-child(18) {
+  position: relative;
+}
+.section-keyboard .keyboard .row-e .key:nth-child(12) span, .section-keyboard .keyboard .row-e .key:nth-child(18) span {
+  position: absolute;
+  top: 16px;
+}
+.section-keyboard .keyboard .row-e .key:nth-child(15), .section-keyboard .keyboard .row-e .key:nth-child(14) {
+  font-size: 12px;
+}
+.section-keyboard .keyboard .row-e .key:nth-child(14) {
+  width: 104px;
+}
+.section-keyboard .keyboard .row-e .key:nth-child(17) {
+  position: relative;
+}
+.section-keyboard .keyboard .row-e .key:nth-child(17) span {
+  position: absolute;
+  top: 15px;
+}
+.section-keyboard .keyboard .row-d {
+  position: relative;
+}
+.section-keyboard .keyboard .row-d .key {
+  width: 53.78px;
+  height: 46px;
+  /* fixes bug with position absolute positioning */
+}
+@media (max-width: 1399px) {
+  .section-keyboard .keyboard .row-d .key:nth-last-child(-n+4) {
+    display: none;
+  }
+}
+@media (min-width: 1400px) {
+  .section-keyboard .keyboard .row-d .key:nth-last-child(-n+4) {
+    width: 50px;
+  }
+}
+.section-keyboard .keyboard .row-d .key:nth-child(1) {
+  width: 96.5px;
+  font-size: 12px;
+  justify-content: left;
+}
+.section-keyboard .keyboard .row-d .key:nth-child(14) {
+  width: 96.5px;
+}
+.section-keyboard .keyboard .row-d .key:nth-last-child(1) {
+  position: absolute;
+  right: 10px;
+  height: 105px;
+}
+.section-keyboard .keyboard .row-d .key:nth-last-child(1):active {
+  left: unset;
+  right: 8px;
+}
+.section-keyboard .keyboard .row-d .key:nth-last-child(1).key-active {
+  left: unset;
+  top: 2px;
+  right: 8px;
+}
+.section-keyboard .keyboard .row-c .key {
+  width: 53.78px;
+  height: 46px;
+}
+@media (max-width: 1399px) {
+  .section-keyboard .keyboard .row-c .key:nth-last-child(-n+3) {
+    display: none;
+  }
+}
+@media (min-width: 1400px) {
+  .section-keyboard .keyboard .row-c .key:nth-last-child(-n+3) {
+    width: 50px;
+  }
+}
+.section-keyboard .keyboard .row-c .key:nth-child(1) {
+  width: 96.5px;
+  font-size: 12px;
+  justify-content: left;
+}
+.section-keyboard .keyboard .row-c .key:nth-child(13) {
+  width: 158px;
+  font-size: 12px;
+}
+.section-keyboard .keyboard .row-b {
+  position: relative;
+}
+.section-keyboard .keyboard .row-b .key {
+  width: 53.78px;
+  height: 46px;
+  /* fixes bug with position absolute positioning */
+}
+@media (max-width: 1399px) {
+  .section-keyboard .keyboard .row-b .key:nth-last-child(-n+4) {
+    display: none;
+  }
+}
+@media (min-width: 1400px) {
+  .section-keyboard .keyboard .row-b .key:nth-last-child(-n+4) {
+    display: flex;
+    width: 50px;
+  }
+}
+.section-keyboard .keyboard .row-b .key:nth-child(1) {
+  width: 125px;
+  font-size: 12px;
+}
+.section-keyboard .keyboard .row-b .key:nth-child(12), .section-keyboard .keyboard .row-b .row-e .key:nth-child(18), .section-keyboard .keyboard .row-e .row-b .key:nth-child(18) {
+  width: 130px;
+  font-size: 12px;
+}
+.section-keyboard .keyboard .row-b .key:nth-last-child(1) {
+  position: absolute;
+  right: 10px;
+  height: 105px;
+  font-size: 12px;
+}
+.section-keyboard .keyboard .row-b .key:nth-last-child(1):active {
+  left: unset;
+  right: 8px;
+}
+.section-keyboard .keyboard .row-b .key:nth-last-child(1).key-active {
+  left: unset;
+  top: 2px;
+  right: 8px;
+}
+.section-keyboard .keyboard .row-a .key {
+  width: 53.78px;
+  height: 46px;
+}
+@media (max-width: 1399px) {
+  .section-keyboard .keyboard .row-a .key:nth-last-child(-n+2) {
+    display: none;
+  }
+}
+@media (min-width: 1400px) {
+  .section-keyboard .keyboard .row-a .key:nth-last-child(-n+2) {
+    display: flex;
+    width: 50px;
+  }
+}
+.section-keyboard .keyboard .row-a .key:nth-child(1) {
+  font-size: 12px;
+}
+.section-keyboard .keyboard .row-a .key:nth-child(2) {
+  font-size: 12px;
+}
+.section-keyboard .keyboard .row-a .key:nth-child(3) {
+  font-size: 12px;
+}
+.section-keyboard .keyboard .row-a .key:nth-child(4) {
+  font-size: 12px;
+  width: 396px;
+}
+.section-keyboard .keyboard .row-a .key:nth-child(6) {
+  font-size: 12px;
+}
+.section-keyboard .keyboard .row-a .key:nth-child(8) {
+  font-size: 12px;
+}
+.section-keyboard .keyboard .row-a .key .icon {
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+}
+.section-keyboard .keyboard .row-a .key .icon-windows-logo {
+  background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 256 257' xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='xMidYMid'%3E%3Cpath fill='%23B90303' d='M0 36.357L104.62 22.11l.045 100.914-104.57.595L0 36.358zm104.57 98.293l.08 101.002L.081 221.275l-.006-87.302 104.494.677zm12.682-114.405L255.968 0v121.74l-138.716 1.1V20.246zM256 135.6l-.033 121.191-138.716-19.578-.194-101.84L256 135.6z'/%3E%3C/svg%3E");
+}
+.section-keyboard .keyboard .row-a .key .icon-windows-logo-active {
+  background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 256 257' xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='xMidYMid'%3E%3Cpath fill='white' d='M0 36.357L104.62 22.11l.045 100.914-104.57.595L0 36.358zm104.57 98.293l.08 101.002L.081 221.275l-.006-87.302 104.494.677zm12.682-114.405L255.968 0v121.74l-138.716 1.1V20.246zM256 135.6l-.033 121.191-138.716-19.578-.194-101.84L256 135.6z'/%3E%3C/svg%3E");
+}
+.section-keyboard .keyboard .row-a .key .icon-apple-logo {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' version='1.1' x='0px' y='0px' width='25' height='25' viewBox='0 0 512 512' enable-background='new 0 0 512 512' xml:space='preserve' fill='%23B90303'%3E%3Cg%3E%3Cpath d='M200,200h-72c-39.701,0-72-32.299-72-72s32.299-72,72-72s72,32.299,72,72V200z M128,72c-30.879,0-56,25.122-56,56   s25.121,56,56,56h56v-56C184,97.122,158.879,72,128,72z'/%3E%3C/g%3E%3Cg%3E%3Cpath d='M384,200h-72v-72c0-39.701,32.299-72,72-72s72,32.299,72,72S423.701,200,384,200z M328,184h56c30.879,0,56-25.122,56-56   s-25.121-56-56-56s-56,25.122-56,56V184z'/%3E%3C/g%3E%3Cg%3E%3Cpath d='M384,456c-39.701,0-72-32.299-72-72v-72h72c39.701,0,72,32.299,72,72S423.701,456,384,456z M328,328v56   c0,30.878,25.121,56,56,56s56-25.122,56-56s-25.121-56-56-56H328z'/%3E%3C/g%3E%3Cg%3E%3Cpath d='M128,456c-39.701,0-72-32.299-72-72s32.299-72,72-72h72v72C200,423.701,167.701,456,128,456z M128,328   c-30.879,0-56,25.122-56,56s25.121,56,56,56s56-25.122,56-56v-56H128z'/%3E%3C/g%3E%3Cg%3E%3Cpath d='M328,328H184V184h144V328z M200,312h112V200H200V312z'/%3E%3C/g%3E%3C/svg%3E");
+}
+.section-keyboard .keyboard .row-a .key .icon-apple-logo-active {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' version='1.1' x='0px' y='0px' width='25' height='25' viewBox='0 0 512 512' enable-background='new 0 0 512 512' xml:space='preserve' fill='white'%3E%3Cg%3E%3Cpath d='M200,200h-72c-39.701,0-72-32.299-72-72s32.299-72,72-72s72,32.299,72,72V200z M128,72c-30.879,0-56,25.122-56,56   s25.121,56,56,56h56v-56C184,97.122,158.879,72,128,72z'/%3E%3C/g%3E%3Cg%3E%3Cpath d='M384,200h-72v-72c0-39.701,32.299-72,72-72s72,32.299,72,72S423.701,200,384,200z M328,184h56c30.879,0,56-25.122,56-56   s-25.121-56-56-56s-56,25.122-56,56V184z'/%3E%3C/g%3E%3Cg%3E%3Cpath d='M384,456c-39.701,0-72-32.299-72-72v-72h72c39.701,0,72,32.299,72,72S423.701,456,384,456z M328,328v56   c0,30.878,25.121,56,56,56s56-25.122,56-56s-25.121-56-56-56H328z'/%3E%3C/g%3E%3Cg%3E%3Cpath d='M128,456c-39.701,0-72-32.299-72-72s32.299-72,72-72h72v72C200,423.701,167.701,456,128,456z M128,328   c-30.879,0-56,25.122-56,56s25.121,56,56,56s56-25.122,56-56v-56H128z'/%3E%3C/g%3E%3Cg%3E%3Cpath d='M328,328H184V184h144V328z M200,312h112V200H200V312z'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+.section-keyboard__note {
+  margin-top: 15px;
+}
+.section-keyboard .keyboard .key.key-active {
+  color: white;
+  box-shadow: 0px 1px 3px 0px #B90303;
+  transition: box-shadow 0.15s ease-in;
+  top: 2px;
+  left: 2px;
+}
+.section-keyboard .keyboard .key:hover {
+  background-color: #202020;
+}
+.section-keyboard .keyboard .key.key-uppercase {
+  font-size: 35px;
+}
