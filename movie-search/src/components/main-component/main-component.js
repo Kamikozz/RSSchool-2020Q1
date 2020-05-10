@@ -168,13 +168,8 @@ class MainComponent {
   initElements() {
     const {
       ROOT,
-      SEARCH_FIELD,
-      SEARCH_BOX,
-      SEARCH_BUTTON,
-      CLEAR_BUTTON,
-      KEYBOARD_BUTTON,
-      SPEECH_RECOGNITION_BUTTON,
-      SEARCH_INFO_MESSAGE,
+      SEARCH_FIELD, SEARCH_BOX, SEARCH_INFO_MESSAGE,
+      SEARCH_BUTTON, CLEAR_BUTTON, KEYBOARD_BUTTON, SPEECH_RECOGNITION_BUTTON,
       SLIDER_PRELOADER,
     } = this.classes;
     const [root] = document.getElementsByClassName(ROOT);
@@ -210,10 +205,7 @@ class MainComponent {
     const {
       searchField,
       // searchBox,
-      searchButton,
-      clearButton,
-      keyboardButton,
-      speechRecognitionButton,
+      searchButton, clearButton, keyboardButton, speechRecognitionButton,
     } = this.elements;
 
     searchField.focus(); // trigger focus on component load
@@ -266,11 +258,7 @@ class MainComponent {
   }
 
   handlerSearchInputChange() {
-    const {
-      searchField,
-      searchButton,
-      clearButton,
-    } = this.elements;
+    const { searchField, searchButton, clearButton } = this.elements;
     const { DISABLED_BUTTON, ACTIVE_BUTTON, HIDDEN_BUTTON } = this.classes;
     const isEmptyField = searchField && !searchField.value.length;
 
