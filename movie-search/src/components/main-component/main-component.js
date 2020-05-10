@@ -29,6 +29,7 @@ class MainComponent {
       SEARCH_FIELD: 'search-box__search-field',
       SEARCH_BUTTON: 'search-button',
       CLEAR_BUTTON: 'clear-button',
+      SPEECH_RECOGNITION_BUTTON: 'speech-recognition-button',
       DISABLED_BUTTON: 'search-box__button_disabled',
       ACTIVE_BUTTON: 'search-box__button_active',
       HIDDEN_BUTTON: 'search-box__button_hidden',
@@ -38,6 +39,7 @@ class MainComponent {
     };
     this.elements = {};
     this.data = {};
+    this.speechRecognition = null;
   }
 
   init() {
@@ -102,8 +104,13 @@ class MainComponent {
         prevEl: '.swiper-button-prev',
       },
     });
-
     this.swiper.init();
+    // SpeechRecognition initialization
+    const SpeechRecognition = window.webkitSpeechRecognition;
+
+    this.speechRecognition = new SpeechRecognition();
+    this.speechRecognition.lang = 'ru-RU'; // en-US
+    this.speechRecognition.maxAlternatives = 1;
     // this.render();
     this.initElements();
     this.initData();
@@ -163,6 +170,7 @@ class MainComponent {
       SEARCH_BUTTON,
       CLEAR_BUTTON,
       KEYBOARD_BUTTON,
+      SPEECH_RECOGNITION_BUTTON,
       SEARCH_INFO_MESSAGE,
       SLIDER_PRELOADER,
     } = this.classes;
@@ -172,6 +180,7 @@ class MainComponent {
     const [searchButton] = root.getElementsByClassName(SEARCH_BUTTON);
     const [clearButton] = root.getElementsByClassName(CLEAR_BUTTON);
     const [keyboardButton] = root.getElementsByClassName(KEYBOARD_BUTTON);
+    const [speechRecognitionButton] = root.getElementsByClassName(SPEECH_RECOGNITION_BUTTON);
     const [searchInfoMessage] = root.getElementsByClassName(SEARCH_INFO_MESSAGE);
     const [sliderPreloader] = root.getElementsByClassName(SLIDER_PRELOADER);
 
@@ -182,6 +191,7 @@ class MainComponent {
       searchButton,
       clearButton,
       keyboardButton,
+      speechRecognitionButton,
       searchInfoMessage,
       sliderPreloader,
     });
@@ -200,6 +210,7 @@ class MainComponent {
       searchButton,
       clearButton,
       keyboardButton,
+      speechRecognitionButton,
     } = this.elements;
 
     searchField.focus(); // trigger focus on component load
@@ -222,6 +233,17 @@ class MainComponent {
         this.handlerSearchButton();
       }
     });
+    // Speech Recognition Listeners
+    speechRecognitionButton.addEventListener(
+      'click', this.handlerSpeechRecognitionButton.bind(this),
+    );
+    this.speechRecognition.addEventListener('result', this.speechRecognize.bind(this));
+    this.speechRecognition.addEventListener('end', () => {
+      const { DISABLED_BUTTON } = this.classes;
+
+      speechRecognitionButton.classList.remove(DISABLED_BUTTON);
+    });
+    // Swiper listeners
     this.swiper.on('reachEnd', async () => {
       const MAX_MOVIES_PER_PAGE = 10;
       const currentResults = this.data.lastPage * MAX_MOVIES_PER_PAGE;
@@ -303,6 +325,34 @@ class MainComponent {
     }
 
     console.log('Keyboard initialized', this);
+  }
+
+  handlerSpeechRecognitionButton(event) {
+    if (event) {
+      event.preventDefault();
+    }
+
+    this.speechRecognition.start();
+
+    const { speechRecognitionButton } = this.elements;
+    const { DISABLED_BUTTON } = this.classes;
+
+    speechRecognitionButton.classList.add(DISABLED_BUTTON);
+  }
+
+  speechRecognize(event) {
+    const [translationAlternatives] = [...event.results];
+    const [translations] = [...translationAlternatives]
+      .map(({ transcript }) => transcript.toLowerCase());
+
+    console.log('SOURCE', translations);
+
+    const { searchField } = this.elements;
+
+    searchField.value = translations;
+
+    this.handlerSearchButton();
+    this.handlerSearchInputChange();
   }
 
   async fetchMoviesList(search, page = 1) {
