@@ -307,7 +307,24 @@ const Keyboard = ({ inputClassName }) => {
     const sectionKeyboard = createSection('section-keyboard');
     const keyboard = createKeyboard();
 
+    const note = document.createElement('div');
+
+    note.classList.add('section-keyboard__note');
+
+    const textDeveloped = document.createElement('p');
+    const textSwitchKeyboardLayout = document.createElement('p');
+    const textDraggableMessage = document.createElement('p');
+
+    textDeveloped.textContent = 'Developed on Microsoft© Windows.';
+    textSwitchKeyboardLayout
+      .textContent = 'CTRL + SHIFT; CTRL + ALT; SHIFT + ALT to switch keyboard layout.';
+    textDraggableMessage.textContent = '- also you can drag this keyboard anywhere you want -';
+    note.append(textDeveloped);
+    note.append(textSwitchKeyboardLayout);
+    note.append(textDraggableMessage);
+
     sectionKeyboard.append(keyboard);
+    sectionKeyboard.append(note);
 
     const returnObject = {
       textarea,
