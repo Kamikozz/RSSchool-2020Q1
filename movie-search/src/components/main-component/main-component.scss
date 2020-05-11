@@ -327,9 +327,16 @@
   }
 
   &__movie-rating {
+    width: 100%;
+    margin-top: 5px;
+    padding: 1px 0 4px;
+
+    border-bottom: {
+      left-radius: 5px;
+      right-radius: 5px;
+    }
   }
 }
-
 
 // Do not score this, because it's necessary hard code due to errors in the virtual-keyboard lib :D
 .section-keyboard {
