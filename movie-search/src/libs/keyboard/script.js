@@ -351,11 +351,23 @@ const Keyboard = ({ inputClassName }) => {
     for (let i = 0; i < keysRowA.length; i += 1) {
       const { firstElementChild: key } = keysRowA[i];
       const isTextEmpty = key.textContent === '';
+      const isLanguageKey = key.textContent === 'LANG';
 
       if (isTextEmpty) {
         const { ICON, META_WIN, META_APPLE } = classes;
 
         key.classList.add(ICON, isPlatformWindows() ? META_WIN : META_APPLE);
+        break;
+      } else if (isLanguageKey) {
+        // apply english/russian-flag image
+        const { KEYBOARD_LANGUAGE } = variables;
+        const keyboardLanguage = localStorage.getItem(KEYBOARD_LANGUAGE);
+        const isEnglish = keyboardLanguage === EN;
+
+        key.parentElement.style.backgroundImage = isEnglish
+          ? 'url(assets/icons/american-flag.svg)'
+          : 'url(assets/icons/russian-flag.svg)';
+        key.textContent = isEnglish ? 'EN' : 'RU';
         break;
       }
     }
@@ -433,8 +445,10 @@ const Keyboard = ({ inputClassName }) => {
    */
   function changeLanguage() {
     // 1. remove key-uppercase before update
+    const { KEY_UPPERCASE } = classes;
+
     elements.keys.forEach((key) => {
-      key.classList.remove(classes.KEY_UPPERCASE);
+      key.classList.remove(KEY_UPPERCASE);
     });
 
     // 2. changeLanguage
@@ -442,15 +456,25 @@ const Keyboard = ({ inputClassName }) => {
     // and get source alphabet pair map {'en':'ru'} or {'ru':'en'}
     let alphabet;
     let numpad;
-    switch (localStorage.getItem(variables.KEYBOARD_LANGUAGE)) {
-      case variables.languages.RU:
-        localStorage.setItem(variables.KEYBOARD_LANGUAGE, variables.languages.EN);
-        [alphabet, numpad] = getAlphabet(variables.languages.RU);
+    const { KEYBOARD_LANGUAGE } = variables;
+    const keyboardLanguage = localStorage.getItem(KEYBOARD_LANGUAGE);
+    const key = document.querySelector('.key[data-keycode="Fn"]');
+
+    switch (keyboardLanguage) {
+      case RU:
+        localStorage.setItem(KEYBOARD_LANGUAGE, EN);
+        [alphabet, numpad] = getAlphabet(RU);
+        // apply english flag image & text
+        key.style.backgroundImage = 'url(assets/icons/american-flag.svg)';
+        key.firstElementChild.textContent = 'EN';
         break;
-      case variables.languages.EN:
+      case EN:
       default:
-        localStorage.setItem(variables.KEYBOARD_LANGUAGE, variables.languages.RU);
-        [alphabet, numpad] = getAlphabet(variables.languages.EN);
+        localStorage.setItem(KEYBOARD_LANGUAGE, RU);
+        [alphabet, numpad] = getAlphabet(EN);
+        // apply russian flag image & text
+        key.style.backgroundImage = 'url(assets/icons/russian-flag.svg)';
+        key.firstElementChild.textContent = 'RU';
         break;
     }
 
@@ -483,7 +507,7 @@ const Keyboard = ({ inputClassName }) => {
     switch (el.innerText) {
       case ESC: case F1: case F2: case F3: case F4: case F6: case F7: case F8: case F9: case F10:
       case F12: case PRINT_SCREEN: case SCROLL_LOCK: case PAUSE: case INSERT: case NUM_LOCK:
-      case CTRL: case FN: case META:
+      case CTRL: case FN: case 'Fn': case 'RU': case 'EN': case META:
         break;
       case ALT:
         if (!isMouse()) event.preventDefault();
@@ -894,9 +918,9 @@ const Keyboard = ({ inputClassName }) => {
       const isCtrlShiftPressed = (e.ctrlKey && isShift(text)) || (e.shiftKey && isCtrl(text));
       const isCtrlAltPressed = (e.ctrlKey && isAlt(text)) || (e.altKey && isCtrl(text));
       const isAltShiftPressed = (e.altKey && isShift(text)) || (e.shiftKey && isAlt(text));
-      const isFn = text === FN;
+      const isLanguageKey = text === 'EN' || text === 'RU';
 
-      if (isCtrlShiftPressed || isCtrlAltPressed || isAltShiftPressed || isFn) {
+      if (isCtrlShiftPressed || isCtrlAltPressed || isAltShiftPressed || isLanguageKey) {
         changeLanguage();
       }
 

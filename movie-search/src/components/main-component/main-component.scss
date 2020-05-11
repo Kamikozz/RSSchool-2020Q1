@@ -369,5 +369,7 @@
 }
 
 .section-keyboard .keyboard .row-a .key[data-keycode="Fn"] {
-  background-color: transparent;
+  background-repeat: no-repeat;
+  background-size: 130%;
+  background-position: center;
 }
