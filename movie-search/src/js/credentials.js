@@ -1,7 +1,7 @@
 module.exports = {
   omdbApi: {
     baseUrl: 'https://www.omdbapi.com/',
-    apiKey: 3937336,
+    apiKey: 'a648d375', // '3937336' // '8499b4c5'
   },
   yandexTranslateApi: {
     baseUrl: 'https://translate.yandex.net/api/v1.5/tr.json/translate',

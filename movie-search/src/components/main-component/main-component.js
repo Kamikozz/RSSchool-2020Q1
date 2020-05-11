@@ -488,7 +488,7 @@ class MainComponent {
         this.swiper.removeAllSlides();
       }
 
-      const defaultNoPosterImage = '/assets/img/no-poster.jpg';
+      const defaultNoPosterImage = 'https://imageog.flaticon.com/icons/png/512/73/73709.png?size=200x200f&ext=png';
 
       this.data.Movies.forEach(({
         Title, Year, Poster, imdbID, Genre, imdbRating,
