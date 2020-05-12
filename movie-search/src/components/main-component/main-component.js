@@ -4,6 +4,7 @@ import Draggable from '../../js/draggable';
 import { performRequests } from '../../js/utils/perform-requests';
 import { getMoviesList, getMovie } from '../../js/api/omdb-service';
 import getTranslation from '../../js/api/yandex-translate-service';
+import getBase64Data from '../../js/utils/get-base64';
 
 class MainComponent {
   constructor(props) {
@@ -442,12 +443,20 @@ class MainComponent {
         if (ratingNumber < 7) { return NEUTRAL; }
         return GOOD;
       };
-      const renderSlide = ({
+      const getImage = async (imageSrc, defaultSrc) => {
+        const imageBase64 = await getBase64Data(imageSrc);
+
+        return imageBase64 ? imageSrc : defaultSrc;
+      };
+      const renderSlide = async ({
         title, year, poster, imdbID, genre, imdbRating, ratingColor,
       }) => {
         const hasData = (data) => data !== 'N/A';
         const defaultNoPosterImage = '/assets/img/no-poster.png';
-
+        // get manually the image (to prevent 404 not found, and at least to set the default image)
+        const image = hasData(poster)
+          ? await getImage(poster, defaultNoPosterImage)
+          : defaultNoPosterImage;
         const swiperSlide = document.createElement('div');
 
         swiperSlide.classList.add('swiper-slide');
@@ -458,7 +467,7 @@ class MainComponent {
           <div class="swiper-slide__img-container">
             <img
               class="swiper-slide__img swiper-slide__img_loading"
-              src="${hasData(poster) ? poster : defaultNoPosterImage}">
+              src="${image}">
           </div>
           ${hasData(year) ? `<p class="swiper-slide__movie-year">${year}</p>` : ''}
           ${hasData(genre) ? `<p class="swiper-slide__movie-genre">${genre}</p>` : ''}
@@ -493,11 +502,11 @@ class MainComponent {
         };
       };
 
-      this.data.Movies.forEach(({
+      this.data.Movies.forEach(async ({
         Title: title, Year: year, Poster: poster, imdbID, Genre: genre, imdbRating,
       }) => {
         const ratingColor = getRatingColor(imdbRating);
-        const swiperSlide = renderSlide({
+        const swiperSlide = await renderSlide({
           title, year, poster, imdbID, genre, imdbRating, ratingColor,
         });
 
