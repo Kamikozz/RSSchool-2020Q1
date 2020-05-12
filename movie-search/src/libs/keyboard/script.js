@@ -383,7 +383,6 @@ const Keyboard = ({ inputClassName }) => {
         const { ICON, META_WIN, META_APPLE } = classes;
 
         key.classList.add(ICON, isPlatformWindows() ? META_WIN : META_APPLE);
-        break;
       } else if (isLanguageKey) {
         // apply english/russian-flag image
         const { KEYBOARD_LANGUAGE } = variables;
@@ -394,7 +393,6 @@ const Keyboard = ({ inputClassName }) => {
           ? 'url(assets/icons/american-flag.svg)'
           : 'url(assets/icons/russian-flag.svg)';
         key.textContent = isEnglish ? 'EN' : 'RU';
-        break;
       }
     }
 

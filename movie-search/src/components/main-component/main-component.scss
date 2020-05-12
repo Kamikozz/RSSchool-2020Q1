@@ -386,7 +386,9 @@
 }
 
 .section-keyboard .keyboard .row-a .key[data-keycode="Fn"] {
-  background-repeat: no-repeat;
-  background-size: 130%;
-  background-position: center;
+  background: {
+    repeat: no-repeat;
+    position: center;
+    size: 130%;
+  }
 }
