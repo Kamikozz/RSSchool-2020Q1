@@ -5,23 +5,6 @@ import { performRequests } from '../../js/utils/perform-requests';
 import { getMoviesList, getMovie } from '../../js/api/omdb-service';
 import getTranslation from '../../js/api/yandex-translate-service';
 
-// const processMoviesList = (response) => {
-//   // Type can be: 'movie, series, episode, game'
-//   const movieSeriesEpisodeSelector = ({ Type }) => Type !== 'game';
-
-//   response.Search = response.Search.filter(movieSeriesEpisodeSelector);
-
-//   return response;
-// };
-
-// const processMovie = (allData) => {
-//   const data = allData;
-//   const { searchResults, Movies = [] } = allData;
-//   const foundMovies = searchResults.Search;
-
-//   data.Movies = Movies.concat(foundMovies);
-// };
-
 class MainComponent {
   constructor(props) {
     this.props = props;
@@ -53,8 +36,6 @@ class MainComponent {
       init: false,
 
       // Slides Settings
-      // centeredSlides: true,
-      // centeredSlidesBounds: true,
       speed: 500,
       centerInsufficientSlides: true,
       slidesPerView: 1,
@@ -62,24 +43,17 @@ class MainComponent {
 
       // Responsive breakpoints
       breakpoints: {
-        // when window width is >= 480px
+        // when window width is >= 560px
         560: {
           slidesPerView: 2,
           spaceBetween: 20,
         },
-        // when window width is >= 640px
-        // 640: {
-        //   slidesPerView: 2,
-        //   spaceBetween: 20,
-        // },
-        // 768: {
-        //   slidesPerView: 3,
-        //   spaceBetween: 20,
-        // },
+        // when window width is >= 1020px
         1020: {
           slidesPerView: 3,
           spaceBetween: 20,
         },
+        // when window width is >= 1440px
         1440: {
           slidesPerView: 4,
           spaceBetween: 20,
@@ -258,16 +232,21 @@ class MainComponent {
     const { DISABLED_BUTTON, ACTIVE_BUTTON, HIDDEN_BUTTON } = this.classes;
     const isEmptyField = searchField && !searchField.value.length;
 
+    const disableButton = (button) => {
+      button.classList.remove(ACTIVE_BUTTON);
+      button.classList.add(DISABLED_BUTTON);
+    };
+    const activateButton = (button) => {
+      button.classList.add(ACTIVE_BUTTON);
+      button.classList.remove(DISABLED_BUTTON);
+    };
+
     if (isEmptyField) {
-      searchButton.classList.remove(ACTIVE_BUTTON);
-      searchButton.classList.add(DISABLED_BUTTON);
+      disableButton(searchButton);
       clearButton.classList.add(HIDDEN_BUTTON);
     } else {
-      searchButton.classList.add(ACTIVE_BUTTON);
-      searchButton.classList.remove(DISABLED_BUTTON);
+      activateButton(searchButton);
       clearButton.classList.remove(HIDDEN_BUTTON);
-
-      console.log('you entered something');
     }
   }
 
@@ -275,8 +254,6 @@ class MainComponent {
     if (event) {
       event.preventDefault();
     }
-
-    console.log('Search Button');
 
     const { searchField } = this.elements;
     const isEmptyField = searchField && !searchField.value.length;
@@ -297,8 +274,6 @@ class MainComponent {
       event.preventDefault();
     }
 
-    console.log('Clear Input Button');
-
     const { searchField } = this.elements;
     const isExistOrNotEmpty = searchField && searchField.value;
 
@@ -313,8 +288,6 @@ class MainComponent {
     if (event) {
       event.preventDefault();
     }
-
-    console.log('Keyboard initialized');
 
     const { KEYBOARD } = this.classes;
     const [keyboard] = document.getElementsByClassName(KEYBOARD);
@@ -358,9 +331,6 @@ class MainComponent {
     const [translationAlternatives] = [...event.results];
     const [translations] = [...translationAlternatives]
       .map(({ transcript }) => transcript.toLowerCase());
-
-    console.log('SOURCE', translations);
-
     const { searchField } = this.elements;
 
     searchField.value = translations;
@@ -370,8 +340,6 @@ class MainComponent {
   }
 
   async fetchMoviesList(search, page = 1) {
-    console.log('Fetch movies!');
-
     const isFirstPage = page === 1;
 
     if (isFirstPage) {
@@ -381,9 +349,6 @@ class MainComponent {
     }
 
     const response = await getMoviesList({ search, page });
-
-    console.log('@getMoviesList', response);
-
     const { Response, Error } = response;
     const isError = Response !== 'True';
     const processError = () => {
@@ -400,13 +365,9 @@ class MainComponent {
       : `Showing results for "${search}"`;
 
     if (!isError) {
-      // const processedResponse = processMoviesList(response); // exclude type: 'game'
       const { Search, totalResults } = response;
-      // const { MoviesList = [] } = this.data;
 
-      // this.data.MoviesList = MoviesList.concat(Search); // TODO: возможно, нужно вернуть обратно
       this.data.MoviesList = Search;
-      // this.elements.searchInfoMessage.textContent = this.data.MoviesList.length;
 
       if (this.data.totalResults === undefined) {
         this.data.totalResults = totalResults;
@@ -421,29 +382,19 @@ class MainComponent {
   }
 
   fetchMovies({ Search }) {
-    // TODO: возможно в будущем добавить
-    // const isFirstPage = this.data.lastPage === 1;
-
-    // if (isFirstPage) {
-    //   this.data.Movies = undefined;
-    // }
-
     this.data.Movies = undefined;
 
-    const arr = [];
+    const movies = [];
 
     Search.forEach(({ imdbID }) => {
-      arr.push(this.fetchMovie(imdbID));
+      movies.push(this.fetchMovie(imdbID));
     });
 
-    return arr;
+    return movies;
   }
 
   async fetchMovie(movieId) {
     const response = await getMovie({ movieId });
-
-    console.log('@getMovie', response);
-
     const { Response } = response;
     const isError = Response !== 'True';
 
@@ -554,8 +505,6 @@ class MainComponent {
         this.swiper.appendSlide(swiperSlide);
       });
     }
-
-    console.log(this.data, responseMoviesList);
   }
 }
 
