@@ -5,4 +5,3 @@ import 'regenerator-runtime/runtime';
 
 import './components/main';
 import './components/main.scss';
-import './components/main.css';

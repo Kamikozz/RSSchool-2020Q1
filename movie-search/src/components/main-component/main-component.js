@@ -69,12 +69,6 @@ class MainComponent {
         enabled: true,
       },
 
-      // Autoplay
-      autoplay: {
-        delay: 2500,
-        disableOnInteraction: false,
-      },
-
       // Navigation arrows
       navigation: {
         nextEl: '.swiper-button-next',

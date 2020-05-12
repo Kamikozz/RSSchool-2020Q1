@@ -68,16 +68,13 @@ body {
 .wrapper {
   margin: 0 auto;
   padding: 0 10px;
-  // @include for-small-phone { padding: 0 10px; }
   @include for-tablet { padding: 0 60px; }
   @include for-desktop { padding: 0 100px; }
-  // @include for-big-desktop { padding: 0 100px; }
   max-width: $big-desktop-width;
 
   transition: padding 0.5s ease-out, margin 0.5s ease-out;
 }
 
-@import "../libs/loader/loader";
 @import "./header/header";
 @import "./main-component/main-component";
 @import "./footer/footer";
