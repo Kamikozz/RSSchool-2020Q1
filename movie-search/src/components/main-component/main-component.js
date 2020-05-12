@@ -38,6 +38,7 @@ class MainComponent {
       KEYBOARD_BUTTON: 'keyboard-button',
       SEARCH_INFO_MESSAGE: 'search-container__info-message',
       SLIDER_PRELOADER: 'slider-container__preloader',
+      SLIDE_PRELOADER: 'swiper-slide__preloader',
       KEYBOARD: 'section-keyboard',
     };
     this.elements = {};
@@ -50,11 +51,6 @@ class MainComponent {
     this.swiper = new Swiper('.swiper-container', {
       // Prevent initialize to delayed initialization
       init: false,
-
-      // Enable lazy loading
-      lazy: {
-        loadPrevNex: true,
-      },
 
       // Slides Settings
       // centeredSlides: true,
@@ -254,9 +250,6 @@ class MainComponent {
           page: this.data.lastPage,
         });
       }
-    });
-    this.swiper.on('lazyImageReady', () => {
-      console.log('LOADED');
     });
   }
 
@@ -480,7 +473,7 @@ class MainComponent {
       // if moviesList is completely fetched with Response: 'True' then fetchEachMovie
       await performRequests({
         promises: this.fetchMovies(responseMoviesList),
-        setPreloader: isFirstPage,
+        setPreloader: true,
         preloaderEl: this.elements.sliderPreloader,
       });
 
@@ -488,56 +481,77 @@ class MainComponent {
         this.swiper.removeAllSlides();
       }
 
-      const defaultNoPosterImage = 'https://imageog.flaticon.com/icons/png/512/73/73709.png?size=200x200f&ext=png';
+      const getRatingColor = (rating) => {
+        const ratingNumber = Number(rating);
+        const BAD = '#c70303';
+        const NEUTRAL = '#5f5f5f';
+        const GOOD = '#007b00';
 
-      this.data.Movies.forEach(({
-        Title, Year, Poster, imdbID, Genre, imdbRating,
+        if (ratingNumber < 5) { return BAD; }
+        if (ratingNumber < 7) { return NEUTRAL; }
+        return GOOD;
+      };
+      const renderSlide = ({
+        title, year, poster, imdbID, genre, imdbRating, ratingColor,
       }) => {
-        const swiperSlide = document.createElement('div');
-
         const hasData = (data) => data !== 'N/A';
-        const getRatingColor = (rating) => {
-          const ratingNumber = Number(rating);
-          const BAD = '#c70303';
-          const NEUTRAL = '#5f5f5f';
-          const GOOD = '#007b00';
+        const defaultNoPosterImage = '/assets/img/no-poster.png';
 
-          if (ratingNumber < 5) { return BAD; }
-          if (ratingNumber < 7) { return NEUTRAL; }
-          return GOOD;
-        };
+        const swiperSlide = document.createElement('div');
 
         swiperSlide.classList.add('swiper-slide');
         swiperSlide.innerHTML = `
           <a
             class="swiper-slide__link"
-            href="https://www.imdb.com/title/${imdbID}/videogallery/">${Title}</a>
+            href="https://www.imdb.com/title/${imdbID}/videogallery/">${title}</a>
           <div class="swiper-slide__img-container">
             <img
-              class="swiper-lazy swiper-slide__img"
-              data-src="${hasData(Poster) ? Poster : defaultNoPosterImage}">
+              class="swiper-slide__img swiper-slide__img_loading"
+              src="${hasData(poster) ? poster : defaultNoPosterImage}">
           </div>
-          ${hasData(Year) ? `<p class="swiper-slide__movie-year">${Year}</p>` : ''}
-          ${hasData(Genre) ? `<p class="swiper-slide__movie-genre">${Genre}</p>` : ''}
+          ${hasData(year) ? `<p class="swiper-slide__movie-year">${year}</p>` : ''}
+          ${hasData(genre) ? `<p class="swiper-slide__movie-genre">${genre}</p>` : ''}
           ${hasData(imdbRating) ? `<h2
             class="swiper-slide__movie-rating"
-            style="border-bottom: 5px solid ${getRatingColor(imdbRating)}">${imdbRating}</h2>` : ''}
-          <div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
+            style="border-bottom: 5px solid ${ratingColor}">${imdbRating}</h2>` : ''}
+          <div class="swiper-slide__preloader preloader preloader_loading">
+            <div class="cssload-loader">
+              <div class="cssload-inner cssload-one"></div>
+              <div class="cssload-inner cssload-two"></div>
+              <div class="cssload-inner cssload-three"></div>
+            </div>
+          </div>
         `;
 
-        const [swiperSlideImg] = swiperSlide.getElementsByClassName('swiper-lazy');
+        return swiperSlide;
+      };
+      const preloadImage = (swiperSlideEl) => {
+        const [swiperSlideImg] = swiperSlideEl.getElementsByClassName('swiper-slide__img');
 
-        swiperSlideImg.onload = () => {
-          console.log('Изображение загружено');
+        swiperSlideImg.onload = (event) => {
+          const { path: [imgEl] } = event;
+          const { parentElement: { parentElement: slide } } = imgEl;
+          const { SLIDE_PRELOADER } = this.classes;
+          const [preloader] = slide.getElementsByClassName(SLIDE_PRELOADER);
+
+          preloader.classList.remove('preloader_loading');
+          preloader.ontransitionend = () => {
+            preloader.remove();
+            imgEl.classList.remove('swiper-slide__img_loading');
+          };
         };
-        this.swiper.appendSlide(swiperSlide);
+      };
 
-        // [].forEach.call(document.querySelectorAll('img[data-src]'),    function(img) {
-        //   img.setAttribute('src', img.getAttribute('data-src'));
-        //   img.onload = function() {
-        //     img.removeAttribute('data-src');
-        //   };
-        // });
+      this.data.Movies.forEach(({
+        Title: title, Year: year, Poster: poster, imdbID, Genre: genre, imdbRating,
+      }) => {
+        const ratingColor = getRatingColor(imdbRating);
+        const swiperSlide = renderSlide({
+          title, year, poster, imdbID, genre, imdbRating, ratingColor,
+        });
+
+        preloadImage(swiperSlide);
+        this.swiper.appendSlide(swiperSlide);
       });
     }
 
