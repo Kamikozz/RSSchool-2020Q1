@@ -164,19 +164,14 @@ const Keyboard = ({ inputClassName }) => {
     HIDDEN: 'hidden',
   };
 
-  function getSymbolsArray(alphabet) {
-    return []
-      .concat(Object.keys(alphabet), Object.values(alphabet))
-      .filter((val) => {
-        const symbols = ['`', '[', ']', ';', '\'', ',', '.', '/'];
-        const isPresent = symbols.every((item) => item !== val);
+  const getSymbolsArray = (alphabet) => []
+    .concat(Object.keys(alphabet), Object.values(alphabet))
+    .filter((val) => {
+      const symbols = ['`', '[', ']', ';', '\'', ',', '.', '/'];
+      const isPresent = symbols.every((item) => item !== val);
 
-        return isPresent;
-
-        // return val !== '`' && val !== '[' && val !== ']'
-        // && val !== ';' && val !== '\'' && val !== ',' && val !== '.' && val !== '/';
-      });
-  }
+      return isPresent;
+    });
 
   function getAlphabet(language) {
     const languageEnglishRussian = {
@@ -215,23 +210,26 @@ const Keyboard = ({ inputClassName }) => {
       '.': 'ю',
       '/': '.',
     };
+
     const numpadEnglishRussian = {
       '.': ',',
     };
 
     switch (language) {
-      case variables.languages.EN: {
+      case EN: {
         variables.layout = getSymbolsArray(languageEnglishRussian);
         return [languageEnglishRussian, numpadEnglishRussian];
       }
-      case variables.languages.RU: {
+      case RU: {
         const languageRussianEnglish = {};
+
         Object.keys(languageEnglishRussian).forEach((key) => {
           // languageEnglishRussian[key] = value -> langRusEng[value] = key;
           languageRussianEnglish[languageEnglishRussian[key]] = key;
         });
 
         const numpadRussianEnglish = {};
+
         Object.keys(numpadEnglishRussian).forEach((key) => {
           // languageEnglishRussian[key] = value -> langRusEng[value] = key;
           numpadRussianEnglish[numpadEnglishRussian[key]] = key;
@@ -269,12 +267,14 @@ const Keyboard = ({ inputClassName }) => {
 
     for (let i = 0; i < keys.length - numpadLength - DELETE_ME; i += 1) {
       const translatedLetter = alphabet[keys[i].innerText.toLowerCase()];
+
       if (translatedLetter) keys[i].innerText = translatedLetter;
     }
 
     // change numpad elements innerText
     for (let i = keys.length - numpadLength; i < keys.length; i += 1) {
       const translatedLetter = numpad[keys[i]];
+
       if (translatedLetter) keys[i].innerText = translatedLetter;
     }
   }
@@ -282,25 +282,30 @@ const Keyboard = ({ inputClassName }) => {
   const isPlatformWindows = () => navigator.platform.toLowerCase().includes('win');
   const isUppercase = () => variables.isShift !== variables.isCapslock; // XOR
 
-  function createSection(className) {
+  const createSection = (className) => {
     const section = document.createElement('section');
-    if (arguments.length) section.className = className;
+
+    if (className) {
+      section.className = className;
+    }
 
     const wrapper = document.createElement('div');
-    wrapper.className = 'wrapper';
 
+    wrapper.className = 'wrapper';
     section.append(wrapper);
 
     return section.firstElementChild;
-  }
+  };
 
-  function createKeyboard() {
+  const createKeyboard = () => {
     const keyboard = document.createElement('div');
-    keyboard.className = classes.KEYBOARD;
-    keyboard.setAttribute(classes.HIDDEN, 'true');
+    const { KEYBOARD, HIDDEN } = classes;
+
+    keyboard.className = KEYBOARD;
+    keyboard.setAttribute(HIDDEN, 'true');
 
     return keyboard;
-  }
+  };
 
   function createTree() {
     const [textarea] = document.getElementsByClassName(inputClassName);
@@ -338,21 +343,25 @@ const Keyboard = ({ inputClassName }) => {
       keyboard,
     };
 
-    const rows = Object.keys(variables.keys);
+    const { keys, structureKeyCodes } = variables;
+    const rows = Object.keys(keys);
 
     rows.forEach((rowClass) => {
       const row = document.createElement('div');
+
       row.classList.add(rowClass);
 
-      variables.keys[rowClass].forEach((text, i) => {
+      keys[rowClass].forEach((text, i) => {
         const span = document.createElement('span');
+
         span.textContent = text;
 
         const key = document.createElement('div');
-        key.classList.add(classes.KEY);
-        key.dataset.keycode = variables.structureKeyCodes[rowClass][i];
-        key.append(span);
+        const { KEY } = classes;
 
+        key.classList.add(KEY);
+        key.dataset.keycode = structureKeyCodes[rowClass][i];
+        key.append(span);
         row.append(key);
 
         returnObject.keys.push(key); // get array of keys 'key'
@@ -425,32 +434,42 @@ const Keyboard = ({ inputClassName }) => {
   }
 
   const changeOnShift = () => {
-    elements.keys.forEach((key) => {
-      const currentKeyCode = key.dataset[variables.DATA_KEYCODE];
+    const {
+      DATA_KEYCODE, shiftCodes, KEYBOARD_LANGUAGE, keyCodes, isShift,
+    } = variables;
+    const { keys } = elements;
+    const currentLang = localStorage.getItem(KEYBOARD_LANGUAGE);
 
-      if (variables.shiftCodes.includes(currentKeyCode)) {
-        const currentLang = localStorage.getItem(variables.KEYBOARD_LANGUAGE);
+    keys.forEach((key) => {
+      const currentKeyCode = key.dataset[DATA_KEYCODE];
+
+      if (shiftCodes.includes(currentKeyCode)) {
         const currentKey = key.firstElementChild;
-        const codes = variables.keyCodes;
 
-        currentKey.innerText = codes[currentLang][currentKeyCode][Number(variables.isShift)];
+        currentKey.innerText = keyCodes[currentLang][currentKeyCode][Number(isShift)];
       }
     });
   };
 
   const changeCase = () => {
+    const { KEY_UPPERCASE } = classes;
+    const { layout } = variables;
+
     elements.keys.forEach((key) => {
       const innerElement = key.firstElementChild;
       const text = innerElement.textContent.toLowerCase();
 
-      if (variables.layout.includes(text)) {
-        if (key.classList.contains(classes.KEY_UPPERCASE)) {
-          key.classList.remove(classes.KEY_UPPERCASE);
-          innerElement.textContent = text;
+      const hasLayoutText = layout.includes(text);
+      const hasKeyUppercaseClass = key.classList.contains(KEY_UPPERCASE);
+
+      if (hasLayoutText) {
+        if (hasKeyUppercaseClass) {
+          key.classList.remove(KEY_UPPERCASE);
         } else {
-          key.classList.add(classes.KEY_UPPERCASE);
-          innerElement.textContent = text.toUpperCase();
+          key.classList.add(KEY_UPPERCASE);
         }
+
+        innerElement.textContent = hasKeyUppercaseClass ? text : text.toUpperCase();
       }
     });
   };
@@ -463,10 +482,9 @@ const Keyboard = ({ inputClassName }) => {
   function changeLanguage() {
     // 1. remove key-uppercase before update
     const { KEY_UPPERCASE } = classes;
+    const { keys } = elements;
 
-    elements.keys.forEach((key) => {
-      key.classList.remove(KEY_UPPERCASE);
-    });
+    keys.forEach((key) => key.classList.remove(KEY_UPPERCASE));
 
     // 2. changeLanguage
     // make changes with localStorage
@@ -475,7 +493,7 @@ const Keyboard = ({ inputClassName }) => {
     let numpad;
     const { KEYBOARD_LANGUAGE } = variables;
     const keyboardLanguage = localStorage.getItem(KEYBOARD_LANGUAGE);
-    const key = document.querySelector('.key[data-keycode="Fn"]');
+    const key = document.querySelector('.key[data-keycode="Fn"]'); // get fn (language key en/ru)
 
     switch (keyboardLanguage) {
       case RU:
@@ -499,7 +517,9 @@ const Keyboard = ({ inputClassName }) => {
     changeKeysInnerText(alphabet, numpad);
 
     // 3. restore uppercase
-    if (isUppercase()) changeCase();
+    if (isUppercase()) {
+      changeCase();
+    }
   }
 
   const playKeypressSound = () => {
@@ -745,27 +765,27 @@ const Keyboard = ({ inputClassName }) => {
   }
 
   const isSpecialKey = (text, e) => (
-    (text === variables.specialKeys.ESC && e.key === 'Escape')
-    || (text === variables.specialKeys.SPACE && e.code === 'Space')
-    || (text === variables.specialKeys.ARROW_UP && e.code === 'ArrowUp')
-    || (text === variables.specialKeys.ARROW_DOWN && e.code === 'ArrowDown')
-    || (text === variables.specialKeys.ARROW_LEFT && e.code === 'ArrowLeft')
-    || (text === variables.specialKeys.ARROW_RIGHT && e.code === 'ArrowRight')
-    || (text === variables.specialKeys.PAGE_UP && e.code === 'PageUp')
-    || (text === variables.specialKeys.PAGE_DOWN && e.code === 'PageDown')
-    || (text === variables.specialKeys.ALTGR && e.code === 'AltRight')
-    || (text === variables.specialKeys.CTRL && e.code === 'ControlLeft')
-    || (text === variables.specialKeys.SHIFT && e.code === 'ShiftLeft')
-    || (text === variables.specialKeys.SCROLL_LOCK && e.key === 'ScrollLock')
-    || (text === variables.specialKeys.PRINT_SCREEN && e.key === 'PrintScreen')
+    (text === ESC && e.key === 'Escape')
+    || (text === SPACE && e.code === 'Space')
+    || (text === ARROW_UP && e.code === 'ArrowUp')
+    || (text === ARROW_DOWN && e.code === 'ArrowDown')
+    || (text === ARROW_LEFT && e.code === 'ArrowLeft')
+    || (text === ARROW_RIGHT && e.code === 'ArrowRight')
+    || (text === PAGE_UP && e.code === 'PageUp')
+    || (text === PAGE_DOWN && e.code === 'PageDown')
+    || (text === ALTGR && e.code === 'AltRight')
+    || (text === CTRL && e.code === 'ControlLeft')
+    || (text === SHIFT && e.code === 'ShiftLeft')
+    || (text === SCROLL_LOCK && e.key === 'ScrollLock')
+    || (text === PRINT_SCREEN && e.key === 'PrintScreen')
     || (text === '<' && e.code === 'IntlBackslash')
   );
 
   const isSecondKey = (text, e) => (
-    (text === variables.specialKeys.CTRL && e.code === 'ControlRight')
-    || (text === variables.specialKeys.SHIFT && e.code === 'ShiftRight')
-    || (text === variables.specialKeys.ALT && e.code === 'AltRight')
-    || (text === variables.specialKeys.ENTER && e.code === 'NumpadEnter')
+    (text === CTRL && e.code === 'ControlRight')
+    || (text === SHIFT && e.code === 'ShiftRight')
+    || (text === ALT && e.code === 'AltRight')
+    || (text === ENTER && e.code === 'NumpadEnter')
     || (text === '\\' && e.code === 'IntlBackslash')
     || (text === '/' && e.code === 'Slash')
     || (text === '-' && e.code === 'NumpadSubtract')
@@ -784,51 +804,58 @@ const Keyboard = ({ inputClassName }) => {
 
   const processKeySelection = (e) => {
     let isKeydown;
+    const { type } = e;
 
-    switch (e.type) {
-      case 'keydown': isKeydown = true; break;
-      case 'keyup': isKeydown = false; break;
-      default: break;
+    switch (type) {
+      case 'keydown':
+        isKeydown = true;
+        break;
+      case 'keyup':
+        isKeydown = false;
+        break;
+      default:
+        break;
     }
 
     function addRemoveKeyActive(currentKey) {
+      const { KEY_ACTIVE } = classes;
+
       return isKeydown
-        ? currentKey.classList.add(classes.KEY_ACTIVE)
-        : currentKey.classList.remove(classes.KEY_ACTIVE);
+        ? currentKey.classList.add(KEY_ACTIVE)
+        : currentKey.classList.remove(KEY_ACTIVE);
     }
 
     let isRightKey = false;
     let target;
 
     for (let i = 0; i < elements.keys.length; i += 1) {
+      const {
+        META_WIN, META_APPLE, META_WIN_ACTIVE, META_APPLE_ACTIVE, KEY_ACTIVE,
+      } = classes;
       const key = elements.keys[i];
       const { innerText: keyText } = key;
       const isMeta = (text, event) => text === META && event.key === 'Meta';
-      const META_ICON = isPlatformWindows() ? classes.META_WIN : classes.META_APPLE;
-      const META_ACTIVE = isPlatformWindows() ? classes.META_WIN_ACTIVE : classes.META_APPLE_ACTIVE;
-      const isCapsLock = (text, event) => text === CAPS_LOCK
-        && event.key === 'CapsLock';
-      const isNumLock = (text, event) => text === variables.specialKeys.NUM_LOCK
-        && event.key === 'NumLock';
-      const { KEY_ACTIVE } = classes;
+      const META_ICON = isPlatformWindows() ? META_WIN : META_APPLE;
+      const META_ACTIVE = isPlatformWindows() ? META_WIN_ACTIVE : META_APPLE_ACTIVE;
+      const isCapsLock = (text, event) => text === CAPS_LOCK && event.key === 'CapsLock';
+      const isNumLock = (text, event) => text === NUM_LOCK && event.key === 'NumLock';
 
       if (isMeta(keyText, e)) {
         addRemoveKeyActive(key);
 
-        if (isKeydown) {
-          key.firstElementChild.classList.remove(META_ICON);
-          key.firstElementChild.classList.add(META_ACTIVE);
-        } else {
-          key.firstElementChild.classList.add(META_ICON);
-          key.firstElementChild.classList.remove(META_ACTIVE);
-        }
+        const { firstElementChild: innerSpanKey } = key;
+
+        innerSpanKey.classList.remove(isKeydown ? META_ICON : META_ACTIVE);
+        innerSpanKey.classList.add(isKeydown ? META_ACTIVE : META_ICON);
         break;
       } else if (isSpecialKey(keyText, e)) {
         addRemoveKeyActive(key);
         target = key;
         break;
       } else if (isKeydown && !e.repeat && isCapsLock(keyText, e)) {
-        if (key.classList.contains(KEY_ACTIVE)) {
+        const hasKeyActiveClass = key.classList.contains(KEY_ACTIVE);
+
+        if (hasKeyActiveClass) {
           key.classList.remove(KEY_ACTIVE);
         } else {
           key.classList.add(KEY_ACTIVE);
@@ -836,10 +863,12 @@ const Keyboard = ({ inputClassName }) => {
         target = key;
         break;
       } else if (isKeydown && !e.repeat && isNumLock(keyText, e)) {
-        if (key.classList.contains(classes.KEY_ACTIVE)) {
-          key.classList.remove(classes.KEY_ACTIVE);
+        const hasKeyActiveClass = key.classList.contains(KEY_ACTIVE);
+
+        if (hasKeyActiveClass) {
+          key.classList.remove(KEY_ACTIVE);
         } else {
-          key.classList.add(classes.KEY_ACTIVE);
+          key.classList.add(KEY_ACTIVE);
         }
         target = key;
         break;
@@ -864,12 +893,16 @@ const Keyboard = ({ inputClassName }) => {
     if (!e.repeat) {
       // playKeypressSound();
 
-      const isCtrlShiftPressed = e.ctrlKey && e.shiftKey
-        && (e.code === 'ControlLeft' || e.code === 'ShiftLeft');
-      const isCtrlAltPressed = e.ctrlKey && e.altKey
-        && (e.code === 'ControlLeft' || e.code === 'AltLeft');
-      const isAltShiftPressed = e.shiftKey && e.altKey
-        && (e.code === 'ShiftLeft' || e.code === 'AltLeft');
+      const {
+        ctrlKey, shiftKey, altKey, code,
+      } = e;
+
+      const isCtrlShiftPressed = ctrlKey && shiftKey
+        && (code === 'ControlLeft' || code === 'ShiftLeft');
+      const isCtrlAltPressed = ctrlKey && altKey
+        && (code === 'ControlLeft' || code === 'AltLeft');
+      const isAltShiftPressed = shiftKey && altKey
+        && (code === 'ShiftLeft' || code === 'AltLeft');
 
       if (isCtrlShiftPressed || isCtrlAltPressed || isAltShiftPressed) {
         changeLanguage();
@@ -879,19 +912,24 @@ const Keyboard = ({ inputClassName }) => {
     elements.textarea.focus();
 
     const target = processKeySelection(e);
+
     handlerKeyInput(target, e);
   };
 
   const handlerKeyUp = (e) => {
     const PRINTSCREEN = 'PrintScreen';
+    const { key } = e;
+    const isKeyShift = key === SHIFT;
 
-    if (e.key === SHIFT) {
+    if (isKeyShift) {
       variables.isShift = !variables.isShift;
       changeCase();
       changeOnShift();
     }
 
-    if (e.key === PRINTSCREEN) {
+    const isKeyPrintScreen = key === PRINTSCREEN;
+
+    if (isKeyPrintScreen) {
       const customEvent = new KeyboardEvent('keydown', {
         cancelable: true,
         key: PRINTSCREEN,
@@ -901,6 +939,7 @@ const Keyboard = ({ inputClassName }) => {
         altKey: false,
         repeat: false,
       });
+
       handlerKeyDown(customEvent);
       setTimeout(() => processKeySelection(e), 100);
       return;
@@ -915,8 +954,9 @@ const Keyboard = ({ inputClassName }) => {
     const { KEY } = classes;
     // find div.key
     let target;
+    const hasTargetKeyClass = e.target.classList.contains(KEY);
 
-    if (e.target.classList.contains(KEY)) {
+    if (hasTargetKeyClass) {
       target = e.target;
     } else if (!e.target.children.length) {
       target = e.target.parentElement;
