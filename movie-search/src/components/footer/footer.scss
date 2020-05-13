@@ -32,6 +32,7 @@
       height: calc(545px * 0.1); // 10% source size
 
       transition: filter 0.5s ease-out;
+      user-select: none;
     }
 
     &:hover {
