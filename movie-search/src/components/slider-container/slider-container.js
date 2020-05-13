@@ -43,7 +43,6 @@ class SliderContainer {
     }
 
     this.initElements();
-    // this.initData();
     this.initHandlers();
 
     await this.renderMoviesCards();
@@ -96,20 +95,7 @@ class SliderContainer {
     });
   }
 
-  // async initData(defaultMovie = 'Bad Boys') {
-  //   this.data.searchQuery = defaultMovie;
-
-  //   await this.renderMoviesCards();
-  // }
-
   initHandlers() {
-    // const {
-    //   searchField,
-    //   // searchBox,
-    //   searchButton, clearButton, keyboardButton, speechRecognitionButton,
-    // } = this.elements;
-
-    // searchField.addEventListener('input', this.handlerSearchInputChange.bind(this));
     // Swiper listeners
     this.swiper.on('reachEnd', async () => {
       const MAX_MOVIES_PER_PAGE = 10;
@@ -151,16 +137,27 @@ class SliderContainer {
         this.swiper.removeAllSlides();
       }
 
-      this.data.Movies.forEach(async ({
+      const swiperMovieSlides = [];
+
+      this.data.Movies.forEach(({
         Title: title, Year: year, Poster: poster, imdbID, Genre: genre, imdbRating,
       }) => {
         const swiperSlide = new SwiperMovieSlide({
           title, year, poster, imdbID, genre, imdbRating,
         });
 
-        await swiperSlide.init();
+        swiperMovieSlides.push(swiperSlide);
+      });
 
-        this.swiper.appendSlide(swiperSlide.elements.root);
+      let slides = swiperMovieSlides.map(async (swiperMovieSlide) => {
+        await swiperMovieSlide.init();
+
+        return swiperMovieSlide.elements.root;
+      });
+
+      slides = await Promise.all(slides);
+      slides.forEach((slide) => {
+        this.swiper.appendSlide(slide);
       });
     }
   }
@@ -213,7 +210,9 @@ class SliderContainer {
     const movies = [];
 
     Search.forEach(({ imdbID }) => {
-      movies.push(this.fetchMovie(imdbID));
+      const movie = this.fetchMovie(imdbID);
+
+      movies.push(movie);
     });
 
     return movies;

@@ -40,7 +40,6 @@ class SwiperMovieSlide {
   }
 
   render() {
-    // const fragment = new DocumentFragment();
     const template = document.createElement('template');
 
     const { ROOT } = this.classes;
@@ -71,9 +70,6 @@ class SwiperMovieSlide {
     `;
 
     this.elements.root = template.content.firstElementChild;
-
-    // fragment.append(template.content);
-    // this.elements.parentEl.append(fragment);
   }
 
   initElements() {

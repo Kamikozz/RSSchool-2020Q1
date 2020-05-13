@@ -39,7 +39,6 @@ class SearchContainer {
 
     this.render();
     this.initElements();
-    // this.initData();
     this.initHandlers();
   }
 
@@ -110,18 +109,9 @@ class SearchContainer {
     });
   }
 
-  // async initData(defaultMovie = 'Bad Boys') {
-  //   this.data.searchQuery = defaultMovie;
-
-  //   const { slider } = this.parent;
-
-  //   await slider.renderMoviesCards();
-  // }
-
   initHandlers() {
     const {
       searchField,
-      // searchBox,
       searchButton, clearButton, keyboardButton, speechRecognitionButton,
     } = this.elements;
 

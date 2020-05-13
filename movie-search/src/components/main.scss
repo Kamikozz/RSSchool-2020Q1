@@ -75,6 +75,24 @@ body {
   transition: padding 0.5s ease-out, margin 0.5s ease-out;
 }
 
+.preloader {
+  & {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.35s ease-out,  background-color 0.35s ease-out, visibility 0.35s ease-out;
+
+    user-select: none;
+  }
+
+  &_loading {
+    opacity: 1;
+    visibility: initial;
+  }
+}
+
 @import "./header/header";
 @import "./main-component/main-component";
+@import "./search-container/search-container";
+@import "./slider-container/slider-container";
+@import "./swiper-movie-slide/swiper-movie-slide";
 @import "./footer/footer";
