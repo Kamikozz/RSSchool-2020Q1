@@ -1,3 +1,24 @@
+const hasChars = (text, firstLetterCharCode, lastLetterCharCode) => {
+  const processedText = text.toLowerCase();
+  const textArray = processedText.split('');
+
+  return textArray.some((char) => {
+    const charCode = char.charCodeAt();
+    const hasChar = charCode >= firstLetterCharCode && charCode <= lastLetterCharCode;
+
+    return hasChar;
+  });
+};
+
+const hasRussianChars = (text) => {
+  const FIRST_LETTER = 'а';
+  const FIRST_LETTER_CODE = FIRST_LETTER.charCodeAt();
+  const LAST_LETTER = 'я';
+  const LAST_LETTER_CODE = LAST_LETTER.charCodeAt();
+
+  return hasChars(text, FIRST_LETTER_CODE, LAST_LETTER_CODE);
+};
+
 const arrayBufferToBase64 = (buffer) => {
   let binary = '';
   const bytes = Array.from(new Uint8Array(buffer));
@@ -43,6 +64,7 @@ const hasData = (data, noData) => data !== noData;
 const isUndefined = (item) => item === undefined;
 
 module.exports = {
+  hasRussianChars,
   arrayBufferToBase64,
   getBase64Data,
   getImage,

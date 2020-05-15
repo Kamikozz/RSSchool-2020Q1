@@ -1,6 +1,7 @@
 import Keyboard from '../../libs/keyboard/script';
 import Draggable from '../../js/draggable';
 import getTranslation from '../../js/api/yandex-translate-service';
+import { hasRussianChars } from '../../js/utils/utils';
 
 class SearchContainer {
   constructor(props) {
@@ -189,8 +190,14 @@ class SearchContainer {
     const isEmptyField = searchField && !searchField.value.length;
 
     if (!isEmptyField) {
-      const { text: [translatedSentence] } = await getTranslation(searchField.value);
-      this.data.searchQuery = translatedSentence;
+      let searchValue = searchField.value;
+
+      if (hasRussianChars(searchValue)) {
+        const { text: [translatedSentence] } = await getTranslation(searchValue);
+
+        searchValue = translatedSentence;
+      }
+      this.data.searchQuery = searchValue;
 
       const { slider } = this.parent;
 
