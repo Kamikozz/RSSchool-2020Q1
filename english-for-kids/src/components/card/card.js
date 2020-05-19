@@ -45,36 +45,42 @@ class Card {
   }
 
   render() {
-    const c = this.classes;
     const fragment = new DocumentFragment();
     const template = document.createElement('template');
+    const {
+      CARD_CONTAINER, CARD_CLASSNAME, CARD_SIDE_FRONT, CARD_SIDE, CARD_TEXT,
+      CARD_ROTATE_BLOCK, CARD_ROTATE_BUTTON,
+      CARD_ICON, ICON_SUCCESS, ICON_ERROR, HIDDEN,
+    } = this.classes;
+    const { image, word, translation } = this.data;
+
     template.innerHTML = `
-      <div class="${c.CARD_CONTAINER} cards-container__card-container" tabindex="0">
-        <div class="${c.CARD_CLASSNAME} ${c.CARD_SIDE_FRONT}">
-          <div class="${c.CARD_SIDE} ${c.CARD_SIDE}_side_front">
+      <div class="${CARD_CONTAINER} cards-container__card-container" tabindex="0">
+        <div class="${CARD_CLASSNAME} ${CARD_SIDE_FRONT}">
+          <div class="${CARD_SIDE} ${CARD_SIDE}_side_front">
             <div class="card__img-container">
-              <div class="card__img" style="background-image: url(${this.data.image})"></div>
+              <div class="card__img" style="background-image: url(${image})"></div>
             </div>
-            <p class="${c.CARD_TEXT} rainbow_color_color1">
-              <span class="card__text">${this.data.word}</span>
+            <p class="${CARD_TEXT} rainbow_color_color1">
+              <span class="card__text">${word}</span>
             </p>
           </div>
 
-          <div class="${c.CARD_SIDE} ${c.CARD_SIDE}_side_back">
+          <div class="${CARD_SIDE} ${CARD_SIDE}_side_back">
             <div class="card__img-container">
-              <div class="card__img" style="background-image: url(${this.data.image})"></div>
+              <div class="card__img" style="background-image: url(${image})"></div>
             </div>
-            <p class="${c.CARD_TEXT} rainbow rainbow_color_color1">
-              <span class="card__text">${this.data.translation}</span>
+            <p class="${CARD_TEXT} rainbow rainbow_color_color1">
+              <span class="card__text">${translation}</span>
             </p>
           </div>
 
-          <div class="${c.CARD_ROTATE_BLOCK} rainbow rainbow_color_color1" tabindex="0">
-            <button class="${c.CARD_ROTATE_BUTTON}"></button>
+          <div class="${CARD_ROTATE_BLOCK} rainbow rainbow_color_color1" tabindex="0">
+            <button class="${CARD_ROTATE_BUTTON}"></button>
           </div>
 
-          <div class="${c.CARD_ICON} ${c.ICON_SUCCESS} ${c.CARD_ICON}_${c.HIDDEN}"></div>
-          <div class="${c.CARD_ICON} ${c.ICON_ERROR} ${c.CARD_ICON}_${c.HIDDEN}"></div>
+          <div class="${CARD_ICON} ${ICON_SUCCESS} ${CARD_ICON}_${HIDDEN}"></div>
+          <div class="${CARD_ICON} ${ICON_ERROR} ${CARD_ICON}_${HIDDEN}"></div>
         </div>
       </div>
     `;
@@ -89,11 +95,12 @@ class Card {
     const [card] = this.rootEl.getElementsByClassName(this.classes.CARD_CLASSNAME);
     const [cardRotateButton] = this.rootEl.getElementsByClassName(this.classes.CARD_ROTATE_BLOCK);
 
-    Object.assign(this.elements, {
+    this.elements = {
+      ...this.elements,
       cardContainer,
       card,
       cardRotateButton,
-    });
+    };
   }
 
   initHandlers() {
@@ -103,6 +110,7 @@ class Card {
     const handlerCardRotate = this.handlerCardRotate.bind(this);
 
     const { card, cardRotateButton } = this.elements;
+
     this.events = [{
       el: card,
       type: 'click',
@@ -124,30 +132,35 @@ class Card {
     if (this.events) {
       this.events.forEach((event) => {
         const { el, type, handler } = event;
+
         el.removeEventListener(type, handler);
       });
     }
   }
 
   handlerCardSwitchSide() {
-    this.elements.card.classList.toggle(this.classes.CARD_SIDE_FRONT);
-    this.elements.card.classList.toggle(this.classes.CARD_SIDE_BACK);
+    const { card } = this.elements;
+
+    card.classList.toggle(this.classes.CARD_SIDE_FRONT);
+    card.classList.toggle(this.classes.CARD_SIDE_BACK);
   }
 
   handlerCardRotate() {
-    const el = this.elements;
+    const { cardContainer } = this.elements;
 
     this.handlerCardSwitchSide();
-    el.cardContainer.addEventListener('mouseleave', this.handlerCardMouseLeave);
+    cardContainer.addEventListener('mouseleave', this.handlerCardMouseLeave);
   }
 
   handlerCardMouseLeave() {
-    const el = this.elements;
-    const c = this.classes;
+    const { card, cardContainer } = this.elements;
+    const { CARD_SIDE_BACK } = this.classes;
 
-    if (el.card.classList.contains(c.CARD_SIDE_BACK)) {
+    const isCardSideBackClassOnCard = card.classList.contains(CARD_SIDE_BACK);
+
+    if (isCardSideBackClassOnCard) {
       this.handlerCardSwitchSide();
-      el.cardContainer.removeEventListener('mouseleave', this.handlerCardMouseLeave);
+      cardContainer.removeEventListener('mouseleave', this.handlerCardMouseLeave);
     }
   }
 

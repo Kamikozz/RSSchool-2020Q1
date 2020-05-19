@@ -25,7 +25,9 @@ class BurgerMenu {
   }
 
   initial() {
-    this.elements.headerNav.innerHTML = '<ul class="nav__list"></ul>';
+    const { headerNav } = this.elements;
+
+    headerNav.innerHTML = '<ul class="nav__list"></ul>';
     this.initElements();
     this.initData();
     this.render();
@@ -45,13 +47,14 @@ class BurgerMenu {
     const [burgerMenuOpen] = document.getElementsByClassName(this.classes.HEADER_NAV);
     const [burgerMenuModalWindow] = document.getElementsByClassName(this.classes.MODAL_WINDOW);
 
-    Object.assign(this.elements, {
+    this.elements = {
+      ...this.elements,
       headerMenu,
       burgerMenuButton,
       burgerMenuButtonOpen,
       burgerMenuOpen,
       burgerMenuModalWindow,
-    });
+    };
   }
 
   initData() {
@@ -59,18 +62,22 @@ class BurgerMenu {
   }
 
   initHandlers() {
-    this.elements.headerMenu.addEventListener('click', this.handlerHeaderMenu.bind(this));
-    this.elements.burgerMenuButton.addEventListener('click', this.handlerHeaderBurgerMenuButton.bind(this));
-    this.elements.burgerMenuOpen.addEventListener(
+    const {
+      headerMenu, burgerMenuButton, burgerMenuOpen, burgerMenuModalWindow,
+    } = this.elements;
+
+    headerMenu.addEventListener('click', this.handlerHeaderMenu.bind(this));
+    burgerMenuButton.addEventListener('click', this.handlerHeaderBurgerMenuButton.bind(this));
+    burgerMenuOpen.addEventListener(
       'animationend', this.handlerHeaderBurgerMenuButtonEndAnimation.bind(this),
     );
-    this.elements.burgerMenuModalWindow.addEventListener(
-      'click', this.handlerHeaderBurgerMenuButton.bind(this),
-    );
+    burgerMenuModalWindow.addEventListener('click', this.handlerHeaderBurgerMenuButton.bind(this));
   }
 
   render() {
-    this.elements.headerMenu.innerHTML = `
+    const { headerMenu } = this.elements;
+
+    headerMenu.innerHTML = `
       <li class="nav__list-item">
         <a class="nav__list-item-link nav__list-item-link_active"
           href="/"
@@ -83,6 +90,7 @@ class BurgerMenu {
 
       this.data.forEach((category, id) => {
         const template = document.createElement('template');
+
         template.innerHTML = `
           <li class="nav__list-item">
             <a class="nav__list-item-link"
@@ -110,6 +118,7 @@ class BurgerMenu {
       const path = window.location.hash.substring(1).split('/');
       const id = path[path.length - 1];
       const children = [...this.elements.headerMenu.children].slice(1);
+
       if (id > 0 && id <= children.length) {
         nextTabTo = children[id - 1].firstElementChild;
       } else {
@@ -117,8 +126,8 @@ class BurgerMenu {
       }
     }
 
-    const c = this.classes;
-    const HEADER_MENU_ITEM_LINK_ACTIVE = `${c.HEADER_MENU_ITEM_LINK}_${c.ACTIVE}`;
+    const { HEADER_MENU_ITEM_LINK, ACTIVE } = this.classes;
+    const HEADER_MENU_ITEM_LINK_ACTIVE = `${HEADER_MENU_ITEM_LINK}_${ACTIVE}`;
 
     this.lastHeaderMenuActiveTab.classList.remove(HEADER_MENU_ITEM_LINK_ACTIVE);
     nextTabTo.classList.add(HEADER_MENU_ITEM_LINK_ACTIVE);
@@ -128,34 +137,47 @@ class BurgerMenu {
   }
 
   handlerHeaderBurgerMenuButton() {
-    const c = this.classes;
+    const {
+      BURGER_BUTTON_BLOCK, ACTIVE, DISABLED,
+      HEADER_NAV, ANIMATION_HIDE_BURGER, HIDDEN,
+    } = this.classes;
+    const {
+      burgerMenuButton, burgerMenuButtonOpen, burgerMenuOpen, burgerMenuModalWindow,
+    } = this.elements;
 
-    this.elements.burgerMenuButton.classList.add(c.DISABLED);
+    burgerMenuButton.classList.add(DISABLED);
 
-    const BURGER_BUTTON_ACTIVE = `${c.BURGER_BUTTON_BLOCK}__button_${c.ACTIVE}`;
-    this.elements.burgerMenuButtonOpen.classList.toggle(BURGER_BUTTON_ACTIVE);
+    const BURGER_BUTTON_ACTIVE = `${BURGER_BUTTON_BLOCK}__button_${ACTIVE}`;
+    const BURGER_DASH_ACTIVE = `${BURGER_BUTTON_BLOCK}__dash_${ACTIVE}`;
 
-    const BURGER_DASH_ACTIVE = `${c.BURGER_BUTTON_BLOCK}__dash_${c.ACTIVE}`;
-    this.elements.burgerMenuButtonOpen.firstElementChild.classList.toggle(BURGER_DASH_ACTIVE);
+    burgerMenuButtonOpen.classList.toggle(BURGER_BUTTON_ACTIVE);
+    burgerMenuButtonOpen.firstElementChild.classList.toggle(BURGER_DASH_ACTIVE);
 
-    const HEADER_NAV_ACTIVE = `${c.HEADER_NAV}_${c.ACTIVE}`;
-    if (this.elements.burgerMenuOpen.classList.contains(HEADER_NAV_ACTIVE)) {
-      this.elements.burgerMenuOpen.style.animationName = c.ANIMATION_HIDE_BURGER;
+    const HEADER_NAV_ACTIVE = `${HEADER_NAV}_${ACTIVE}`;
+
+    if (burgerMenuOpen.classList.contains(HEADER_NAV_ACTIVE)) {
+      burgerMenuOpen.style.animationName = ANIMATION_HIDE_BURGER;
     } else {
-      this.elements.burgerMenuOpen.classList.toggle(HEADER_NAV_ACTIVE);
+      burgerMenuOpen.classList.toggle(HEADER_NAV_ACTIVE);
     }
 
-    this.elements.burgerMenuModalWindow.classList.toggle(c.HIDDEN);
+    burgerMenuModalWindow.classList.toggle(HIDDEN);
   }
 
-  handlerHeaderBurgerMenuButtonEndAnimation(e) {
-    this.elements.burgerMenuButton.classList.remove(this.classes.DISABLED);
+  handlerHeaderBurgerMenuButtonEndAnimation(event) {
+    const {
+      ACTIVE, DISABLED, HEADER_NAV, ANIMATION_HIDE_BURGER,
+    } = this.classes;
+    const { burgerMenuButton } = this.elements;
 
-    if (e.target.style.animationName === this.classes.ANIMATION_HIDE_BURGER) {
-      e.target.removeAttribute('style');
-      this.elements.burgerMenuOpen.classList.toggle(
-        `${this.classes.HEADER_NAV}_${this.classes.ACTIVE}`,
-      );
+    burgerMenuButton.classList.remove(DISABLED);
+
+    const { target } = event;
+    const isAnimationHideBurger = target.style.animationName === ANIMATION_HIDE_BURGER;
+
+    if (isAnimationHideBurger) {
+      target.removeAttribute('style');
+      this.elements.burgerMenuOpen.classList.toggle(`${HEADER_NAV}_${ACTIVE}`);
     }
   }
 

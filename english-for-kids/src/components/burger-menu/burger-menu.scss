@@ -94,8 +94,6 @@
     &::after { @extend %dash; }
 
     &_active {
-      & {
-      }
       &::before,
       &::after {
         position: absolute;

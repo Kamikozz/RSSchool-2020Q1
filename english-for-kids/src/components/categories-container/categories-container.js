@@ -15,7 +15,9 @@ class CategoriesContainer {
   }
 
   initial() {
-    this.elements.mainElem.innerHTML = '<div class="categories-container"></div>';
+    const { mainElem } = this.elements;
+
+    mainElem.innerHTML = '<div class="categories-container"></div>';
 
     this.initElements();
     this.initHandlers();
@@ -26,9 +28,10 @@ class CategoriesContainer {
   initElements() {
     const [categoriesContainer] = document.getElementsByClassName(this.classes.CATEGORIES);
 
-    Object.assign(this.elements, {
+    this.elements = {
+      ...this.elements,
       categoriesContainer,
-    });
+    };
   }
 
   initHandlers() {
@@ -38,6 +41,7 @@ class CategoriesContainer {
 
   initData() {
     const categories = [];
+
     data[0].forEach((item) => {
       categories.push({
         name: item,
@@ -57,6 +61,7 @@ class CategoriesContainer {
 
     this.data.forEach((category) => {
       const template = document.createElement('template');
+
       template.innerHTML = new Category(category).getMarkup();
       fragment.append(template.content);
     });

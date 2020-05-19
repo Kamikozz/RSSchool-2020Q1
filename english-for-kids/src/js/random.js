@@ -8,6 +8,7 @@ const getRandomId = (length) => Math.floor(Math.random() * length);
  */
 const shuffleFisherYates = (array) => {
   const arr = [...array];
+
   for (let i = arr.length - 1; i > 0; i -= 1) {
     const randomIdx = Math.floor(Math.random() * (i + 1));
     [arr[i], arr[randomIdx]] = [arr[randomIdx], arr[i]]; // swap elements
@@ -28,19 +29,18 @@ const shuffle = (array) => {
   // Fisher and Yates method
   const shuffledArr = shuffleFisherYates(arr);
 
-  for (let i = 0; i < shuffledArr.length; i += 1) {
-    if (shuffledArr[i] === arr[i]) {
-      if (i + 1 === shuffledArr.length) {
-        // reach the end? -> swap first & last element
-        [shuffledArr[i], shuffledArr[0]] = [shuffledArr[0], shuffledArr[i]];
-      } else {
-        // default action -> swap this & last element
-        [
-          shuffledArr[i], shuffledArr[shuffledArr.length - 1],
-        ] = [
-          shuffledArr[shuffledArr.length - 1], shuffledArr[i],
-        ];
-      }
+  for (let i = 0, LENGTH = shuffledArr.length; i < LENGTH; i += 1) {
+    const isEqualItems = shuffledArr[i] === arr[i];
+    const isNextItemLast = i + 1 === LENGTH;
+
+    if (isEqualItems && isNextItemLast) {
+      // reach the end? -> swap first & last element
+      [shuffledArr[i], shuffledArr[0]] = [shuffledArr[0], shuffledArr[i]];
+    } else if (isEqualItems && !isNextItemLast) {
+      // default action -> swap this & last element
+      const LAST_IDX = LENGTH - 1;
+
+      [shuffledArr[i], shuffledArr[LAST_IDX]] = [shuffledArr[LAST_IDX], shuffledArr[i]];
     }
   }
 

@@ -21,6 +21,7 @@ class ButtonSwitchMode {
   render() {
     const fragment = new DocumentFragment();
     const template = document.createElement('template');
+
     template.innerHTML = `
       <div class="button-switch-mode-block">
         <button class="button button-switch-mode button_theme_train">TRAIN</button>
@@ -36,10 +37,11 @@ class ButtonSwitchMode {
     const switchBlock = this.rootEl;
     const switchButton = this.rootEl.firstElementChild;
 
-    Object.assign(this.elements, {
+    this.elements = {
+      ...this.elements,
       switchBlock,
       switchButton,
-    });
+    };
   }
 }
 

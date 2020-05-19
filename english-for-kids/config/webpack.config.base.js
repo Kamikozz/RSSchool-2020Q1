@@ -17,10 +17,6 @@ const PATHS = {
   components: 'components/',
 };
 
-const PAGES = [
-  // 'card',
-];
-
 module.exports = {
   externals: {
     paths: PATHS,
@@ -68,7 +64,6 @@ module.exports = {
           loader: 'eslint-loader',
           options: {
             cache: true,
-            // configFile: `${PATHS.config}.eslintrc.js`,
           },
         },
       ],
@@ -144,17 +139,7 @@ module.exports = {
       filename: './index.html',
       inject: true, // if true - to insert link & script tags into html
     }),
-    ...PAGES.map((page) => new HtmlWebpackPlugin({
-      template: `${PATHS.src}/${PATHS.components}${page}/${page}.html`,
-      filename: `${PATHS.views}${page}.html`,
-      inject: false,
-    })),
     new CopyWebpackPlugin([
-      // {
-      //   from: `${PATHS.src}/${PATHS.components}`,
-      //   to: `${PATHS.views}[name].[ext]`,
-      //   ignore: ['*.!(html|htm)'],
-      // },
       { from: `${PATHS.src}/${PATHS.assets}${PATHS.img}`, to: `${PATHS.assets}${PATHS.img}` },
       {
         from: `${PATHS.src}/${PATHS.assets}${PATHS.fonts}`,
