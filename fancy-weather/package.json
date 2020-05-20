@@ -1,0 +1,66 @@
+{
+  "name": "fancy-weather",
+  "version": "1.0.0",
+  "description": "forecast app using different languages",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "dev": "webpack-dev-server --config ./config/webpack.config.dev.js",
+    "build": "webpack --config ./config/webpack.config.prod.js"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 3 version"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rolling-scopes-school/kamikozz-RS2020Q1.git"
+  },
+  "keywords": [
+    "webpack4-template",
+    "forecast",
+    "i18n",
+    "spa",
+    "search",
+    "google",
+    "maps",
+    "api",
+    "weather"
+  ],
+  "author": "Alexey Shevchenko <kamikozz@mail.ru>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rolling-scopes-school/kamikozz-RS2020Q1/issues"
+  },
+  "homepage": "https://github.com/rolling-scopes-school/kamikozz-RS2020Q1#readme",
+  "devDependencies": {
+    "@babel/core": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
+    "autoprefixer": "^9.8.0",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.1.0",
+    "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^6.0.1",
+    "core-js": "^3.6.5",
+    "css-loader": "^3.5.3",
+    "css-mqpacker": "^7.0.0",
+    "cssnano": "^4.1.10",
+    "eslint": "^7.0.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-loader": "^4.0.2",
+    "eslint-plugin-import": "^2.20.2",
+    "file-loader": "^6.0.0",
+    "html-webpack-plugin": "^4.3.0",
+    "mini-css-extract-plugin": "^0.9.0",
+    "node-sass": "^4.14.1",
+    "path": "^0.12.7",
+    "postcss-loader": "^3.0.0",
+    "regenerator-runtime": "^0.13.5",
+    "sass-loader": "^8.0.2",
+    "style-loader": "^1.2.1",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.11.0",
+    "webpack-merge": "^4.2.2"
+  }
+}
