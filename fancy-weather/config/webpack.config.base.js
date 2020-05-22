@@ -15,6 +15,7 @@ const PATHS = {
   icons: 'icons/',
   views: 'views/',
   components: 'components/',
+  localization: 'localization/',
 };
 
 module.exports = {
@@ -149,6 +150,7 @@ module.exports = {
         { from: `${PATHS.src}/${PATHS.assets}${PATHS.icons}`, to: `${PATHS.assets}${PATHS.icons}` },
         { from: `${PATHS.src}/${PATHS.assets}${PATHS.audio}`, to: `${PATHS.assets}${PATHS.audio}` },
         { from: `${PATHS.src}/${PATHS.static}`, to: '' },
+        { from: `${PATHS.src}/${PATHS.localization}`, to: `${PATHS.assets}${PATHS.localization}` },
       ],
     }),
   ],
