@@ -1,0 +1,85 @@
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.react-native-logo {
+  filter: drop-shadow(0 0px 10px black);
+  animation: rotate 15s linear infinite;
+}
+
+.flex-table {
+  display: flex;
+  justify-content: space-between;
+}
+
+.flex-center {
+  justify-content: center;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+}
+
+.block-fill {
+  margin: 10px 10px 20px 10px;
+  padding: 20px;
+
+  color: white;
+
+  background-color: grey;
+}
+
+.block-outline {
+  margin: 10px 0;
+  padding: 20px;
+
+  font-size: 1.2rem;
+
+  color: white;
+
+  background-color: lightgrey;
+}
+
+.react-block-fill {
+  color: white;
+
+  background-color: rgb(205, 92, 92);
+}
+
+.react-block-outline {
+  color: rgb(205, 92, 92);
+
+  border: 1px solid rgb(205, 92, 92);
+
+  background-color: rgba(205, 92, 92, 0.25);
+}
+
+.react-native-block-fill {
+  color: white;
+
+  background-color: rgb(173, 216, 230);
+}
+
+.react-native-block-outline {
+  color: rgb(173, 216, 230);
+
+  border: 1px solid rgb(173, 216, 230);
+
+  background-color: rgba(173, 216, 230, 0.25);
+}
+
+.align-left {
+  text-align: left;
+}
+
+.col-2 {
+  width: 49%;
+}

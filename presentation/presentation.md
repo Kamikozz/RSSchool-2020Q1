@@ -1,3 +1,3 @@
-### [YouTube video](https://www.youtube.com/watch?v=fHEARGyBs94)
-### [Reveal presentation]()
+### [YouTube video]()
+### [Reveal presentation](https://kamikozz-presentation-about-react-native.netlify.app)
 ### [Transcript of the presentation](transcript.md)

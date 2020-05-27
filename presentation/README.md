@@ -13,3 +13,5 @@
 --- 
 
 ## [Completed Presentation Here](presentation.md)
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/9f8fae1a-79ae-424d-917c-bacadf95a023/deploy-status)](https://kamikozz-presentation-about-react-native.netlify.app)

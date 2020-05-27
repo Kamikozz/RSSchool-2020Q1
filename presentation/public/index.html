@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>React Native presentation</title>
+
+  <meta name="description" content="A presentation about React Native">
+  <meta name="author" content="Alexey Shevchenko">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="reset.css">
+  <link rel="stylesheet" href="reveal.css">
+  <link rel="stylesheet" href="theme/solarized.css">
+
+  <!-- Theme used for syntax highlighting of code -->
+  <link rel="stylesheet" href="plugin/highlight/monokai.css">
+
+  <!-- My custom stylings -->
+  <link rel="stylesheet" href="custom-styles.css">
+</head>
+
+<body>
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+      <section>
+        <h1>React Native</h1>
+        <img class="react-native-logo" width="300" data-src="https://reactnative.dev/img/header_logo.svg" alt="React Native Logo">
+      </section>
+
+      <section>
+        <section>
+          <h2>What is React Native?</h2>
+          <div class="flex-table flex-center">
+            <div class="flex-column" style="flex-direction: row; width: 100%;">
+              <div class="fragment block-fill react-block-fill" style="margin: 10px;">React.js</div>
+              <div class="fragment block-outline react-block-outline" style="margin: 10px;"><p>A JavaScript library for building user interfaces</p></div>
+              <div class="fragment block-outline react-block-outline" style="margin: 10px;">Typically used for web development</div>
+              <div class="fragment block-outline react-block-outline" style="margin: 10px;">ReactDOM.render() adds the web support</div>
+              <div class="fragment block-outline react-block-outline" style="margin: 10px;">React itself is Platform agnostic</div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <h2>What is React Native?</h2>
+          <div class="flex-table flex-center">
+            <div class="flex-column">
+              <div class="fragment block-fill react-native-block-fill">React Native</div>
+              <div class="fragment block-outline react-native-block-outline">A collection of "special" React components</div>
+              <div class="fragment block-outline react-native-block-outline">Components compiled to Native Widgets</div>
+              <div class="fragment block-outline react-native-block-outline">Native Platform APIs exposed to JavaScript</div>
+              <div class="fragment block-outline react-native-block-outline">Connects JavaScript and Native Platform Code</div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <h2>What is React Native?</h2>
+          <div class="flex-table">
+            <div class="flex-column">
+              <div class="fragment block-fill react-block-fill">React.js</div>
+            </div>
+            <div class="flex-column">
+              <div class="fragment block-fill react-native-block-fill">React Native</div>
+            </div>
+            <div class="flex-column">
+              <div class="fragment block-fill">Real Native Mobile Apps</div>
+              <div class="fragment block-outline">iOS</div>
+              <div class="fragment block-outline">Android</div>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <section data-auto-animate>
+        <h2 data-id="code-title">Behind the scenes</h2>
+              
+        <div class="flex-table">
+          <div class="flex-column" style="width: 49%;">
+            <div class="fragment block-fill react-block-fill">React + React Native App</div>
+            <pre class="fragment" data-id="code-animation"><code class="hljs" data-trim data-line-numbers="|3-5">
+              const App = props =&gt; {
+                return (
+                  &lt;View&gt;
+                    &lt;Text&gt;Hello there!&lt;/Text&gt;
+                  &lt;/View&gt;
+                );
+              }
+            </code></pre>
+          </div>
+          <div class="flex-column" style="width: 49%;">
+            <div class="fragment block-fill" style="height: 100%; display: flex; align-items: center; justify-content: center;">Real Native App</div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>How React Native works briefly</h2>
+        <div class="flex-table">
+          <div class="flex-column">
+            <div class="fragment block-fill react-block-fill">React for the Web</div>
+          </div>
+          <div class="flex-column">
+            <div class="fragment block-fill react-block-fill">Native Component (Android)</div>
+          </div>
+          <div class="flex-column">
+            <div class="fragment block-fill react-block-fill">Native Component (iOS)</div>
+          </div>
+          <div class="flex-column">
+            <div class="fragment block-fill react-block-fill">React Native</div>
+          </div>
+        </div>
+        <div class="flex-table">
+          <div class="flex-column">
+            <div class="fragment block-fill react-block-outline">&lt;div&gt;</div>
+          </div>
+          <div class="flex-column">
+            <div class="fragment block-fill react-block-outline">android.view</div>
+          </div>
+          <div class="flex-column">
+            <div class="fragment block-fill react-block-outline">UIView</div>
+          </div>
+          <div class="flex-column">
+            <div class="fragment block-fill react-block-outline">&lt;View&gt;</div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>How React Native works from JS point of view</h2>
+        <div class="flex-table">
+          <div class="flex-column" style="width: 40%;">
+            <div class="fragment block-fill react-block-fill">UI</div>
+            <div class="fragment block-fill react-block-fill">Components exposed by React Native</div>
+            <div class="fragment block-outline react-native-block-fill">Compiled to native views</div>
+          </div>
+          <div class="flex-column" style="width: 40%;">
+            <div class="fragment block-fill react-block-fill">Logic</div>
+            <div class="fragment block-fill react-block-fill">Written by us, in JavaScript</div>
+            <div class="fragment block-outline react-block-outline">Written by us, in JavaScript</div>
+            <div class="fragment block-outline react-native-block-fill">NOT compiled!</div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>A look behind the scenes</h2>
+        <div class="flex-table">
+          <div class="flex-column col-2">
+              <div class="fragment block-fill react-block-fill" style="font-size: 2rem;">Your Code</div>
+          </div>
+          <div class="flex-column col-2">
+            <div class="fragment block-fill react-native-block-fill" style="font-size: 2rem;">Native App / Native Platform (e. g. iOS)</div>
+          </div>
+        </div>
+        <div class="flex-table">
+          <div class="flex-column col-2">
+              <div class="fragment block-outline react-block-fill">Views (e. g. <View>...</View>)</div>
+          </div>
+          <div class="flex-column col-2">
+            <div class="fragment block-outline react-native-block-fill">Compiled Views (Native Views)</div>
+          </div>
+        </div>
+        <div class="flex-table">
+          <div class="flex-column col-2">
+              <div class="fragment block-outline react-block-fill">JavaScript Code</div>
+          </div>
+          <div class="flex-column col-2">
+            <div class="fragment block-outline react-native-block-fill">JavaScript Code</div>
+            <div class="fragment block-outline react-native-block-fill">JavaScript Core (VM)</div>
+            <div class="fragment block-outline react-native-block-fill">"Bridge"</div>
+            <div class="fragment block-outline react-native-block-fill">Native Platform Modules / API</div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>React Native Apps are Hard Work!</h2>
+        <p><strike class="fragment">Write JavaScript code and run it everywhere?</strike></p>
+        <blockquote class="fragment">Learn once, write everywhere</blockquote>
+        <div class="flex-table">
+          <div class="flex-column">
+              <div class="fragment block-outline react-block-fill">No or very little cross-platform styling of components</div>
+              <div class="fragment block-outline react-native-block-fill">No or very little cross-platform styling of components</div>
+          </div>
+          <div class="flex-column">
+            <div class="fragment block-outline react-block-fill">Only a basic set of pre-built components (everything you need though)</div>
+            <div class="fragment block-outline react-native-block-fill">Build components on your own or use third-party libraries</div>
+          </div>
+          <div class="flex-column">
+            <div class="fragment block-outline react-block-fill">Tools to create responsive designs but no responsiveness out of the box</div>
+            <div class="fragment block-outline react-native-block-fill">Create responsive designs on your own (check for device-size and OS)</div>
+          </div>
+        </div>
+      </section>
+
+      <section data-background-iframe="https://reactnative.dev" data-background-interactive>
+      </section>
+
+      <section class="align-left">
+        <h1>THANKS</h1>
+        <p>
+          <small>
+            Created by <a href="https://github.com/kamikozz">Alexey Shevchenko</a><br>
+            Special for <a href="https://rs.school/">Rolling Scopes School</a>
+          </small>
+        </p>
+      </section>
+
+    </div>
+
+  </div>
+
+  <script src="reveal.js"></script>
+  <script src="plugin/zoom/zoom.js"></script>
+  <script src="plugin/highlight/highlight.js"></script>
+  <script>
+
+    // Also available as an ES module, see:
+    // https://revealjs.com/initialization/
+    Reveal.initialize({
+      controls: true,
+      progress: true,
+      center: true,
+      hash: true,
+
+      // Learn about plugins: https://revealjs.com/plugins/
+      plugins: [RevealZoom, RevealHighlight]
+    });
+
+  </script>
+
+</body>
+
+</html>
