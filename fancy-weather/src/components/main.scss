@@ -38,4 +38,4 @@ body {
   @include for-desktop { padding: 0 40px; }
 }
 
-// @import "./header/header"
+@import "./main-content/main-content";

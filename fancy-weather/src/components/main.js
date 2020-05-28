@@ -26,6 +26,7 @@
 // }, 5000);
 
 import I18N from '../js/i18n';
+import MainContent from './main-content/main-content';
 
 // i18n initialization
 const i18n = new I18N();
@@ -54,31 +55,13 @@ const i18nInitializationPromise = i18n.init({
   options: i18nOptions,
 });
 
-// <select> to change languages
-const [selectLanguages] = document.getElementsByClassName('select-languages');
-
-selectLanguages.onchange = ({ target }) => {
-  const { value } = target;
-
-  console.log(target, value);
-  i18n.changeLanguage(value);
-};
-
-// get page language from localStorage and set its elements to the previous locale
-// async for the future possible functions/methods that will use requests
-const restoreState = async () => {
-  const currentLanguage = localStorage.getItem(i18n.localStorageKeyPageLanguage);
-
-  if (currentLanguage) {
-    selectLanguages.value = currentLanguage;
-  }
-};
-const restoreStatePromise = restoreState();
+const mainContent = new MainContent({ i18n });
+const mainContentInitializationPromise = mainContent.init();
 
 // Wait until all of the classes/elements/map/search/etc. loaded & then remove loader
 Promise
   .all([
-    i18nInitializationPromise, restoreStatePromise,
+    i18nInitializationPromise, mainContentInitializationPromise,
   ])
   .then(() => {
     document.body.style.opacity = '1';

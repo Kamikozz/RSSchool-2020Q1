@@ -111,7 +111,7 @@ module.exports = {
         },
       ],
     }, {
-      test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/i,
+      test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/i,
       loader: 'file-loader',
       options: {
         name: '[name].[ext]',

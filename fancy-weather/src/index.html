@@ -12,11 +12,26 @@
 <body style="opacity: 0; transition: opacity 0.35s ease-out;">
   <main class="main-content">
     <div class="wrapper">
-      <select class="select-languages">
-        <option value="en">English</option>
-        <option value="ru">Русский</option>
-        <option value="be">Беларуская</option>
-      </select>
+      <div class="select-box">
+        <div class="select-box__drop-menu-activator">
+          <span class="select-box__flag-icon flag-icon"></span>
+          <input class="select-box__selected-value" data-lang="en" value="" disabled>
+        </div>
+        <ul class="select-box__options">
+          <li class="select-box__option" data-lang="en">
+            <span class="select-box__flag-icon flag-icon flag-icon-gb"></span>
+            <span>English</span>
+          </li>
+          <li class="select-box__option" data-lang="ru">
+            <span class="select-box__flag-icon flag-icon flag-icon-ru"></span>
+            <span>Русский</span>
+          </li>
+          <li class="select-box__option" data-lang="be">
+            <span class="select-box__flag-icon flag-icon flag-icon-by"></span>
+            <span>Беларуская</span>
+          </li>
+        </ul>
+      </div>
 
       <input type="search" name="search-weather-field" aria-label="" placeholder="" data-i18n="search_text">
     </div>
