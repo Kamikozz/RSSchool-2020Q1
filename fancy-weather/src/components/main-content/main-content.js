@@ -58,14 +58,12 @@ class MainContent {
 
   initHandlers() {
     const {
-      selectBoxActivator,
-      selectBoxOptions,
       refreshButton,
+      selectBoxActivator, selectBoxOptions,
     } = this.elements;
     const {
-      SELECT_BOX_DROP_MENU_ACTIVATOR_ACTIVE,
-      SELECT_BOX_OPTIONS_ACTIVE,
       REFRESH_BUTTON_ICON_ACTIVE,
+      SELECT_BOX_DROP_MENU_ACTIVATOR_ACTIVE, SELECT_BOX_OPTIONS_ACTIVE,
     } = this.classes;
 
     // Refresh Button Component
