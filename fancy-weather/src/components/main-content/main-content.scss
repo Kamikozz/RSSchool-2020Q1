@@ -45,3 +45,43 @@
   }
 }
 
+// TODO: REFACTOR
+
+.units-switcher {
+  display: flex;
+  height: 100%;
+
+  font-weight: 700;
+
+  &__unit {
+    & {
+      width: 44px;
+
+      color: rgba(255, 255, 255, 0.4);
+
+      background-color: $secondary-color;
+
+      outline: none;
+      cursor: pointer;
+      transition: all 0.35s;
+    }
+
+    &_active {
+      color: $default-color;
+
+      background-color: $primary-color;
+    }
+
+    &_temp {
+      &_fahrenheit {
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+      }
+
+      &_centigrade {
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+      }
+    }
+  }
+}

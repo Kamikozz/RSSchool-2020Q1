@@ -12,6 +12,8 @@ class MainContent {
       SELECT_BOX_OPTIONS_ACTIVE: 'select-box__options_active',
       SELECT_BOX_SELECTED_VALUE: 'select-box__selected-value',
       SELECT_BOX_SELECTED_ICON: 'select-box__flag-icon',
+      UNITS_SWITCHER: 'units-switcher',
+      UNITS_SWITCHER_UNIT_ACTIVE: 'units-switcher__unit_active',
     };
     this.elements = {};
     this.data = {};
@@ -33,6 +35,7 @@ class MainContent {
       SELECT_BOX_OPTIONS,
       SELECT_BOX_SELECTED_VALUE,
       SELECT_BOX_SELECTED_ICON,
+      UNITS_SWITCHER,
     } = this.classes;
     const [root] = document.getElementsByClassName(ROOT);
     const [refreshButton] = root.getElementsByClassName(REFRESH_BUTTON);
@@ -43,6 +46,7 @@ class MainContent {
     const [
       selectBoxSelectedIcon,
     ] = selectBoxActivator.getElementsByClassName(SELECT_BOX_SELECTED_ICON);
+    const [unitsSwitcher] = root.getElementsByClassName(UNITS_SWITCHER);
 
     this.elements = {
       ...this.elements,
@@ -53,6 +57,7 @@ class MainContent {
       selectBoxOptions,
       selectBoxSelected,
       selectBoxSelectedIcon,
+      unitsSwitcher,
     };
   }
 
@@ -60,10 +65,12 @@ class MainContent {
     const {
       refreshButton,
       selectBoxActivator, selectBoxOptions,
+      unitsSwitcher,
     } = this.elements;
     const {
       REFRESH_BUTTON_ICON_ACTIVE,
       SELECT_BOX_DROP_MENU_ACTIVATOR_ACTIVE, SELECT_BOX_OPTIONS_ACTIVE,
+      UNITS_SWITCHER_UNIT_ACTIVE,
     } = this.classes;
 
     // Refresh Button Component
@@ -90,6 +97,17 @@ class MainContent {
       }
 
       this.changeSelectedOption(target);
+    });
+
+    // Units Switcher Component
+    unitsSwitcher.addEventListener('click', ({ target }) => {
+      const isActive = target.classList.contains(UNITS_SWITCHER_UNIT_ACTIVE);
+
+      if (!isActive) {
+        const { children: units } = unitsSwitcher;
+
+        units.forEach((el) => el.classList.toggle(UNITS_SWITCHER_UNIT_ACTIVE));
+      }
     });
   }
 
