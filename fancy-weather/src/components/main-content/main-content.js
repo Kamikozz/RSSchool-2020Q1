@@ -61,11 +61,11 @@ class MainContent {
       SELECT_BOX_OPTIONS_ACTIVE,
     } = this.classes;
 
+    // Select Box Component
     selectBoxActivator.addEventListener('click', () => {
       selectBoxActivator.classList.toggle(SELECT_BOX_DROP_MENU_ACTIVATOR_ACTIVE);
       selectBoxOptions.classList.toggle(SELECT_BOX_OPTIONS_ACTIVE);
     });
-
     selectBoxOptions.addEventListener('click', (e) => {
       let { target } = e;
       const { tagName } = target;
