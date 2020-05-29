@@ -57,7 +57,32 @@
 
         <!-- Search Component -->
         <div class="controls-container__search search-container">
-          <input type="search" name="search-weather-field" aria-label="" placeholder="" data-i18n="search_text">
+          <form class="search-box search-container__search-box" role="search" aria-label="Search the city in the internet">
+            <fieldset class="search-box__fieldset">
+              <input class="search-box__search-field" type="text" name="search-field" aria-label="" placeholder="" autocomplete="off" maxlength="80" data-i18n="search_text">
+            </fieldset>
+
+            <button class="search-box__button clear-button search-box__button_hidden" aria-label="To clear the search input">
+              <svg class="icon search-box__icon" height="16" width="16" viewBox="0 0 14 14">
+                <polygon points="14,0.7 13.3,0 7,6.3 0.7,0 0,0.7 6.3,7 0,13.3 0.7,14 7,7.7 13.3,14 14,13.3 7.7,7"/>
+              </svg>
+            </button>
+
+            <button class="search-box__button speech-recognition-button" aria-label="To search for the city by your recognized speech">
+              <svg class="icon search-box__icon" xmlns="http://www.w3.org/2000/svg"
+                width="24" height="24" viewBox="0 0 18 18">
+                <path d="M9 11.25c1.242 0 2.25-1.008 2.25-2.25v-3.938c0-1.242-1.008-2.25-2.25-2.25s-2.25 1.008-2.25 2.25v3.938c0 1.242 1.008 2.25 2.25 2.25zm4.5-2.25h-1.125c0 .848-.32 1.668-.898 2.289-.637.691-1.535 1.086-2.477 1.086-.941 0-1.84-.395-2.477-1.082-.578-.625-.898-1.441-.898-2.293h-1.125c0 1.137.426 2.223 1.195 3.055.723.777 1.691 1.273 2.742 1.406v1.727h1.125v-1.727c1.051-.133 2.02-.629 2.742-1.406.77-.832 1.195-1.922 1.195-3.055zm0 0" fill-rule="evenodd"/>
+              </svg>
+            </button>
+
+            <button class="search-box__button search-button search-box__button_disabled" type="submit" aria-label="To search the city in the internet" disabled>
+              <svg class="icon search-box__icon" height="16" width="16" viewBox="0 0 16 16" version="1.1">
+                <path fill-rule="evenodd" d="M15.7 13.3l-3.81-3.83A5.93 5.93 0 0013 6c0-3.31-2.69-6-6-6S1 2.69 1 6s2.69 6 6 6c1.3 0 2.48-.41 3.47-1.11l3.83 3.81c.19.2.45.3.7.3.25 0 .52-.09.7-.3a.996.996 0 000-1.41v.01zM7 10.7c-2.59 0-4.7-2.11-4.7-4.7 0-2.59 2.11-4.7 4.7-4.7 2.59 0 4.7 2.11 4.7 4.7 0 2.59-2.11 4.7-4.7 4.7z"></path>
+              </svg>
+            </button>
+
+          </form>
+          <p class="search-container__info-message"></p>
         </div>
       </div>
     </div>

@@ -1,0 +1,237 @@
+.search-container {
+  &__search-box {
+    position: relative;
+
+    height: 100%;
+
+    width: 375px;
+  }
+
+  &__info-message {
+    margin: 10px 0;
+
+    text-align: center;
+
+    font-weight: 700;
+    font-size: 2rem;
+    color: darkred;
+  }
+}
+
+.search-box {
+  & {
+    display: flex;
+  }
+
+  &__fieldset {
+    & {
+      width: 100%;
+    }
+  }
+
+  &__search-field {
+    & {
+      padding: 10px;
+      width: 100%;
+      height: 100%;
+
+      color: $default-color;
+      text-transform: uppercase;
+
+      border: 1px solid rgba(228, 227, 227, 0.2);
+      border: {
+        right: initial;
+        top-left-radius: 5px;
+        bottom-left-radius: 5px;
+      }
+      outline: none;
+
+      background-color: $secondary-color;
+      transition: background-color 0.35s ease-out;
+    }
+
+    &::placeholder {
+      color: $default-color;
+      text-transform: initial;
+    }
+  }
+
+  &__button {
+    & {
+      padding: 10px;
+
+      border: {
+        top: 1px solid rgba(228, 227, 227, 0.2);
+        bottom: 1px solid rgba(228, 227, 227, 0.2);
+      }
+
+      background-color: $secondary-color;
+
+      outline: none;
+      cursor: pointer;
+      transition: opacity 0.2s ease-out, filter 0.1s ease-out;
+    }
+
+    &_disabled {
+      & {
+        opacity: 0.35;
+        cursor: not-allowed;
+        // pointer-events: none;
+      }
+    }
+
+    &_hidden {
+      & {
+        position: absolute;
+        visibility: hidden;
+      }
+
+      .icon {
+        & {
+          opacity: 0;
+        }
+      }
+    }
+
+    &:hover:not(.search-box__button_disabled),
+    &:focus:not(.search-box__button_disabled) {
+      .icon {
+        opacity: 0.5;
+      }
+    }
+
+    &:active {
+      .icon {
+        opacity: 1;
+      }
+    }
+
+    &_active {
+      & {
+        opacity: 1;
+      }
+
+      .icon {
+        opacity: 0.75;
+      }
+
+      &:hover,
+      &:focus {
+        opacity: 0.85;
+      }
+    }
+  }
+
+  &__icon {
+    & {
+      opacity: 1;
+      transition: opacity 0.2s ease-out;
+    }
+  }
+}
+
+.clear-button {
+  & {
+    padding: {
+      right: 5px;
+      left: 5px;
+    }
+  }
+}
+
+.speech-recognition-button {
+  & {
+    padding: 0 5px;
+
+    fill: rgba(255, 255, 255, 0.4);
+  }
+}
+
+.keyboard-button {
+  & {
+    padding: {
+      right: 5px;
+      left: 5px;
+    }
+  }
+}
+
+.search-button {
+  & {
+    position: initial;
+
+    padding: {
+      right: 15px;
+      left: 15px;
+    }
+
+    border: {
+      left: 1px solid rgba(0, 0, 0, 0.35);
+      top-right-radius: 5px;
+      bottom-right-radius: 5px;
+    }
+
+    background-color: $primary-color;
+  }
+
+  &:active:not(.search-box__button_disabled) {
+    filter: drop-shadow(0px 0px 5px black);
+  }
+}
+
+// Do not score this, because it's necessary hard code due to errors in the virtual-keyboard lib :D
+.section-keyboard {
+  & {
+    position: absolute;
+    bottom: 95px;
+    z-index: 2;
+  }
+
+  &__note {
+    & {
+      position: absolute;
+
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      padding: 5px;
+      width: 40%;
+
+      font-size: 1.2rem;
+
+      background-color: white;
+      border-radius: 5px;
+
+      transform: translateX(50%);
+    }
+  }
+}
+
+@media (min-width: 1400px) {
+  .section-keyboard .keyboard .row-a,
+  .section-keyboard .keyboard .row-b,
+  .section-keyboard .keyboard .row-c,
+  .section-keyboard .keyboard .row-d,
+  .section-keyboard .keyboard .row-e,
+  .section-keyboard .keyboard .row-k {
+      display: flex;
+      justify-content: center;
+  }
+
+  .section-keyboard .keyboard .row-k .key:nth-last-child(-n + 4),
+  .section-keyboard .keyboard .row-e .key:nth-last-child(-n + 4),
+  .section-keyboard .keyboard .row-d .key:nth-last-child(-n + 4),
+  .section-keyboard .keyboard .row-c .key:nth-last-child(-n + 3),
+  .section-keyboard .keyboard .row-b .key:nth-last-child(-n + 4),
+  .section-keyboard .keyboard .row-a .key:nth-last-child(-n + 2) {
+    display: none;
+  }
+}
+
+.section-keyboard .keyboard .row-a .key[data-keycode="Fn"] {
+  background: {
+    repeat: no-repeat;
+    position: center;
+    size: 130%;
+  }
+}

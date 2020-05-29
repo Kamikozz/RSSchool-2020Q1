@@ -15,7 +15,8 @@ li {
   list-style: none;
 }
 
-// textarea {
-//   border: none;
-//   outline: none;
-// }
+fieldset,
+input,
+button {
+  border: none;
+}
