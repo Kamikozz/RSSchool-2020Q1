@@ -13,12 +13,14 @@ html {
 
 body {
   min-width: $small-phone-width;
+  height: 100vh;
 
   font: {
     family: $main-font;
     weight: $main-font-weight;
   }
 
+  backdrop-filter: blur(5px);
   overflow-x: hidden;
 
   background-color: $primary-color; // #226912;
