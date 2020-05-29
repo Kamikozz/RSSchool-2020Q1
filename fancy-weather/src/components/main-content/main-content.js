@@ -3,6 +3,8 @@ class MainContent {
     this.props = props;
     this.classes = {
       ROOT: 'main-content',
+      REFRESH_BUTTON: 'controls-container__refresh-button',
+      REFRESH_BUTTON_ICON_ACTIVE: 'refresh-button-icon_active',
       SELECT_BOX: 'select-box',
       SELECT_BOX_DROP_MENU_ACTIVATOR: 'select-box__drop-menu-activator',
       SELECT_BOX_DROP_MENU_ACTIVATOR_ACTIVE: 'select-box__drop-menu-activator_active',
@@ -25,6 +27,7 @@ class MainContent {
   initElements() {
     const {
       ROOT,
+      REFRESH_BUTTON,
       SELECT_BOX,
       SELECT_BOX_DROP_MENU_ACTIVATOR,
       SELECT_BOX_OPTIONS,
@@ -32,6 +35,7 @@ class MainContent {
       SELECT_BOX_SELECTED_ICON,
     } = this.classes;
     const [root] = document.getElementsByClassName(ROOT);
+    const [refreshButton] = root.getElementsByClassName(REFRESH_BUTTON);
     const [selectBox] = root.getElementsByClassName(SELECT_BOX);
     const [selectBoxActivator] = root.getElementsByClassName(SELECT_BOX_DROP_MENU_ACTIVATOR);
     const [selectBoxOptions] = root.getElementsByClassName(SELECT_BOX_OPTIONS);
@@ -43,6 +47,7 @@ class MainContent {
     this.elements = {
       ...this.elements,
       root,
+      refreshButton,
       selectBox,
       selectBoxActivator,
       selectBoxOptions,
@@ -55,11 +60,22 @@ class MainContent {
     const {
       selectBoxActivator,
       selectBoxOptions,
+      refreshButton,
     } = this.elements;
     const {
       SELECT_BOX_DROP_MENU_ACTIVATOR_ACTIVE,
       SELECT_BOX_OPTIONS_ACTIVE,
+      REFRESH_BUTTON_ICON_ACTIVE,
     } = this.classes;
+
+    // Refresh Button Component
+    refreshButton.addEventListener('click', () => {
+      const svgIconElement = refreshButton.firstElementChild;
+
+      svgIconElement.classList.toggle(REFRESH_BUTTON_ICON_ACTIVE);
+      // TODO: add logic for refreshing
+      setTimeout(() => svgIconElement.classList.toggle(REFRESH_BUTTON_ICON_ACTIVE), 2000);
+    });
 
     // Select Box Component
     selectBoxActivator.addEventListener('click', () => {

@@ -30,18 +30,13 @@
   background-image: linear-gradient(45deg, lightyellow 0%, lightblue 100%);
 }
 
-/* ---------------- HEADER-MENU -------------------- */
-@keyframes show-menu {
+@keyframes rotate {
   0% {
-    animation-timing-function: ease-out;
-    transform: translate3d(-100%, 0px, 0px);
+    transform: rotate(0deg);
   }
-}
 
-@keyframes hide-menu {
   100% {
-    animation-timing-function: ease-out;
-    transform: translate3d(-100%, 0px, 0px);
+    transform: rotate(360deg);
   }
 }
 /* ---------------- ANIMATIONS END ---------------- */

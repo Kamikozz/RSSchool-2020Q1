@@ -12,5 +12,36 @@
   &__buttons {
     display: flex;
   }
+
+  &__refresh-button {
+    & {
+      width: 44px;
+      margin-right: 10px;
+
+      color: $default-color;
+
+      border-radius: 5px;
+      outline: none;
+
+      background-color: $primary-color;
+
+      cursor: pointer;
+      transition: all 0.35s ease-out;
+    }
+
+    &:hover {
+      background-color: darken($color: $primary-color, $amount: 10%);
+    }
+  }
+}
+
+.refresh-button-icon {
+  & {
+    fill: $default-color;
+  }
+
+  &_active {
+    animation: rotate 1s linear infinite;
+  }
 }
 
