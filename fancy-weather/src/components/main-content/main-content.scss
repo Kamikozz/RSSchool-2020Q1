@@ -23,7 +23,10 @@
       border-radius: 5px;
       outline: none;
 
-      background-color: $primary-color;
+      background: {
+        color: $primary-color;
+        image: url("/assets/icons/refresh.svg");
+      }
 
       cursor: pointer;
       transition: all 0.35s ease-out;
