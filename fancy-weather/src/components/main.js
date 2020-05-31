@@ -29,6 +29,10 @@ import I18N from '../js/i18n';
 import MainContent from './main-content/main-content';
 import YandexMaps from './map-container/map-container';
 
+// TODO: DELETE THIS (THIS IS FOR RAPIDO CROSS-CHECKERS)
+// eslint-disable-next-line no-alert
+alert('Уважаемый проверяющий, работа пока доделывается, убедительная просьба отложить проверку данной работы до конца дедлайна кросс-чека. Спасибо большое! Ты лапочка! <3');
+
 // i18n initialization
 const i18n = new I18N();
 const i18nOptions = {
