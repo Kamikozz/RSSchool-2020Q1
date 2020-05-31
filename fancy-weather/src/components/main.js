@@ -27,6 +27,7 @@
 
 import I18N from '../js/i18n';
 import MainContent from './main-content/main-content';
+import YandexMaps from './map-container/map-container';
 
 // i18n initialization
 const i18n = new I18N();
@@ -66,3 +67,5 @@ Promise
   .then(() => {
     document.body.style.opacity = '1';
   });
+
+console.log(YandexMaps);

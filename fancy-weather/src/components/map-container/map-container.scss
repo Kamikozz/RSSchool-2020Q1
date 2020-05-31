@@ -1,0 +1,35 @@
+.map-container {
+  & {
+
+  }
+
+  &__map {
+    position: relative;
+
+    width: 375px;
+    height: 400px;
+
+    background-color: lightgrey;
+
+    clip-path: url(#map-container__map-mask-clip);
+  }
+
+  &__map-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  &__coordinates {
+    margin-top: 10px;
+
+    text-align: right;
+
+    color: $default-color;
+    font: {
+      weight: 600;
+      size: 2rem;
+    }
+    line-height: 30px;
+  }
+}

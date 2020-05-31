@@ -88,6 +88,33 @@
           <p class="search-container__info-message"></p>
         </div>
       </div>
+
+      <!-- Main Container -->
+      <div class="main-container">
+        <!-- Forecast Container Component -->
+        <div class="forecast-container">
+
+        </div>
+
+        <!-- Map Container Component -->
+        <div class="map-container">
+          <div class="map-container__map">
+            <svg class="map-container__map-mask" width="0" height="0">
+              <defs>
+                <clipPath id="map-container__map-mask-clip">
+                  <path xmlns="http://www.w3.org/2000/svg" d="M0 30C0 13.4315 13.4315 0 30 0H345C361.569 0 375 13.4315 375 30V345C375 361.569 361.569 375 345 375H30C13.4315 375 0 361.569 0 345V30Z"/>
+                  <path xmlns="http://www.w3.org/2000/svg" d="M375 310H259L375 398V310Z"/>
+                </clipPath>
+              </defs>
+            </svg>
+          </div>
+
+          <div class="map-container__coordinates">
+            <p class="map-container__latitude"></p>
+            <p class="map-container__longitude"></p>
+          </div>
+        </div>
+      </div>
     </div>
   </main>
 
