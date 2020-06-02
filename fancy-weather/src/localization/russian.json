@@ -1,5 +1,40 @@
 {
   "search_text": "Найти погоду по городу или индексу",
-  "monday": "Понедельник",
-  "tuesday": "Вторник"
+
+  "feels_like": "Ощущается как",
+  "wind": "Ветер",
+  "wind_units": "м/с",
+  "humidity": "Влажность",
+
+  "latitude": "Широта",
+  "longitude": "Долгота",
+
+  "week_day_monday_short": "Пнд",
+  "week_day_tuesday_short": "Втр",
+  "week_day_wednesday_short": "Срд",
+  "week_day_thursday_short": "Чтв",
+  "week_day_friday_short": "Птн",
+  "week_day_saturday_short": "Сбт",
+  "week_day_sunday_short": "Вск",
+
+  "week_day_monday": "Понедельник",
+  "week_day_tuesday": "Вторник",
+  "week_day_wednesday": "Среда",
+  "week_day_thursday": "Четверг",
+  "week_day_friday": "Пятница",
+  "week_day_saturday": "Суббота",
+  "week_day_sunday": "Воскресенье",
+
+  "month_january": "Января",
+  "month_february": "Февраля",
+  "month_march": "Марта",
+  "month_april": "Апреля",
+  "month_may": "Мая",
+  "month_june": "Июня",
+  "month_july": "Июля",
+  "month_august": "Августа",
+  "month_september": "Сентября",
+  "month_october": "Октября",
+  "month_november": "Ноября",
+  "month_december": "Декабря"
 }

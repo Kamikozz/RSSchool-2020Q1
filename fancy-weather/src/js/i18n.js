@@ -65,28 +65,36 @@ class I18N {
       this.currentLanguage = processedLanguage; // change private property to the new language
       document.documentElement.lang = this.currentLanguage; // change <html>'s "lang" attribute
 
-      const elements = document.querySelectorAll('[data-i18n]');
-
-      elements.forEach((el) => {
-        const element = el;
-        const { i18n: name } = element.dataset;
-        const value = this.getLocalization(name); // localization 'Example Text'
-        const elementOptions = this.getOption(name); // { placeholder: false, text: true }
-        const { placeholder = null, text = true, ariaLabel = null } = elementOptions;
-
-        if (placeholder) {
-          element.placeholder = value;
-        }
-
-        if (text) {
-          element.textContent = value;
-        }
-
-        if (ariaLabel) {
-          element.ariaLabel = value;
-        }
-      });
+      this.update(); // update all of the elements with "i18n" data-attribute
     }
+  }
+
+  /**
+   * Finds all of the DOM-elements with data-attribute "i18n".
+   * For each found element changes property/value/textContent according to the given options.
+   */
+  update() {
+    const elements = document.querySelectorAll('[data-i18n]');
+
+    elements.forEach((el) => {
+      const element = el;
+      const { i18n: name } = element.dataset;
+      const value = this.getLocalization(name); // localization 'Example Text'
+      const elementOptions = this.getOption(name); // { placeholder: false, text: true }
+      const { placeholder = null, text = true, ariaLabel = null } = elementOptions;
+
+      if (placeholder) {
+        element.placeholder = value;
+      }
+
+      if (text) {
+        element.textContent = value;
+      }
+
+      if (ariaLabel) {
+        element.ariaLabel = value;
+      }
+    });
   }
 
   /**

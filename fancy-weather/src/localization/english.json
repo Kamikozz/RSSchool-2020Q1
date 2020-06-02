@@ -1,5 +1,40 @@
 {
   "search_text": "Search weather by city or ZIP",
-  "monday": "Monday",
-  "tuesday": "Tuesday"
+
+  "feels_like": "Feels like",
+  "wind": "Wind",
+  "wind_units": "m/s",
+  "humidity": "Humidity",
+
+  "latitude": "Latitude",
+  "longitude": "Longitude",
+
+  "week_day_monday_short": "Mon",
+  "week_day_tuesday_short": "Tue",
+  "week_day_wednesday_short": "Wed",
+  "week_day_thursday_short": "Thu",
+  "week_day_friday_short": "Fri",
+  "week_day_saturday_short": "Sat",
+  "week_day_sunday_short": "Sun",
+
+  "week_day_monday": "Monday",
+  "week_day_tuesday": "Tuesday",
+  "week_day_wednesday": "Wednesday",
+  "week_day_thursday": "Thursday",
+  "week_day_friday": "Friday",
+  "week_day_saturday": "Saturday",
+  "week_day_sunday": "Sunday",
+
+  "month_january": "January",
+  "month_february": "February",
+  "month_march": "March",
+  "month_april": "April",
+  "month_may": "May",
+  "month_june": "June",
+  "month_july": "July",
+  "month_august": "August",
+  "month_september": "September",
+  "month_october": "October",
+  "month_november": "November",
+  "month_december": "December"
 }

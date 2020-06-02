@@ -74,11 +74,11 @@ class MyMap {
     const latitudeDMS = converterDMS(this.latitude);
     const longitudeDMS = converterDMS(this.longitude);
 
-    const [latitudeElement] = document.getElementsByClassName('map-container__latitude');
-    const [longitudeElement] = document.getElementsByClassName('map-container__longitude');
+    const [latitudeElement] = document.getElementsByClassName('map-container__latitude-value');
+    const [longitudeElement] = document.getElementsByClassName('map-container__longitude-value');
 
-    latitudeElement.textContent = `Latitude: ${latitudeDMS}`;
-    longitudeElement.textContent = `Longitude: ${longitudeDMS}`;
+    latitudeElement.textContent = `: ${latitudeDMS}`;
+    longitudeElement.textContent = `: ${longitudeDMS}`;
   }
 
   createMarker(coordinates) {

@@ -1,5 +1,40 @@
 {
   "search_text": "Знайсці надвор'е па горадзе ці індэксе",
-  "monday": "Панядзелак",
-  "tuesday": "Аўторак"
+
+  "feels_like": "Адчуваецца як",
+  "wind": "Вецер",
+  "wind_units": "м/с",
+  "humidity": "Вільготнасць",
+
+  "latitude": "Шырата",
+  "longitude": "Даўгата",
+
+  "week_day_monday_short": "Пнд",
+  "week_day_tuesday_short": "Аўт",
+  "week_day_wednesday_short": "Сер",
+  "week_day_thursday_short": "Чцв",
+  "week_day_friday_short": "Пят",
+  "week_day_saturday_short": "Суб",
+  "week_day_sunday_short": "Няд",
+
+  "week_day_monday": "Панядзелак",
+  "week_day_tuesday": "Аўторак",
+  "week_day_wednesday": "Серада",
+  "week_day_thursday": "Чацверг",
+  "week_day_friday": "Пятнiца",
+  "week_day_saturday": "Субота",
+  "week_day_sunday": "Нядзеля",
+
+  "month_january": "Студзеня",
+  "month_february": "Лютага",
+  "month_march": "Сакавіка",
+  "month_april": "Красавіка",
+  "month_may": "Мая",
+  "month_june": "Чэрвеня",
+  "month_july": "Ліпеня",
+  "month_august": "Аўгуста",
+  "month_september": "Верасеня",
+  "month_october": "Кастрычніка",
+  "month_november": "Лістапада",
+  "month_december": "Снежаня"
 }
