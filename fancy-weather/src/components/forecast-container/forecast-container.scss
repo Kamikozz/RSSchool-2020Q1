@@ -77,14 +77,10 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
 
-    @include for-small-phone {
-      margin-left: 16px;
-    }
-
-    @include for-big-desktop {
-      margin-left: 32px;
-    }
+    @include for-small-phone { margin-left: 16px; }
+    @include for-big-desktop { margin-left: 32px; }
 
     padding-bottom: 80px;
 
