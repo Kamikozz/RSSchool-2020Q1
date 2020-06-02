@@ -1,6 +1,21 @@
-// TODO: remove this
-const hasData = (data, noData) => data !== noData;
-const isUndefined = (item) => item === undefined;
+/**
+ * Converts the given temperature in Fahrenheit/Celsius into Celsius/Fahrenheit units.
+ * @param {String|Number} temperature given temperature in Fahrenheit/Celsius units
+ * @param {Boolean} toFahrenheit indicates if needed to convert into Fahrenheit or Celsius units
+ * @param {Number} precision number of signs after comma which will remain after .toFixed()
+ * @returns converted temperature into units given by toFahrenheit option
+ */
+const temperatureUnitsConverter = (temperature, toFahrenheit, precision = 1) => {
+  let ret;
+
+  if (toFahrenheit) {
+    ret = (9 / 5) * temperature + 32;
+  } else {
+    ret = (5 / 9) * (temperature - 32);
+  }
+
+  return ret.toFixed(precision);
+};
 
 /**
  * Converts given number of decimal degrees into DMS format (degrees, minutes, seconds).
@@ -19,7 +34,6 @@ const converterDMS = (decimalDegrees, precision = 4) => {
 };
 
 module.exports = {
-  hasData,
-  isUndefined,
+  temperatureUnitsConverter,
   converterDMS,
 };

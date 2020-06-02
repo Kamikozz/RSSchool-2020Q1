@@ -1,3 +1,5 @@
+import { temperatureUnitsConverter } from '../../js/utils/utils';
+
 class MainContent {
   constructor(props) {
     this.props = props;
@@ -14,6 +16,8 @@ class MainContent {
       SELECT_BOX_SELECTED_ICON: 'select-box__flag-icon',
       UNITS_SWITCHER: 'units-switcher',
       UNITS_SWITCHER_UNIT_ACTIVE: 'units-switcher__unit_active',
+      UNITS_SWITCHER_UNIT_TEMP_FAHRENHEIT: 'units-switcher__unit_temp_fahrenheit',
+      FORECAST_CONTAINER_TEMPERATURE_VALUE: 'forecast-container__temperature-value',
     };
     this.elements = {};
     this.data = {};
@@ -70,7 +74,8 @@ class MainContent {
     const {
       REFRESH_BUTTON_ICON_ACTIVE,
       SELECT_BOX_DROP_MENU_ACTIVATOR_ACTIVE, SELECT_BOX_OPTIONS_ACTIVE,
-      UNITS_SWITCHER_UNIT_ACTIVE,
+      UNITS_SWITCHER_UNIT_ACTIVE, UNITS_SWITCHER_UNIT_TEMP_FAHRENHEIT,
+      FORECAST_CONTAINER_TEMPERATURE_VALUE,
     } = this.classes;
 
     // Refresh Button Component
@@ -107,6 +112,17 @@ class MainContent {
         const { children: units } = unitsSwitcher;
 
         units.forEach((el) => el.classList.toggle(UNITS_SWITCHER_UNIT_ACTIVE));
+
+        const isFahrenheit = target.classList.contains(UNITS_SWITCHER_UNIT_TEMP_FAHRENHEIT);
+        const temperatureElements = document
+          .getElementsByClassName(FORECAST_CONTAINER_TEMPERATURE_VALUE);
+
+        temperatureElements.forEach((el) => {
+          const element = el;
+          const { textContent: temperature } = element;
+
+          element.textContent = temperatureUnitsConverter(temperature, isFahrenheit);
+        });
       }
     });
   }
