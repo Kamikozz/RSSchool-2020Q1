@@ -1,5 +1,11 @@
 .main-content {
-  padding-top: 40px;
+  & {
+    padding-top: 40px;
+  }
+
+  &__main-container {
+    margin-top: 60px;
+  }
 }
 
 .controls-container {
