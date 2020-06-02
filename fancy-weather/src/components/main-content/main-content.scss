@@ -4,6 +4,16 @@
   }
 
   &__main-container {
+    @include for-small-phone {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    @include for-desktop {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
     margin-top: 60px;
   }
 }
@@ -11,12 +21,29 @@
 .controls-container {
   & {
     display: flex;
-    justify-content: space-between;
-    height: 44px;
+
+    @include for-small-phone {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    @include for-tablet {
+      flex-direction: row;
+      justify-content: space-between;
+    }
   }
 
   &__buttons {
     display: flex;
+    height: 44px;
+
+    @include for-small-phone {
+      margin-bottom: 20px;
+    }
+
+    @include for-tablet {
+      margin-bottom: initial;
+    }
   }
 
   &__refresh-button {
@@ -41,6 +68,20 @@
     &:hover {
       background-color: darken($color: $primary-color, $amount: 10%);
     }
+  }
+
+  &__search {
+    width: 100%;
+
+    @include for-small-phone {
+      max-width: 100%;
+    }
+
+    @include for-phone {
+      max-width: 375px;
+    }
+
+    height: 44px;
   }
 }
 
@@ -96,6 +137,16 @@
 }
 
 .main-container {
-  display: flex;
-  justify-content: space-between;
+  & {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__map-container {
+    margin-top: 25px;
+
+    @include for-desktop {
+      margin-top: initial;
+    }
+  }
 }

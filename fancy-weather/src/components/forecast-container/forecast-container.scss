@@ -1,0 +1,150 @@
+.forecast-container {
+  & {
+    width: 100%;
+    max-width: 600px;
+
+    color: $default-color;
+    font: {
+      weight: 700;
+    }
+  }
+
+  &__city {
+    font: {
+      size: 4.4rem;
+    }
+    line-height: 5.4rem;
+    text-transform: uppercase;
+    overflow-wrap: break-word;
+  }
+
+  &__datetime {
+    display: flex;
+
+    font: {
+      weight: 300;
+      size: 2.4rem;
+    }
+    line-height: 2.9rem;
+  }
+
+  &__time {
+    margin-left: 10px;
+  }
+
+  &__today {
+    display: flex;
+    flex-direction: column;
+
+    @include for-small-phone {
+      align-items: center;
+    }
+
+    @include for-tablet {
+      flex-direction: row;
+      align-items: initial;
+    }
+  }
+
+  &__temperature {
+    display: flex;
+
+    @include for-small-phone {
+      font-size: 22.6rem;
+      line-height: 37rem;
+    }
+
+    @include for-phone {
+      font-size: 25.6rem; // 30.6rem;
+      line-height: 40rem; // 37.3rem;
+    }
+  }
+
+  &__temperature-units {
+    position: relative;
+    top: 1.3em;
+
+    height: 0;
+
+    font: {
+      size: 0.4em;
+    }
+    line-height: 0;
+  }
+
+  &__details {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
+    @include for-small-phone {
+      margin-left: 16px;
+    }
+
+    @include for-big-desktop {
+      margin-left: 32px;
+    }
+
+    padding-bottom: 80px;
+
+    font: {
+      weight: 400;
+      size: 2.2rem;
+    }
+    line-height: 3.7rem;
+    text-transform: uppercase;
+  }
+
+  // Forecast for 3 days
+  &__week {
+    display: flex;
+    justify-content: space-between;
+
+    @include for-small-phone {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    @include for-phone {
+      flex-direction: row;
+    }
+  }
+
+  &__week-day-content {
+    display: flex;
+  }
+
+  &__week-day-title {
+    font-size: 2.2rem;
+    line-height: 2.7rem;
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  &__weather-status-small-icon {
+    width: 50%;
+
+    margin-left: 5px;
+  }
+
+  &__temperature-small {
+    @include for-small-phone {
+      font-size: 8rem;
+      line-height: 9.8rem;
+    }
+
+    @include for-phone {
+      font-size: 8rem;
+      line-height: 9.8rem;
+    }
+  }
+
+  &__temperature-units-small {
+    top: 0.7em;
+
+    font: {
+      size: 0.8em;
+    }
+  }
+}
