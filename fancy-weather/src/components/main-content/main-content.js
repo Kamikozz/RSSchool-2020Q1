@@ -20,6 +20,7 @@ class MainContent {
       UNITS_SWITCHER_UNIT_ACTIVE: 'units-switcher__unit_active',
       UNITS_SWITCHER_UNIT_TEMP_FAHRENHEIT: 'units-switcher__unit_temp_fahrenheit',
       FORECAST_CONTAINER_TEMPERATURE_VALUE: 'forecast-container__temperature-value',
+      FORECAST_CONTAINER_FEELS_LIKE_VALUE: 'forecast-container__feels-like-value',
     };
     this.elements = {};
     this.data = {};
@@ -42,8 +43,6 @@ class MainContent {
     await myMapContainer.init();
 
     this.map = myMapContainer;
-
-    console.log(myMapContainer);
 
     // Forecast Component
     this.forecast = new ForecastContainer({
@@ -118,7 +117,6 @@ class MainContent {
       REFRESH_BUTTON_ICON_ACTIVE,
       SELECT_BOX_DROP_MENU_ACTIVATOR_ACTIVE, SELECT_BOX_OPTIONS_ACTIVE,
       UNITS_SWITCHER_UNIT_ACTIVE, UNITS_SWITCHER_UNIT_TEMP_FAHRENHEIT,
-      FORECAST_CONTAINER_TEMPERATURE_VALUE,
     } = this.classes;
 
     // Refresh Button Component
@@ -162,10 +160,16 @@ class MainContent {
         units.forEach((el) => el.classList.toggle(UNITS_SWITCHER_UNIT_ACTIVE));
 
         const isFahrenheit = target.classList.contains(UNITS_SWITCHER_UNIT_TEMP_FAHRENHEIT);
-        const temperatureElements = document
-          .getElementsByClassName(FORECAST_CONTAINER_TEMPERATURE_VALUE);
 
-        temperatureElements.forEach((el) => {
+        const {
+          FORECAST_CONTAINER_TEMPERATURE_VALUE, FORECAST_CONTAINER_FEELS_LIKE_VALUE,
+        } = this.classes;
+        const temperatureElementsArray = [
+          ...document.getElementsByClassName(FORECAST_CONTAINER_TEMPERATURE_VALUE),
+          ...document.getElementsByClassName(FORECAST_CONTAINER_FEELS_LIKE_VALUE),
+        ];
+
+        temperatureElementsArray.forEach((el) => {
           const element = el;
           const { textContent: temperature } = element;
 
