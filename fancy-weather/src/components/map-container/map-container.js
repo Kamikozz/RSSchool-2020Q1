@@ -1,5 +1,6 @@
 import { yandexMapsLoad } from '../../js/api/yandex-maps-service';
 import { converterDMS } from '../../js/utils/utils';
+import getOpenCageData from '../../js/api/open-cage-data-service';
 
 class MyMap {
   constructor(props = {}) {
@@ -15,6 +16,7 @@ class MyMap {
     this.ymaps = null; // глобальный объект ymaps (Yandex Maps API)
     this.map = null; // экземпляр класса MyMap
     this.zoom = 10;
+    this.searchQuery = null;
     this.latitude = null;
     this.longitude = null;
     this.city = null;
@@ -59,7 +61,18 @@ class MyMap {
   }
 
   async yandexMapsInit() {
-    const myCoordinates = await this.getLocation({ isInit: true });
+    const userCoordinates = await this.getLocation({ isInit: true });
+
+    const coordsString = userCoordinates.join(','); // создать строку вида '56.23232,12.2244'
+    const pageLanguage = localStorage.getItem('pageLanguage');
+    const openCageData = await getOpenCageData(coordsString, pageLanguage);
+
+    this.searchQuery = coordsString;
+
+    const { results } = openCageData;
+    const [{ formatted }] = results;
+
+    this.city = formatted;
 
     const { map } = this.elements;
 
@@ -69,7 +82,7 @@ class MyMap {
       // Порядок по умолчанию: «широта (latitude), долгота (longitude)».
       // Чтобы не определять координаты центра карты вручную,
       // воспользуйтесь инструментом Определение координат.
-      center: myCoordinates,
+      center: userCoordinates,
       // Уровень масштабирования. Допустимые значения:
       // от 0 (весь мир) до 19.
       zoom: this.zoom,
@@ -85,10 +98,51 @@ class MyMap {
 
     // При первом запуске:
     // 1. Создаём объект с нужными координатами нашего местоположения
-    const myGeoLocationObject = this.createMarker(myCoordinates);
+    const myGeoLocationObject = this.createMarker(userCoordinates);
 
     // 2. Добавляем наш маркер на карту и перемещаем область видимости к нашему маркеру
-    this.addMarker(myGeoLocationObject, myCoordinates);
+    this.addMarker(myGeoLocationObject, userCoordinates);
+  }
+
+  /**
+   * Получение местоположения и автоматическое отображение его на карте.
+   * @param {Object} options поле isInit, обозначающее первый запуск определения гео-локации
+   */
+  async getLocation({ isInit }) {
+    const onSuccess = (result) => {
+      // Выбираем первый результат гео-кодирования
+      const firstGeoObject = result.geoObjects.get(0);
+
+      // Получаем координаты в массиве [широта, долгота]
+      const userCoordinates = firstGeoObject.geometry.getCoordinates();
+
+      // Преобразовать широту и долготу в DMS-формат и выставить координаты в HTML-элементы
+      this.setLatitudeLongitude(userCoordinates);
+
+      if (!isInit) {
+        // Добавляем его на карту
+        this.addMarker(firstGeoObject, userCoordinates);
+      }
+
+      return userCoordinates;
+    };
+    const onError = (err) => {
+      console.error('Ошибка', err);
+      this.searchCity('Moscow');
+    };
+
+    // Получение местоположения пользователя
+    let coordinates;
+
+    try {
+      const result = await this.ymaps.geolocation.get({ mapStateAutoApply: false });
+
+      coordinates = await onSuccess(result);
+    } catch (err) {
+      onError(err);
+    }
+
+    return coordinates;
   }
 
   /**
@@ -149,11 +203,13 @@ class MyMap {
   }
 
   /**
-   * Поиск города по его названию и отображение на карте.
-   * @param {String} name название города
+   * Поиск города по его названию/ZIP/координатам и отображение на карте.
+   * Поиск осуществляется засчёт Open Cage Data API.
+   * @param {String} name название города || ZIP || координаты (широта/долгота)
+   * @param {String} lang язык, на котором API будет пытаться выдать результаты (название города)
    */
-  async searchCityByName(name) {
-    if (!name.length) {
+  async searchCity(query, lang = 'en') {
+    if (!query.length) {
       return;
     }
 
@@ -163,111 +219,55 @@ class MyMap {
       console.error('Ошибка', err);
     };
 
-    // Прямое гео-кодирование (поиск по названию для получения координат)
-    const directGeocodingOnSuccess = (result) => {
-      console.log(result);
+    // Прямое/обратное гео-кодирование (поиск по названию/координатам/ZIP-коду)
+    const geocodingOnSuccess = (result) => {
+      const { status } = result;
 
-      const foundResults = result.metaData.geocoder.found;
+      const isSuccessRequest = status.code === 200;
 
-      let coords;
-
-      if (foundResults) {
-        // Выбираем первый результат гео-кодирования
-        const firstGeoObject = result.geoObjects.get(0);
-        console.log(firstGeoObject, foundResults);
-        // Получаем координаты геообъекта [широта, долгота]
-        coords = firstGeoObject.geometry.getCoordinates();
-      } else {
-        error = new Error('Ничего не найдено');
+      if (!isSuccessRequest) {
+        error = new Error(status.message);
+        throw error;
       }
 
-      return coords;
+      const { total_results: totalResults } = result;
+
+      if (!totalResults) {
+        error = new Error('Ничего не найдено');
+        throw error;
+      }
+
+      const { results } = result;
+      const [{ formatted, geometry: { lat: latitude, lng: longitude } }] = results;
+
+      return [formatted, [latitude, longitude]];
     };
 
-    let coordinates;
+    let openCageData;
 
     try {
-      const result = await this.ymaps.geocode(name, { results: 1 });
+      const result = await getOpenCageData(query, lang);
 
-      coordinates = directGeocodingOnSuccess(result);
+      openCageData = geocodingOnSuccess(result);
     } catch (err) {
       onError(err);
       error = new Error(err.message);
     }
 
-    // Если прямое гео-кодирование прошло успешно, тогда выполнить обратное гео-кодирование
-    // (поиск по координатам и выдача ближайшего города)
     if (!error) {
-      const reverseGeocodingOnSuccess = (result) => {
-        // Удалить все метки с карты (предыдущие результаты)
-        this.map.geoObjects.removeAll();
+      const [cityName, coordinates] = openCageData;
 
-        // Выбираем первый результат гео-кодирования
-        const firstGeoObject = result.geoObjects.get(0);
-
-        // Получаем координаты геообъекта [широта, долгота]
-        const coords = firstGeoObject.geometry.getCoordinates();
-        // Преобразовать широту и долготу в DMS-формат и выставить координаты в HTML-элементы
-        this.setLatitudeLongitude(coords);
-
-        // Добавляем его на карту
-        this.addMarker(firstGeoObject, coords);
-      };
-
-      try {
-        const result = await this.ymaps.geocode(coordinates, { results: 1 });
-
-        reverseGeocodingOnSuccess(result);
-      } catch (err) {
-        onError(err);
-        error = new Error(err.message);
-      }
+      this.searchQuery = query;
+      this.city = cityName;
+      // 1. Удалить все метки с карты (предыдущие результаты)
+      this.map.geoObjects.removeAll();
+      // 2. Преобразовать широту и долготу в DMS-формат и выставить координаты в HTML-элементы
+      this.setLatitudeLongitude(coordinates);
+      // 3. Создаём объект с нужными координатами нашего местоположения
+      const myGeoLocationObject = this.createMarker(coordinates);
+      // 4. Добавляем наш маркер на карту и перемещаем область видимости к нашему маркеру
+      this.addMarker(myGeoLocationObject, coordinates);
     }
-
-    if (error) {
-      console.error(error.message);
-    }
-  }
-
-  /**
-   * Получение местоположения и автоматическое отображение его на карте.
-   * @param {Object} options поле isInit, обозначающее первый запуск определения гео-локации
-   */
-  async getLocation({ isInit }) {
-    const onSuccess = (result) => {
-      // Выбираем первый результат гео-кодирования
-      const firstGeoObject = result.geoObjects.get(0);
-
-      const userAddress = firstGeoObject.properties.get('text');
-      const userCoordinates = firstGeoObject.geometry.getCoordinates();
-      console.log(`Адрес: ${userAddress}<br/>Координаты: ${userCoordinates}`);
-      // Преобразовать широту и долготу в DMS-формат и выставить координаты в HTML-элементы
-      this.setLatitudeLongitude(userCoordinates);
-
-      if (!isInit) {
-        // Добавляем его на карту
-        this.addMarker(firstGeoObject, userCoordinates);
-      }
-
-      return userCoordinates;
-    };
-    const onError = (err) => {
-      console.log('Ошибка', err);
-      this.searchCityByName('Moscow');
-    };
-
-    // Получение местоположения пользователя
-    let coordinates;
-
-    try {
-      const result = await this.ymaps.geolocation.get({ mapStateAutoApply: false });
-
-      coordinates = await onSuccess(result);
-    } catch (err) {
-      onError(err);
-    }
-
-    return coordinates;
   }
 }
 

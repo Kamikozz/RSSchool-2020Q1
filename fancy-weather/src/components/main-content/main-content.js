@@ -51,7 +51,7 @@ class MainContent {
 
       const { value: text } = searchField;
 
-      await myMapContainer.searchCityByName(text);
+      await myMapContainer.searchCity(text, this.i18n.currentLanguage);
     });
   }
 
@@ -117,7 +117,7 @@ class MainContent {
       selectBoxActivator.classList.toggle(SELECT_BOX_DROP_MENU_ACTIVATOR_ACTIVE);
       selectBoxOptions.classList.toggle(SELECT_BOX_OPTIONS_ACTIVE);
     });
-    selectBoxOptions.addEventListener('click', (e) => {
+    selectBoxOptions.addEventListener('click', async (e) => {
       let { target } = e;
       const { tagName } = target;
       const isListItem = tagName === 'LI';
@@ -126,7 +126,11 @@ class MainContent {
         target = target.parentElement;
       }
 
-      this.changeSelectedOption(target);
+      const isChangedLanguage = await this.changeSelectedOption(target);
+
+      if (isChangedLanguage) {
+        await this.map.searchCity(this.map.searchQuery, this.i18n.currentLanguage);
+      }
     });
 
     // Units Switcher Component
