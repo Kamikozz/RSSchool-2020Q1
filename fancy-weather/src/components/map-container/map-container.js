@@ -10,7 +10,6 @@ class MyMap {
     this.map = null;
     this.latitude = null;
     this.longitude = null;
-    this.center = null;
     this.zoom = 10;
   }
 
@@ -100,8 +99,9 @@ class MyMap {
 
   /**
    * Задаёт визуальное оформление гео-объекту и добавляет его на данную карту.
+   * Если coordinates отлично от undefined, тогда карта перемещается на заданные координаты.
    * @param {*} geoObject гео-объект Яндекс.Карт (например, маркер)
-   * @param {Boolean} setCenter переместить область видимости карты на созданный маркер
+   * @param {Number[]} coordinates координаты широта, долгота, для установки центра
    */
   addMarker(geoObject, coordinates) {
     // Устанавливаем визуальное оформление метки

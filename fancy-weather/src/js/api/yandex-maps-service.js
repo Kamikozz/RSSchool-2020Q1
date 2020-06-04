@@ -1,6 +1,6 @@
 import { yandexMapsApi } from '../credentials';
 
-// https://api-maps.yandex.ru/2.1/?apikey=c16d1bbd-0a20-45e9-af12-558237d8bdb6&lang=en_US
+// https://api-maps.yandex.ru/2.1/?apikey=&lang=en_US
 export const yandexMapsLoad = async (lang = 'en_US') => {
   const { baseUrl, apiKey } = yandexMapsApi;
   const params = `apikey=${apiKey}&lang=${lang}`;

@@ -67,6 +67,8 @@ class I18N {
 
       this.update(); // update all of the elements with "i18n" data-attribute
     }
+
+    return isDifferentLanguage;
   }
 
   /**

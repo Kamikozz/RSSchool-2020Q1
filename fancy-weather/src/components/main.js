@@ -71,5 +71,3 @@ Promise
   .then(() => {
     document.body.style.opacity = '1';
   });
-
-console.log(YandexMaps);
