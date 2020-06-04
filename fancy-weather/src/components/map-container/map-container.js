@@ -4,26 +4,31 @@ import { converterDMS } from '../../js/utils/utils';
 class MyMap {
   constructor(props = {}) {
     this.props = props;
+    this.classes = {
+      ROOT: 'map-container',
+      MAP_CONTAINER_MAP: 'map-container__map',
+      MAP_CONTAINER_LATITUDE: 'map-container__latitude-value',
+      MAP_CONTAINER_LONGITUDE: 'map-container__longitude-value',
+    };
+    this.elements = {};
     this.isInit = props.isInit;
-    this.ymaps = null;
-    this.mapElement = null;
-    this.map = null;
+    this.ymaps = null; // глобальный объект ymaps (Yandex Maps API)
+    this.map = null; // экземпляр класса MyMap
+    this.zoom = 10;
     this.latitude = null;
     this.longitude = null;
-    this.zoom = 10;
+    this.city = null;
   }
 
   async init() {
+    this.initElements();
+
     if (this.isInit) {
       await yandexMapsLoad(); // load Yandex Maps & append <script>
     }
     // Прокинуть глобальный объект ymaps внутрь экземпляра класса
     // eslint-disable-next-line no-undef
     this.ymaps = ymaps;
-
-    const [mapElement] = document.getElementsByClassName('map-container__map');
-
-    this.mapElement = mapElement;
 
     // Не теряем контекст класса
     const boundYandexMapsInit = this.yandexMapsInit.bind(this);
@@ -32,11 +37,34 @@ class MyMap {
     this.ymaps.ready(boundYandexMapsInit);
   }
 
+  initElements() {
+    const {
+      ROOT,
+      MAP_CONTAINER_MAP,
+      MAP_CONTAINER_LATITUDE,
+      MAP_CONTAINER_LONGITUDE,
+    } = this.classes;
+    const [root] = document.getElementsByClassName(ROOT);
+    const [map] = root.getElementsByClassName(MAP_CONTAINER_MAP);
+    const [latitude] = root.getElementsByClassName(MAP_CONTAINER_LATITUDE);
+    const [longitude] = root.getElementsByClassName(MAP_CONTAINER_LONGITUDE);
+
+    this.elements = {
+      ...this.elements,
+      root,
+      map,
+      latitude,
+      longitude,
+    };
+  }
+
   async yandexMapsInit() {
     const myCoordinates = await this.getLocation({ isInit: true });
 
+    const { map } = this.elements;
+
     // Создание карты
-    this.map = new this.ymaps.Map(this.mapElement, {
+    this.map = new this.ymaps.Map(map, {
       // Координаты центра карты.
       // Порядок по умолчанию: «широта (latitude), долгота (longitude)».
       // Чтобы не определять координаты центра карты вручную,
@@ -73,11 +101,10 @@ class MyMap {
     const latitudeDMS = converterDMS(this.latitude);
     const longitudeDMS = converterDMS(this.longitude);
 
-    const [latitudeElement] = document.getElementsByClassName('map-container__latitude-value');
-    const [longitudeElement] = document.getElementsByClassName('map-container__longitude-value');
+    const { latitude, longitude } = this.elements;
 
-    latitudeElement.textContent = `: ${latitudeDMS}`;
-    longitudeElement.textContent = `: ${longitudeDMS}`;
+    latitude.textContent = `: ${latitudeDMS}`;
+    longitude.textContent = `: ${longitudeDMS}`;
   }
 
   createMarker(coordinates) {
@@ -244,25 +271,4 @@ class MyMap {
   }
 }
 
-// Initialization
-// Создание экземпляра примера ради
-const myMapContainer = new MyMap({
-  isInit: true,
-});
-
-myMapContainer.init();
-
-console.log(myMapContainer);
-
-const [searchButton] = document
-  .getElementsByClassName('search-box__button speech-recognition-button');
-const [searchField] = document
-  .getElementsByClassName('search-box__search-field');
-
-searchButton.addEventListener('click', (e) => {
-  e.preventDefault();
-
-  const { value: text } = searchField;
-
-  myMapContainer.searchCityByName(text);
-});
+export default MyMap;

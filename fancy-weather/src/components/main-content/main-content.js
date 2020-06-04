@@ -1,3 +1,4 @@
+import MapContainer from '../map-container/map-container';
 import { temperatureUnitsConverter } from '../../js/utils/utils';
 
 class MainContent {
@@ -22,12 +23,36 @@ class MainContent {
     this.elements = {};
     this.data = {};
     this.i18n = props.i18n;
+    this.map = null;
   }
 
   async init() {
     this.initElements();
     this.initHandlers();
     await this.restoreState();
+
+    // Initialization
+    // Создание экземпляра примера ради
+    const myMapContainer = new MapContainer({
+      isInit: true,
+    });
+
+    await myMapContainer.init();
+
+    this.map = myMapContainer;
+
+    const [searchButton] = document
+      .getElementsByClassName('search-box__button speech-recognition-button');
+    const [searchField] = document
+      .getElementsByClassName('search-box__search-field');
+
+    searchButton.addEventListener('click', async (e) => {
+      e.preventDefault();
+
+      const { value: text } = searchField;
+
+      await myMapContainer.searchCityByName(text);
+    });
   }
 
   initElements() {

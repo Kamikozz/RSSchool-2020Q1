@@ -27,7 +27,6 @@
 
 import I18N from '../js/i18n';
 import MainContent from './main-content/main-content';
-import YandexMaps from './map-container/map-container';
 
 // TODO: DELETE THIS (THIS IS FOR RAPIDO CROSS-CHECKERS)
 // eslint-disable-next-line no-alert
