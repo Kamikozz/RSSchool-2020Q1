@@ -33,7 +33,43 @@ const converterDMS = (decimalDegrees, precision = 4) => {
   return `${degrees}° ${minutes}' ${roundSeconds}"`;
 };
 
+const dateTimeFormatter = {
+  getWeekDayByIndex({ index, dataI18nPrefix = 'week_day', isShortFormat = true }) {
+    let weekDays = [
+      'sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday',
+    ];
+
+    if (isShortFormat) {
+      weekDays = weekDays.map((item) => `${dataI18nPrefix}_${item}_short`);
+    } else {
+      weekDays = weekDays.map((item) => `${dataI18nPrefix}_${item}`);
+    }
+
+    const weekDay = weekDays[index];
+
+    return weekDay;
+  },
+
+  getMonthByIndex({ index, dataI18nPrefix = 'month' }) {
+    const months = [
+      'january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december',
+    ].map((item) => `${dataI18nPrefix}_${item}`);
+
+    const month = months[index];
+
+    return month;
+  },
+
+  addLeadNull(number) {
+    const isDigit = number < 10;
+    const ret = isDigit ? `0${number}` : number;
+
+    return ret;
+  },
+};
+
 module.exports = {
+  dateTimeFormatter,
   temperatureUnitsConverter,
   converterDMS,
 };

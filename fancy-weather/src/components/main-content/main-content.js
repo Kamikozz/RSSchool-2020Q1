@@ -1,3 +1,4 @@
+import ForecastContainer from '../forecast-container/forecast-container';
 import MapContainer from '../map-container/map-container';
 import { temperatureUnitsConverter } from '../../js/utils/utils';
 
@@ -23,6 +24,7 @@ class MainContent {
     this.elements = {};
     this.data = {};
     this.i18n = props.i18n;
+    this.forecast = null;
     this.map = null;
   }
 
@@ -41,6 +43,16 @@ class MainContent {
 
     this.map = myMapContainer;
 
+    console.log(myMapContainer);
+
+    // Forecast Component
+    this.forecast = new ForecastContainer({
+      i18n: this.i18n,
+    });
+
+    await this.forecast.init();
+    this.forecast.updateCity(this.map.city);
+
     const [searchButton] = document
       .getElementsByClassName('search-box__button speech-recognition-button');
     const [searchField] = document
@@ -51,7 +63,13 @@ class MainContent {
 
       const { value: text } = searchField;
 
+      this.forecast.data = {
+        timeZone: text,
+      };
+
       await myMapContainer.searchCity(text, this.i18n.currentLanguage);
+      this.forecast.updateCity(this.map.city);
+      // this.forecast.update();
     });
   }
 
@@ -104,12 +122,12 @@ class MainContent {
     } = this.classes;
 
     // Refresh Button Component
-    refreshButton.addEventListener('click', () => {
+    refreshButton.addEventListener('click', async () => {
       const svgIconElement = refreshButton.firstElementChild;
 
       svgIconElement.classList.toggle(REFRESH_BUTTON_ICON_ACTIVE);
-      // TODO: add logic for refreshing
-      setTimeout(() => svgIconElement.classList.toggle(REFRESH_BUTTON_ICON_ACTIVE), 2000);
+      await this.forecast.getForecast();
+      svgIconElement.classList.toggle(REFRESH_BUTTON_ICON_ACTIVE);
     });
 
     // Select Box Component
@@ -130,6 +148,7 @@ class MainContent {
 
       if (isChangedLanguage) {
         await this.map.searchCity(this.map.searchQuery, this.i18n.currentLanguage);
+        this.forecast.updateCity(this.map.city);
       }
     });
 
