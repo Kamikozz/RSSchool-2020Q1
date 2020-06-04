@@ -29,7 +29,7 @@ class MainContent {
   async init() {
     this.initElements();
     this.initHandlers();
-    await this.restoreState();
+    await this.restoreState(true);
 
     // Initialization
     // Создание экземпляра примера ради
@@ -152,31 +152,42 @@ class MainContent {
     });
   }
 
-  changeSelectedOption(option) {
-    const { selectBoxSelected, selectBoxSelectedIcon } = this.elements;
-    const { innerText: text, dataset: { lang } } = option;
+  async changeSelectedOption(selectedOption, isInit = false) {
+    const { selectBoxSelected } = this.elements;
+    const { dataset: { lang: currentLanguage } } = selectBoxSelected;
+    const { dataset: { lang: targetLanguage } } = selectedOption;
 
-    selectBoxSelected.value = text;
-    selectBoxSelected.dataset.lang = lang;
+    const isDifferentLanguage = currentLanguage !== targetLanguage;
 
-    const LANG_TRANSFORMATION = {
-      en: 'gb',
-      ru: 'ru',
-      be: 'by',
-    };
-    const { [lang]: transformedLang } = LANG_TRANSFORMATION;
-    const newIconClasses = `select-box__flag-icon flag-icon flag-icon-${transformedLang}`;
+    if (isDifferentLanguage || isInit) {
+      const { innerText: text } = selectedOption;
 
-    selectBoxSelectedIcon.classList.value = newIconClasses;
+      selectBoxSelected.value = text;
+      selectBoxSelected.dataset.lang = targetLanguage;
 
-    this.i18n.changeLanguage(lang);
+      const LANG_TRANSFORMATION = {
+        en: 'gb',
+        ru: 'ru',
+        be: 'by',
+      };
+      const { [targetLanguage]: transformedLanguage } = LANG_TRANSFORMATION;
+      const newIconClasses = `select-box__flag-icon flag-icon flag-icon-${transformedLanguage}`;
+
+      const { selectBoxSelectedIcon } = this.elements;
+
+      selectBoxSelectedIcon.classList.value = newIconClasses;
+
+      await this.i18n.changeLanguage(targetLanguage);
+    }
+
+    return isDifferentLanguage;
   }
 
   /**
    * get page language from localStorage and set its elements to the previous locale
    * async for the future possible functions/methods that will use requests
    */
-  async restoreState() {
+  async restoreState(isInit) {
     const currentLanguage = localStorage.getItem(this.i18n.localStorageKeyPageLanguage);
 
     if (currentLanguage) {
@@ -188,7 +199,7 @@ class MainContent {
         return isLanguageEqual;
       });
 
-      this.changeSelectedOption(currentLanguageElement);
+      await this.changeSelectedOption(currentLanguageElement, isInit);
     }
   }
 }
