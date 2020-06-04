@@ -146,7 +146,7 @@ class MainContent {
           const element = el;
           const { textContent: temperature } = element;
 
-          element.textContent = temperatureUnitsConverter(temperature, isFahrenheit);
+          element.textContent = temperatureUnitsConverter(temperature, isFahrenheit, 0);
         });
       }
     });
