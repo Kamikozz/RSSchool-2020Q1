@@ -8,14 +8,17 @@
       weight: 700;
     }
   }
-
   &__city {
+    max-height: calc(5.4rem * 3); // max 3 lines will be visible to the user
+
     font: {
       size: 4.4rem;
     }
     line-height: 5.4rem;
     text-transform: uppercase;
     overflow-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   &__datetime {

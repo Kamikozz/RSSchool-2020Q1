@@ -157,6 +157,7 @@ class ForecastContainer {
     const { city } = this.elements;
 
     city.textContent = cityName;
+    city.title = cityName;
   }
 }
 
