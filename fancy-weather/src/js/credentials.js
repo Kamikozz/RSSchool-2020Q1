@@ -7,4 +7,8 @@ module.exports = {
     baseUrl: 'https://api.opencagedata.com/geocode/v1/json',
     apiKey: '3ff14e427ce84c589e77dff156216dcc',
   },
+  openWeatherMapApi: {
+    baseUrl: 'https://api.openweathermap.org/data/2.5/forecast',
+    apiKey: 'ef3f1e7c5ddb1f19d9fc2f8786136857',
+  },
 };

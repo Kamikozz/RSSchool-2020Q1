@@ -1,3 +1,38 @@
+const getWeatherIconById = ({ iconId, iconPrefix = 'weather' }) => {
+  const icons = {
+    '01d': 'clear-sky',
+    '01n': 'clear-sky',
+    '02d': 'few-clouds',
+    '02n': 'few-clouds',
+    '03d': 'scattered-clouds',
+    '03n': 'scattered-clouds',
+    '04d': 'broken-clouds',
+    '04n': 'broken-clouds',
+    '09d': 'shower-rain',
+    '09n': 'shower-rain',
+    '10d': 'rain',
+    '10n': 'rain',
+    '11d': 'thunderstorm',
+    '11n': 'thunderstorm',
+    '13d': 'snow',
+    '13n': 'snow',
+    '50d': 'mist',
+    '50n': 'mist',
+  };
+  const chosenIcon = `${iconPrefix}_${icons[iconId]}`;
+
+  return chosenIcon;
+};
+
+const getWeatherDescriptionById = ({
+  descriptionId,
+  weatherI18nPrefix = 'weather_description',
+}) => {
+  const weatherDescription = `${weatherI18nPrefix}_${descriptionId}`;
+
+  return weatherDescription;
+};
+
 /**
  * Converts the given temperature in Fahrenheit/Celsius into Celsius/Fahrenheit units.
  * @param {String|Number} temperature given temperature in Fahrenheit/Celsius units
@@ -35,17 +70,17 @@ const converterDMS = (decimalDegrees, precision = 4) => {
 
 const dateTimeFormatter = {
   getWeekDayByIndex({ index, dataI18nPrefix = 'week_day', isShortFormat = true }) {
-    let weekDays = [
+    const weekDays = [
       'sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday',
     ];
 
-    if (isShortFormat) {
-      weekDays = weekDays.map((item) => `${dataI18nPrefix}_${item}_short`);
-    } else {
-      weekDays = weekDays.map((item) => `${dataI18nPrefix}_${item}`);
-    }
+    let weekDay;
 
-    const weekDay = weekDays[index];
+    if (isShortFormat) {
+      weekDay = `${dataI18nPrefix}_${weekDays[index]}_short`;
+    } else {
+      weekDay = `${dataI18nPrefix}_${weekDays[index]}`;
+    }
 
     return weekDay;
   },
@@ -53,9 +88,9 @@ const dateTimeFormatter = {
   getMonthByIndex({ index, dataI18nPrefix = 'month' }) {
     const months = [
       'january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december',
-    ].map((item) => `${dataI18nPrefix}_${item}`);
+    ];
 
-    const month = months[index];
+    const month = `${dataI18nPrefix}_${months[index]}`;
 
     return month;
   },
@@ -69,6 +104,8 @@ const dateTimeFormatter = {
 };
 
 module.exports = {
+  getWeatherIconById,
+  getWeatherDescriptionById,
   dateTimeFormatter,
   temperatureUnitsConverter,
   converterDMS,

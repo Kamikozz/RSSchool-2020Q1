@@ -1,5 +1,9 @@
-// import { } from '../../js/api/open-weather-map-service';
-import { dateTimeFormatter } from '../../js/utils/utils';
+import getWeatherData from '../../js/api/open-weather-map-service';
+import {
+  dateTimeFormatter,
+  getWeatherIconById,
+  getWeatherDescriptionById,
+} from '../../js/utils/utils';
 
 class ForecastContainer {
   constructor(props) {
@@ -11,19 +15,27 @@ class ForecastContainer {
       FORECAST_DATE_DAY: 'forecast-container__date-day',
       FORECAST_DATE_MONTH: 'forecast-container__date-month',
       FORECAST_TIME: 'forecast-container__time',
+      FORECAST_TODAY: 'forecast-container__today',
+      FORECAST_WEEK: 'forecast-container__week',
+      FORECAST_TEMPERATURE_VALUE: 'forecast-container__temperature-value',
+      FORECAST_STATUS_ICON: 'forecast-container__weather-status-icon',
+      FORECAST_STATUS_SMALL_ICON: 'forecast-container__weather-status-small-icon',
+      FORECAST_STATUS_DESCRIPTION: 'forecast-container__weather-status-description',
+      FORECAST_FEELS_LIKE_VALUE: 'forecast-container__feels-like-value',
+      FORECAST_WIND_VALUE: 'forecast-container__wind-value',
+      FORECAST_HUMIDITY_VALUE: 'forecast-container__humidity-value',
+      FORECAST_WEEK_DAY_TITLE: 'forecast-container__week-day-title',
     };
     this.elements = {};
     this.i18n = props.i18n;
+    this.map = props.map;
     this.dateTime = {
       date: null, // Date object which will store current time: Date
       timeZoneOffset: null, // number of milliseconds (eg. 10800000): Number
       timestamp: null, // time in UNIX-format: Number
     };
     this.timerId = null;
-    // TODO: DELETE THIS MOCK
-    this.data = {
-      timeZone: 10800,
-    };
+    this.isFahrenheit = false;
   }
 
   async init() {
@@ -40,6 +52,8 @@ class ForecastContainer {
       FORECAST_DATE_DAY,
       FORECAST_DATE_MONTH,
       FORECAST_TIME,
+      FORECAST_TODAY,
+      FORECAST_WEEK,
     } = this.classes;
     const [root] = document.getElementsByClassName(ROOT);
     const [city] = root.getElementsByClassName(FORECAST_CITY);
@@ -47,6 +61,8 @@ class ForecastContainer {
     const [day] = root.getElementsByClassName(FORECAST_DATE_DAY);
     const [month] = root.getElementsByClassName(FORECAST_DATE_MONTH);
     const [time] = root.getElementsByClassName(FORECAST_TIME);
+    const [today] = root.getElementsByClassName(FORECAST_TODAY);
+    const [week] = root.getElementsByClassName(FORECAST_WEEK);
 
     this.elements = {
       ...this.elements,
@@ -56,28 +72,122 @@ class ForecastContainer {
       day,
       month,
       time,
+      today,
+      week,
     };
   }
 
   async getForecast() {
-    // const data = await getForecastData();
-    const data = await this.time();
-    const { timeZone } = data;
+    const data = await this.getForecastData();
 
-    this.dateTime.timeZoneOffset = timeZone * 1000;
+    if (data) {
+      const [timeZone, weatherDataList] = data;
 
-    this.startTimer();
+      this.updateForecast(weatherDataList);
+
+      this.dateTime.timeZoneOffset = timeZone * 1000;
+
+      this.startTimer();
+    }
   }
 
-  time() {
-    const promise = new Promise((resolve) => {
-      setTimeout(() => {
-        console.log('DUMMY DELETE ME', this);
-        resolve(this.data);
-      }, 2000);
-    });
+  async getForecastData() {
+    const onError = (err) => console.error('Ошибка: ', err);
+    const onSuccess = async (result) => {
+      console.log(result);
 
-    return promise;
+      const { cod } = result;
+      const isSuccessRequest = Number(cod) === 200;
+
+      if (!isSuccessRequest) {
+        throw new Error(result.message);
+      }
+
+      const { city: { timezone }, list } = result;
+
+      return [timezone, list];
+    };
+
+    // Options for request
+    const { latitude, longitude } = this.map;
+    console.log(this.map, this.map.latitude, this.map.longitude);
+    const { currentLanguage: language } = this.i18n;
+    const units = this.isFahrenheit ? 'imperial' : 'metric';
+
+    let error;
+    let weatherData;
+
+    try {
+      if (!navigator.online) {
+        throw new Error('Отсутствует подключение к интернету!');
+      }
+
+      const result = await getWeatherData(latitude, longitude, language, units);
+
+      weatherData = await onSuccess(result);
+    } catch (err) {
+      onError(err);
+      error = new Error(err.message);
+    }
+
+    let ret;
+
+    if (!error) {
+      const [timeZone, weatherDataList] = weatherData;
+
+      const DAY_HOURS = 24; // number of hours in a day
+      const HOURS_BETWEEN_MEASURES = 3; // number of hours between measures
+      // Each 8th index is a new day (eg. 8 measures each 3hours * 5 days = 40 elements)
+      const MEASURES_NUMBER = Math.floor(DAY_HOURS / HOURS_BETWEEN_MEASURES);
+      // Make weather measures exact for 5 days
+      const weatherDataListPerDays = weatherDataList.filter((item, index) => {
+        const isDayPassed = index % MEASURES_NUMBER === 0;
+
+        return isDayPassed;
+      });
+
+      const formatWeatherData = (dirtyData, precision = 0) => {
+        const {
+          dt,
+          main: {
+            feels_like: feelsLike,
+            humidity,
+            temp,
+          },
+          wind: {
+            speed: windSpeed,
+          },
+          weather: {
+            0: {
+              id: weatherDescriptionId,
+              icon: weatherIcon,
+            },
+          },
+        } = dirtyData;
+
+        return {
+          feelsLike: Number(feelsLike).toFixed(precision),
+          humidity,
+          temperature: Number(temp).toFixed(precision),
+          windSpeed,
+          weekDayI18nAttr: dateTimeFormatter.getWeekDayByIndex({
+            index: new Date(dt * 1000).getUTCDay(),
+            isShortFormat: false,
+          }),
+          weatherIconClass: getWeatherIconById({
+            iconId: weatherIcon,
+          }),
+          weatherDescriptionI18nAttr: getWeatherDescriptionById({
+            descriptionId: weatherDescriptionId,
+          }),
+        };
+      };
+      const formattedData = weatherDataListPerDays.map((item) => formatWeatherData(item));
+
+      ret = [timeZone, formattedData];
+    }
+
+    return ret;
   }
 
   startTimer() {
@@ -158,6 +268,68 @@ class ForecastContainer {
 
     city.textContent = cityName;
     city.title = cityName;
+  }
+
+  updateForecast(weatherDataList) {
+    const { today: todayEl, week: weekEl } = this.elements;
+    const {
+      FORECAST_TEMPERATURE_VALUE,
+      FORECAST_STATUS_ICON,
+      FORECAST_STATUS_SMALL_ICON,
+      FORECAST_STATUS_DESCRIPTION,
+      FORECAST_FEELS_LIKE_VALUE,
+      FORECAST_WIND_VALUE,
+      FORECAST_HUMIDITY_VALUE,
+      FORECAST_WEEK_DAY_TITLE,
+    } = this.classes;
+
+    // Process the today's block
+    const [todayTemperatureEl] = todayEl.getElementsByClassName(FORECAST_TEMPERATURE_VALUE);
+    const [todayStatusIconEl] = todayEl.getElementsByClassName(FORECAST_STATUS_ICON);
+    const [todayStatusDescriptionEl] = todayEl.getElementsByClassName(FORECAST_STATUS_DESCRIPTION);
+    const [todayFeelsLikeEl] = todayEl.getElementsByClassName(FORECAST_FEELS_LIKE_VALUE);
+    const [todayWindEl] = todayEl.getElementsByClassName(FORECAST_WIND_VALUE);
+    const [todayHumidityEl] = todayEl.getElementsByClassName(FORECAST_HUMIDITY_VALUE);
+
+    const [today] = weatherDataList;
+    const {
+      feelsLike,
+      humidity,
+      temperature,
+      windSpeed,
+      weatherIconClass,
+      weatherDescriptionI18nAttr,
+    } = today;
+
+    todayTemperatureEl.textContent = temperature;
+    todayStatusIconEl.textContent = weatherIconClass;
+    todayStatusDescriptionEl.dataset.i18n = weatherDescriptionI18nAttr;
+    todayFeelsLikeEl.textContent = feelsLike;
+    todayWindEl.textContent = windSpeed;
+    todayHumidityEl.textContent = humidity;
+
+    // Process the week's elements
+    const weekDays = weekEl.children;
+
+    weekDays.forEach((weekDay, index) => {
+      const [weekDayTitleEl] = weekDay.getElementsByClassName(FORECAST_WEEK_DAY_TITLE);
+      const [weekDayTemperatureEl] = weekDay.getElementsByClassName(FORECAST_TEMPERATURE_VALUE);
+      const [weekDayStatusIconEl] = weekDay.getElementsByClassName(FORECAST_STATUS_SMALL_ICON);
+
+      // index increased by 1 according to the weatherDataList contains 4 items: today & 3 days
+      const indexNextDay = index + 1;
+      const weekDayData = weatherDataList[indexNextDay];
+
+      const {
+        temperature: temperatureItem,
+        weekDayI18nAttr: weekDayI18nAttrItem,
+        weatherIconClass: weatherIconClassItem,
+      } = weekDayData;
+
+      weekDayTitleEl.dataset.i18n = weekDayI18nAttrItem;
+      weekDayTemperatureEl.textContent = temperatureItem;
+      weekDayStatusIconEl.textContent = weatherIconClassItem;
+    });
   }
 }
 

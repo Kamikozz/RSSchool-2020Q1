@@ -69,7 +69,7 @@ class MainContent {
 
       await myMapContainer.searchCity(text, this.i18n.currentLanguage);
       this.forecast.updateCity(this.map.city);
-      // this.forecast.update();
+      await this.forecast.getForecast();
     });
   }
 
@@ -161,6 +161,8 @@ class MainContent {
         units.forEach((el) => el.classList.toggle(UNITS_SWITCHER_UNIT_ACTIVE));
 
         const isFahrenheit = target.classList.contains(UNITS_SWITCHER_UNIT_TEMP_FAHRENHEIT);
+
+        this.forecast.isFahrenheit = isFahrenheit;
 
         const {
           FORECAST_CONTAINER_TEMPERATURE_VALUE, FORECAST_CONTAINER_FEELS_LIKE_VALUE,
