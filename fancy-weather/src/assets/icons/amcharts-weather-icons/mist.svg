@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Svg Vector Icons : http://www.onlinewebfonts.com/icon -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 2000 2000" enable-background="new 0 0 1000 1000" xml:space="preserve">
+<metadata> Svg Vector Icons : http://www.onlinewebfonts.com/icon </metadata>
+    <defs>
+        <filter id="blur" width="200%" height="200%">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+            <feOffset dx="0" dy="4" result="offsetblur"/>
+            <feComponentTransfer>
+                <feFuncA type="linear" slope="0.05"/>
+            </feComponentTransfer>
+        <feMerge> 
+          <feMergeNode/>
+          <feMergeNode in="SourceGraphic"/> 
+        </feMerge>
+        </filter>
+        <style type="text/css"><![CDATA[
+/*
+** MIST
+*/
+@keyframes am-weather-mist-1 {
+  0% {
+    -webkit-transform: translate(-25px,0px);
+       -moz-transform: translate(-50px,0px);
+        -ms-transform: translate(-25px,0px);
+            transform: translate(-25px,0px);
+  }
+
+  50% {
+    -webkit-transform: translate(25px,0px);
+       -moz-transform: translate(25px,0px);
+        -ms-transform: translate(25px,0px);
+            transform: translate(25px,0px);
+  }
+
+  100% {
+    -webkit-transform: translate(-25px,0px);
+       -moz-transform: translate(-25px,0px);
+        -ms-transform: translate(-25px,0px);
+            transform: translate(-25px,0px);
+  }
+}
+
+.am-weather-mist-1 {
+  -webkit-animation-name: am-weather-mist-1;
+     -moz-animation-name: am-weather-mist-1;
+          animation-name: am-weather-mist-1;
+  -webkit-animation-duration: 7s;
+     -moz-animation-duration: 7s;
+          animation-duration: 7s;
+  -webkit-animation-timing-function: linear;
+     -moz-animation-timing-function: linear;
+          animation-timing-function: linear;
+  -webkit-animation-iteration-count: infinite;
+     -moz-animation-iteration-count: infinite;
+          animation-iteration-count: infinite;
+}
+
+@keyframes am-weather-mist-2 {
+  0% {
+    -webkit-transform: translate(-10px,0px);
+       -moz-transform: translate(-10px,0px);
+        -ms-transform: translate(-10px,0px);
+            transform: translate(-10px,0px);
+  }
+
+  50% {
+    -webkit-transform: translate(25px,0px);
+       -moz-transform: translate(25px,0px);
+        -ms-transform: translate(25px,0px);
+            transform: translate(25px,0px);
+  }
+
+  100% {
+    -webkit-transform: translate(-10px,0px);
+       -moz-transform: translate(-10px,0px);
+        -ms-transform: translate(-10px,0px);
+            transform: translate(-10px,0px);
+  }
+}
+
+.am-weather-mist-2 {
+  -webkit-animation-name: am-weather-mist-2;
+     -moz-animation-name: am-weather-mist-2;
+          animation-name: am-weather-mist-2;
+  -webkit-animation-duration: 3s;
+     -moz-animation-duration: 3s;
+          animation-duration: 3s;
+  -webkit-animation-timing-function: linear;
+     -moz-animation-timing-function: linear;
+          animation-timing-function: linear;
+  -webkit-animation-iteration-count: infinite;
+     -moz-animation-iteration-count: infinite;
+          animation-iteration-count: infinite;
+}
+
+@keyframes am-weather-mist-3 {
+  0% {
+    -webkit-transform: translate(-10px,0px);
+       -moz-transform: translate(-10px,0px);
+        -ms-transform: translate(-10px,0px);
+            transform: translate(-10px,0px);
+  }
+
+  50% {
+    -webkit-transform: translate(15px,0px);
+       -moz-transform: translate(15px,0px);
+        -ms-transform: translate(15px,0px);
+            transform: translate(15px,0px);
+  }
+  
+  100% {
+    -webkit-transform: translate(-10px,0px);
+       -moz-transform: translate(-10px,0px);
+        -ms-transform: translate(-10px,0px);
+            transform: translate(-10px,0px);
+  }
+}
+
+.am-weather-mist-3 {
+  -webkit-animation-name: am-weather-mist-3;
+     -moz-animation-name: am-weather-mist-3;
+          animation-name: am-weather-mist-3;
+  -webkit-animation-duration: 3s;
+     -moz-animation-duration: 3s;
+          animation-duration: 3s;
+  -webkit-animation-timing-function: linear;
+     -moz-animation-timing-function: linear;
+          animation-timing-function: linear;
+  -webkit-animation-iteration-count: infinite;
+     -moz-animation-iteration-count: infinite;
+          animation-iteration-count: infinite;
+}
+
+@keyframes am-weather-mist-4 {
+  0% {
+    -webkit-transform: translate(10px,0px);
+       -moz-transform: translate(10px,0px);
+        -ms-transform: translate(10px,0px);
+            transform: translate(10px,0px);
+  }
+
+  50% {
+    -webkit-transform: translate(-10px,0px);
+       -moz-transform: translate(-10px,0px);
+        -ms-transform: translate(-10px,0px);
+            transform: translate(-10px,0px);
+  }
+  
+  100% {
+    -webkit-transform: translate(10px,0px);
+       -moz-transform: translate(10px,0px);
+        -ms-transform: translate(10px,0px);
+            transform: translate(10px,0px);
+  }
+}
+
+.am-weather-mist-4 {
+  -webkit-animation-name: am-weather-mist-4;
+     -moz-animation-name: am-weather-mist-4;
+          animation-name: am-weather-mist-4;
+  -webkit-animation-duration: 3s;
+     -moz-animation-duration: 3s;
+          animation-duration: 3s;
+  -webkit-animation-timing-function: linear;
+     -moz-animation-timing-function: linear;
+          animation-timing-function: linear;
+  -webkit-animation-iteration-count: infinite;
+     -moz-animation-iteration-count: infinite;
+          animation-iteration-count: infinite;
+}
+        ]]></style>
+    </defs>
+	<g filter="url(#blur)" style="transform: translate(25%, 25%);">
+		<path d="M760.3,285.6c-3.1,0-4.6,0-7.7,0C711.3,195.3,621,132.5,515.3,132.5c-130.2,0-238.9,96.5-257.3,222c-15.3-4.6-32.2-7.7-49-7.7c-87.3,0-159.3,67.4-168.4,153.1h918.8C959.4,389.8,870.6,285.6,760.3,285.6z" fill="#57A0EE" stroke="white" stroke-linejoin="round" stroke-width="37"/>
+		<path class="am-weather-mist-1" d="M959.4,561.3H40.6C23.8,561.3,10,575,10,591.9s13.8,30.6,30.6,30.6h918.8c16.8,0,30.6-13.8,30.6-30.6S976.2,561.3,959.4,561.3z" fill="#C6DEFF" stroke="white" stroke-linejoin="round"/>
+		<path class="am-weather-mist-2" d="M898.1,683.8H132.5c-16.8,0-30.6,13.8-30.6,30.6s13.8,30.6,30.6,30.6h765.6c16.8,0,30.6-13.8,30.6-30.6S915,683.8,898.1,683.8z" fill="#C6DEFF" stroke="white" stroke-linejoin="round"/>
+		<path class="am-weather-mist-3" d="M438.8,806.3h-245c-16.8,0-30.6,13.8-30.6,30.6s13.8,30.6,30.6,30.6h245c16.8,0,30.6-13.8,30.6-30.6S455.6,806.3,438.8,806.3z" fill="#C6DEFF" stroke="white" stroke-linejoin="round"/>
+		<path class="am-weather-mist-4" d="M867.5,806.3H561.3c-16.8,0-30.6,13.8-30.6,30.6s13.8,30.6,30.6,30.6h306.3c16.8,0,30.6-13.8,30.6-30.6S884.3,806.3,867.5,806.3z" fill="#C6DEFF" stroke="white" stroke-linejoin="round"/>
+	</g>
+</svg>

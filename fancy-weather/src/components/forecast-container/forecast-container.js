@@ -1,7 +1,7 @@
 import getWeatherData from '../../js/api/open-weather-map-service';
 import {
   dateTimeFormatter,
-  getWeatherIconById,
+  getWeatherIconPathById,
   getWeatherDescriptionById,
   milesPerHourToMetersPerSecond,
 } from '../../js/utils/utils';
@@ -175,7 +175,7 @@ class ForecastContainer {
             index: new Date(dt * 1000).getUTCDay(),
             isShortFormat: false,
           }),
-          weatherIconClass: getWeatherIconById({
+          weatherIconPath: getWeatherIconPathById({
             iconId: weatherIcon,
           }),
           weatherDescriptionI18nAttr: getWeatherDescriptionById({
@@ -298,12 +298,12 @@ class ForecastContainer {
       humidity,
       temperature,
       windSpeed,
-      weatherIconClass,
+      weatherIconPath,
       weatherDescriptionI18nAttr,
     } = today;
 
     todayTemperatureEl.textContent = temperature;
-    todayStatusIconEl.textContent = weatherIconClass;
+    todayStatusIconEl.data = weatherIconPath;
     todayStatusDescriptionEl.dataset.i18n = weatherDescriptionI18nAttr;
     todayFeelsLikeEl.textContent = feelsLike;
     todayWindEl.textContent = windSpeed;
@@ -324,12 +324,12 @@ class ForecastContainer {
       const {
         temperature: temperatureItem,
         weekDayI18nAttr: weekDayI18nAttrItem,
-        weatherIconClass: weatherIconClassItem,
+        weatherIconPath: weatherIconPathItem,
       } = weekDayData;
 
       weekDayTitleEl.dataset.i18n = weekDayI18nAttrItem;
       weekDayTemperatureEl.textContent = temperatureItem;
-      weekDayStatusIconEl.textContent = weatherIconClassItem;
+      weekDayStatusIconEl.data = weatherIconPathItem;
     });
   }
 }

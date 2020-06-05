@@ -1,13 +1,17 @@
-const getWeatherIconById = ({ iconId, iconPrefix = 'weather' }) => {
+const getWeatherIconPathById = ({
+  iconId,
+  iconPrefix = 'amcharts-weather-icons',
+  extension = 'svg',
+}) => {
   const icons = {
-    '01d': 'clear-sky',
-    '01n': 'clear-sky',
-    '02d': 'few-clouds',
-    '02n': 'few-clouds',
-    '03d': 'scattered-clouds',
-    '03n': 'scattered-clouds',
-    '04d': 'broken-clouds',
-    '04n': 'broken-clouds',
+    '01d': 'clear-sky-day',
+    '01n': 'clear-sky-night',
+    '02d': 'few-clouds-day',
+    '02n': 'few-clouds-night',
+    '03d': 'cloudy',
+    '03n': 'cloudy',
+    '04d': 'cloudy',
+    '04n': 'cloudy',
     '09d': 'shower-rain',
     '09n': 'shower-rain',
     '10d': 'rain',
@@ -19,9 +23,9 @@ const getWeatherIconById = ({ iconId, iconPrefix = 'weather' }) => {
     '50d': 'mist',
     '50n': 'mist',
   };
-  const chosenIcon = `${iconPrefix}_${icons[iconId]}`;
+  const iconPath = `/assets/icons/${iconPrefix}/${icons[iconId]}.${extension}`;
 
-  return chosenIcon;
+  return iconPath;
 };
 
 const getWeatherDescriptionById = ({
@@ -118,7 +122,7 @@ const dateTimeFormatter = {
 };
 
 module.exports = {
-  getWeatherIconById,
+  getWeatherIconPathById,
   getWeatherDescriptionById,
   dateTimeFormatter,
   temperatureUnitsConverter,

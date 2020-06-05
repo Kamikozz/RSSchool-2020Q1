@@ -79,7 +79,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     width: 100%;
 
     @include for-small-phone { margin-left: 16px; }
@@ -93,6 +93,15 @@
     }
     line-height: 3.7rem;
     text-transform: uppercase;
+  }
+
+  &__weather-status-icon {
+    width: 64px;
+    height: 64px;
+
+    user-select: none;
+
+    transform: scale(3) translate(30%, 10%);
   }
 
   // Forecast for 3 days
@@ -121,9 +130,10 @@
   }
 
   &__weather-status-small-icon {
-    width: 50%;
+    width: 64px;
+    height: 64px;
 
-    margin-left: 5px;
+    user-select: none;
   }
 
   &__temperature-small {
