@@ -1,4 +1,4 @@
-import { yandexMapsLoad } from '../../js/api/yandex-maps-service';
+import yandexMapsLoad from '../../js/api/yandex-maps-service';
 import { converterDMS } from '../../js/utils/utils';
 import getOpenCageData from '../../js/api/open-cage-data-service';
 
@@ -32,11 +32,10 @@ class MyMap {
     // eslint-disable-next-line no-undef
     this.ymaps = ymaps;
 
-    // Не теряем контекст класса
-    const boundYandexMapsInit = this.yandexMapsInit.bind(this);
     // Функция ymaps.ready() будет вызвана, когда загрузятся все компоненты API,
     // а также когда будет готово DOM-дерево
-    this.ymaps.ready(boundYandexMapsInit);
+    await this.ymaps.ready();
+    await this.yandexMapsInit();
   }
 
   initElements() {
@@ -209,12 +208,6 @@ class MyMap {
    * @param {String} lang язык, на котором API будет пытаться выдать результаты (название города)
    */
   async searchCity(query, lang = 'en') {
-    if (!query.length) {
-      return;
-    }
-
-    let error;
-
     const onError = (err) => {
       console.error('Ошибка', err);
     };
@@ -226,15 +219,13 @@ class MyMap {
       const isSuccessRequest = status.code === 200;
 
       if (!isSuccessRequest) {
-        error = new Error(status.message);
-        throw error;
+        throw new Error(status.message);
       }
 
       const { total_results: totalResults } = result;
 
       if (!totalResults) {
-        error = new Error('Ничего не найдено');
-        throw error;
+        throw new Error('Ничего не найдено');
       }
 
       const { results } = result;
@@ -243,9 +234,18 @@ class MyMap {
       return [formatted, [latitude, longitude]];
     };
 
+    let error;
     let openCageData;
 
     try {
+      if (!query.length) {
+        throw new Error('Введена пустая строка!');
+      }
+
+      if (!navigator.online) {
+        throw new Error('Отсутствует подключение к интернету!');
+      }
+
       const result = await getOpenCageData(query, lang);
 
       openCageData = geocodingOnSuccess(result);

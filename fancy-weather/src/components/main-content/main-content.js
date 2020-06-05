@@ -47,6 +47,7 @@ class MainContent {
     // Forecast Component
     this.forecast = new ForecastContainer({
       i18n: this.i18n,
+      map: this.map,
     });
 
     await this.forecast.init();
