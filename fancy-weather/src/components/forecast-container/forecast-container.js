@@ -118,7 +118,7 @@ class ForecastContainer {
     let weatherData;
 
     try {
-      if (!navigator.online) {
+      if (!navigator.onLine) {
         throw new Error('Отсутствует подключение к интернету!');
       }
 

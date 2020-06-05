@@ -242,7 +242,7 @@ class MyMap {
         throw new Error('Введена пустая строка!');
       }
 
-      if (!navigator.online) {
+      if (!navigator.onLine) {
         throw new Error('Отсутствует подключение к интернету!');
       }
 
