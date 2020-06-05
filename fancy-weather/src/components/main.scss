@@ -33,8 +33,7 @@ body {
 
   @include for-small-phone { padding: 0 10px; }
   @include for-tablet { padding: 0 30px; }
-  @include for-desktop { padding: 0 30px; }
-  @include for-big-desktop { padding: 0 90px; }
+  @include for-desktop { padding: 0 90px; }
 }
 
 @import "./main-content/main-content";

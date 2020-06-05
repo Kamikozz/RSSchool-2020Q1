@@ -9,7 +9,7 @@
       align-items: center;
     }
 
-    @include for-desktop {
+    @include for-big-desktop {
       flex-direction: row;
       justify-content: space-between;
     }
@@ -144,9 +144,5 @@
 
   &__map-container {
     margin-top: 25px;
-
-    @include for-desktop {
-      margin-top: initial;
-    }
   }
 }

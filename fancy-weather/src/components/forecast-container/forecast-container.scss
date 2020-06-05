@@ -1,13 +1,24 @@
 .forecast-container {
   & {
-    width: 100%;
-    max-width: 600px;
-
     color: $default-color;
     font: {
       weight: 700;
     }
+
+    @include for-small-phone {
+      max-width: 100%;
+      text-align: center;
+    }
+
+    @include for-tablet {
+      text-align: initial;
+    }
+
+    @include for-big-desktop {
+      max-width: 600px;
+    }
   }
+
   &__city {
     max-height: calc(5.4rem * 3); // max 3 lines will be visible to the user
 
@@ -19,6 +30,14 @@
     overflow-wrap: break-word;
     overflow: hidden;
     text-overflow: ellipsis;
+
+    @include for-small-phone {
+      justify-content: center;
+    }
+
+    @include for-tablet {
+      justify-content: initial;
+    }
   }
 
   &__datetime {
@@ -29,6 +48,14 @@
       size: 2.4rem;
     }
     line-height: 2.9rem;
+
+    @include for-small-phone {
+      justify-content: center;
+    }
+
+    @include for-tablet {
+      justify-content: initial;
+    }
   }
 
   &__time {
@@ -46,6 +73,13 @@
     @include for-tablet {
       flex-direction: row;
       align-items: initial;
+      width: 80%;
+      margin: 0 auto;
+    }
+
+    @include for-big-desktop {
+      width: initial;
+      margin: initial;
     }
   }
 
@@ -60,6 +94,14 @@
     @include for-phone {
       font-size: 25.6rem; // 30.6rem;
       line-height: 40rem; // 37.3rem;
+    }
+
+    @include for-tablet {
+      width: 100%;
+    }
+
+    @include for-big-desktop {
+      width: initial;
     }
   }
 
@@ -81,10 +123,6 @@
     justify-content: space-between;
     align-items: flex-start;
     width: 100%;
-
-    @include for-small-phone { margin-left: 16px; }
-    @include for-big-desktop { margin-left: 32px; }
-
     padding-bottom: 80px;
 
     font: {
@@ -93,6 +131,19 @@
     }
     line-height: 3.7rem;
     text-transform: uppercase;
+
+    @include for-small-phone {
+      margin-left: 16px;
+      align-items: center;
+    }
+
+    @include for-tablet {
+      align-items: initial;
+    }
+
+    @include for-big-desktop {
+      margin-left: 32px;
+    }
   }
 
   &__weather-status-icon {
@@ -102,6 +153,16 @@
     user-select: none;
 
     transform: scale(3) translate(30%, 10%);
+
+    @include for-small-phone {
+      margin-bottom: 40px;
+      transform: scale(3);
+    }
+
+    @include for-tablet {
+      margin-bottom: 0;
+      transform: scale(3) translate(30%, 10%);
+    }
   }
 
   // Forecast for 3 days
@@ -114,8 +175,25 @@
       align-items: center;
     }
 
-    @include for-phone {
+    @include for-tablet {
       flex-direction: row;
+      width: 80%;
+      margin: 0 auto;
+    }
+
+    @include for-big-desktop {
+      width: initial;
+      margin: initial;
+    }
+  }
+
+  &__week-day {
+    @include for-small-phone {
+      margin-bottom: 50px;
+    }
+
+    @include for-tablet {
+      margin-bottom: initial;
     }
   }
 
@@ -154,5 +232,12 @@
     font: {
       size: 0.8em;
     }
+  }
+}
+
+.weather-properties {
+  &__item {
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 }
