@@ -3,6 +3,7 @@ import {
   dateTimeFormatter,
   getWeatherIconById,
   getWeatherDescriptionById,
+  milesPerHourToMetersPerSecond,
 } from '../../js/utils/utils';
 
 class ForecastContainer {
@@ -169,7 +170,7 @@ class ForecastContainer {
           feelsLike: Number(feelsLike).toFixed(precision),
           humidity,
           temperature: Number(temp).toFixed(precision),
-          windSpeed,
+          windSpeed: this.isFahrenheit ? milesPerHourToMetersPerSecond(windSpeed, 2) : windSpeed,
           weekDayI18nAttr: dateTimeFormatter.getWeekDayByIndex({
             index: new Date(dt * 1000).getUTCDay(),
             isShortFormat: false,

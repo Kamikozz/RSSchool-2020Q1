@@ -53,6 +53,20 @@ const temperatureUnitsConverter = (temperature, toFahrenheit, precision = 1) => 
 };
 
 /**
+ * Converts the given miles per hour (mph) to meters per second (ms).
+ * @param {Number} milesPerHour miles per hour (1 mile = 1609.34 meters)
+ * @param {Number} precision number of signs after comma which will remain after .toFixed()
+ * @returns {Number} rounded number of meters per second
+ */
+const milesPerHourToMetersPerSecond = (milesPerHour, precision = 0) => {
+  const METERS_IN_MILE = 1609.34;
+  const SECONDS_IN_HOUR = 60 * 60;
+  const metersPerSecond = milesPerHour * (METERS_IN_MILE / SECONDS_IN_HOUR);
+
+  return metersPerSecond.toFixed(precision);
+};
+
+/**
  * Converts given number of decimal degrees into DMS format (degrees, minutes, seconds).
  * @param {Number|String} decimalDegrees number of decimal degrees
  * @param {Number} precision seconds rounding precision
@@ -108,5 +122,6 @@ module.exports = {
   getWeatherDescriptionById,
   dateTimeFormatter,
   temperatureUnitsConverter,
+  milesPerHourToMetersPerSecond,
   converterDMS,
 };
