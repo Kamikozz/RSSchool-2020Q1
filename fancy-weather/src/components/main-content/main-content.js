@@ -188,7 +188,7 @@ class MainContent {
 
     const isDifferentLanguage = currentLanguage !== targetLanguage;
 
-    if (isDifferentLanguage || isInit) {
+    const makeVisualChanges = () => {
       const { innerText: text } = selectedOption;
 
       selectBoxSelected.value = text;
@@ -205,8 +205,20 @@ class MainContent {
       const { selectBoxSelectedIcon } = this.elements;
 
       selectBoxSelectedIcon.classList.value = newIconClasses;
+    };
 
-      await this.i18n.changeLanguage(targetLanguage);
+    if (!isInit) {
+      const isValidToChangeLanguage = await this.i18n.changeLanguage(targetLanguage);
+
+      if (isValidToChangeLanguage) {
+        makeVisualChanges();
+      }
+
+      return isValidToChangeLanguage;
+    }
+
+    if (isDifferentLanguage || isInit) {
+      makeVisualChanges();
     }
 
     return isDifferentLanguage;

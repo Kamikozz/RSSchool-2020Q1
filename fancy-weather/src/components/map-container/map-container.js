@@ -218,7 +218,7 @@ class MyMap {
       const { total_results: totalResults } = result;
 
       if (!totalResults) {
-        throw new Error('Ничего не найдено');
+        throw new Error(errorHandler.ERROR_STATUSES.NOT_FOUND);
       }
 
       const { results } = result;

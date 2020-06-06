@@ -77,5 +77,7 @@
   "weather_description_900": "Неизвестные осадки",
 
   "error_no_connection": "Отсутствует подключение к интернету!",
-  "error_empty_query": "Введена пустая строка!"
+  "error_empty_query": "Введена пустая строка!",
+  "error_not_found": "По данному запросу ничего не найдено!",
+  "error_unsplash_images_exceeded_limit": "Исчерпан лимит изображений на этот час!"
 }

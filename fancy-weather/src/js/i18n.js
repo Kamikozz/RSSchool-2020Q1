@@ -1,3 +1,4 @@
+import errorHandler from './error-handler';
 
 const processValue = (value) => String(value).toLowerCase();
 
@@ -60,12 +61,27 @@ class I18N {
     const isDifferentLanguage = this.currentLanguage !== processedLanguage;
 
     if (isDifferentLanguage) {
-      localStorage.setItem(this.localStorageKeyPageLanguage, processedLanguage);
-      await this.cacheLanguage(processedLanguage);
-      this.currentLanguage = processedLanguage; // change private property to the new language
-      document.documentElement.lang = this.currentLanguage; // change <html>'s "lang" attribute
+      let isNotError = true;
 
-      this.update(); // update all of the elements with "i18n" data-attribute
+      try {
+        if (!navigator.onLine) {
+          throw new Error(errorHandler.ERROR_STATUSES.NO_CONNECTION);
+        }
+
+        localStorage.setItem(this.localStorageKeyPageLanguage, processedLanguage);
+
+        await this.cacheLanguage(processedLanguage);
+        this.currentLanguage = processedLanguage; // change private property to the new language
+        document.documentElement.lang = this.currentLanguage; // change <html>'s "lang" attribute
+
+        this.update(); // update all of the elements with "i18n" data-attribute
+      } catch (err) {
+        errorHandler.handle(err.message);
+
+        isNotError = false;
+      }
+
+      return isNotError;
     }
 
     return isDifferentLanguage;
