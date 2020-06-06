@@ -1,6 +1,7 @@
 import yandexMapsLoad from '../../js/api/yandex-maps-service';
 import { converterDMS } from '../../js/utils/utils';
 import getOpenCageData from '../../js/api/open-cage-data-service';
+import errorHandler from '../../js/error-handler';
 
 class MyMap {
   constructor(props = {}) {
@@ -125,10 +126,6 @@ class MyMap {
 
       return userCoordinates;
     };
-    const onError = (err) => {
-      console.error('Ошибка', err);
-      this.searchCity('Moscow');
-    };
 
     // Получение местоположения пользователя
     let coordinates;
@@ -138,7 +135,7 @@ class MyMap {
 
       coordinates = await onSuccess(result);
     } catch (err) {
-      onError(err);
+      errorHandler.handle(err.message);
     }
 
     return coordinates;
@@ -208,10 +205,6 @@ class MyMap {
    * @param {String} lang язык, на котором API будет пытаться выдать результаты (название города)
    */
   async searchCity(query, lang = 'en') {
-    const onError = (err) => {
-      console.error('Ошибка', err);
-    };
-
     // Прямое/обратное гео-кодирование (поиск по названию/координатам/ZIP-коду)
     const geocodingOnSuccess = (result) => {
       const { status } = result;
@@ -239,19 +232,20 @@ class MyMap {
 
     try {
       if (!query.length) {
-        throw new Error('Введена пустая строка!');
+        throw new Error(errorHandler.ERROR_STATUSES.EMPTY_QUERY);
       }
 
       if (!navigator.onLine) {
-        throw new Error('Отсутствует подключение к интернету!');
+        throw new Error(errorHandler.ERROR_STATUSES.NO_CONNECTION);
       }
 
       const result = await getOpenCageData(query, lang);
 
       openCageData = geocodingOnSuccess(result);
     } catch (err) {
-      onError(err);
-      error = new Error(err.message);
+      error = err;
+
+      errorHandler.handle(err.message);
     }
 
     if (!error) {

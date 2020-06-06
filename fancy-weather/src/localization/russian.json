@@ -74,5 +74,8 @@
   "weather_description_802": "Переменная облачность",
   "weather_description_803": "Облачно с прояснениями",
   "weather_description_804": "Пасмурно",
-  "weather_description_900": "Неизвестные осадки"
+  "weather_description_900": "Неизвестные осадки",
+
+  "error_no_connection": "Отсутствует подключение к интернету!",
+  "error_empty_query": "Введена пустая строка!"
 }

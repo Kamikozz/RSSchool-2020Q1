@@ -74,5 +74,8 @@
   "weather_description_802": "Scattered clouds",
   "weather_description_803": "Broken clouds",
   "weather_description_804": "Overcast clouds",
-  "weather_description_900": "Unknown Precipitation"
+  "weather_description_900": "Unknown Precipitation",
+
+  "error_no_connection": "No internet connection!",
+  "error_empty_query": "Empty string entered!"
 }

@@ -74,5 +74,8 @@
   "weather_description_802": "Пераменная воблачнасць",
   "weather_description_803": "Пагодна",
   "weather_description_804": "Пахмурна",
-  "weather_description_900": "Невядомыя ападкі"
+  "weather_description_900": "Невядомыя ападкі",
+
+  "error_no_connection": "Адсутнічае падлучэнне да інтэрнэту!",
+  "error_empty_query": "Ўведзена пустая радок!"
 }

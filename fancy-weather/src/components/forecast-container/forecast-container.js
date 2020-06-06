@@ -5,6 +5,7 @@ import {
   getWeatherDescriptionById,
   milesPerHourToMetersPerSecond,
 } from '../../js/utils/utils';
+import errorHandler from '../../js/error-handler';
 
 class ForecastContainer {
   constructor(props) {
@@ -107,7 +108,6 @@ class ForecastContainer {
   }
 
   async getForecastData() {
-    const onError = (err) => console.error('Ошибка: ', err);
     const onSuccess = async (result) => {
       console.log(result);
 
@@ -134,15 +134,15 @@ class ForecastContainer {
 
     try {
       if (!navigator.onLine) {
-        throw new Error('Отсутствует подключение к интернету!');
+        throw new Error(errorHandler.ERROR_STATUSES.NO_CONNECTION);
       }
 
       const result = await getWeatherData(latitude, longitude, language, units);
 
       weatherData = await onSuccess(result);
     } catch (err) {
-      onError(err);
-      error = new Error(err.message);
+      errorHandler.handle(err.message);
+      error = err;
     }
 
     let ret;
