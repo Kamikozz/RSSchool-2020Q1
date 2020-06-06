@@ -1,11 +1,11 @@
 const Autoprefixer = require('autoprefixer');
-const CssMqpacker = require('css-mqpacker');
+// const CssMqpacker = require('css-mqpacker');
 const CssNano = require('cssnano');
 
 module.exports = {
   plugins: [
     Autoprefixer,
-    CssMqpacker,
+    // CssMqpacker,
     CssNano({
       preset: [
         'default', {

@@ -13,17 +13,24 @@ html {
 
 body {
   min-width: $small-phone-width;
-  height: 100vh;
 
   font: {
     family: $main-font;
     weight: $main-font-weight;
   }
 
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(10px);
   overflow-x: hidden;
 
   background-color: $primary-color; // #226912;
+
+  @include for-small-phone {
+    height: 100%;
+  }
+
+  @include for-big-desktop {
+    height: 100vh;
+  }
 }
 
 .wrapper {
