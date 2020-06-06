@@ -19,6 +19,7 @@ class MainContent {
       UNITS_SWITCHER: 'units-switcher',
       UNITS_SWITCHER_UNIT_ACTIVE: 'units-switcher__unit_active',
       UNITS_SWITCHER_UNIT_TEMP_FAHRENHEIT: 'units-switcher__unit_temp_fahrenheit',
+      UNITS_SWITCHER_UNIT_TEMP_CENTIGRADE: 'units-switcher__unit_temp_centigrade',
       FORECAST_CONTAINER_TEMPERATURE_VALUE: 'forecast-container__temperature-value',
       FORECAST_CONTAINER_FEELS_LIKE_VALUE: 'forecast-container__feels-like-value',
     };
@@ -32,7 +33,6 @@ class MainContent {
   async init() {
     this.initElements();
     this.initHandlers();
-    await this.restoreState(true);
 
     // Initialization
     // Создание экземпляра примера ради
@@ -46,12 +46,15 @@ class MainContent {
 
     // Forecast Component
     this.forecast = new ForecastContainer({
+      localStorageKeyPageUnits: 'pageUnits', // to recover page units after refreshing
       i18n: this.i18n,
       map: this.map,
     });
 
     await this.forecast.init();
     this.forecast.updateCity(this.map.city);
+
+    await this.restoreState(true);
 
     const [searchButton] = document
       .getElementsByClassName('search-box__button speech-recognition-button');
@@ -156,13 +159,9 @@ class MainContent {
       const isActive = target.classList.contains(UNITS_SWITCHER_UNIT_ACTIVE);
 
       if (!isActive) {
-        const { children: units } = unitsSwitcher;
-
-        units.forEach((el) => el.classList.toggle(UNITS_SWITCHER_UNIT_ACTIVE));
-
         const isFahrenheit = target.classList.contains(UNITS_SWITCHER_UNIT_TEMP_FAHRENHEIT);
 
-        this.forecast.isFahrenheit = isFahrenheit;
+        this.forecast.changeUnits(target, isFahrenheit);
 
         const {
           FORECAST_CONTAINER_TEMPERATURE_VALUE, FORECAST_CONTAINER_FEELS_LIKE_VALUE,
@@ -221,15 +220,40 @@ class MainContent {
     const currentLanguage = localStorage.getItem(this.i18n.localStorageKeyPageLanguage);
 
     if (currentLanguage) {
-      const [{ children: [...languages] }] = document.getElementsByClassName('select-box__options');
-      const currentLanguageElement = languages.find((item) => {
-        const { dataset: { lang } } = item;
+      // Restore Select Box State
+      const { selectBoxOptions } = this.elements;
+      const { children: [...optionsElements] } = selectBoxOptions;
+      const currentLanguageElement = optionsElements.find((option) => {
+        const { dataset: { lang } } = option; // get 'lang' data-attribute
         const isLanguageEqual = lang === currentLanguage;
 
         return isLanguageEqual;
       });
 
       await this.changeSelectedOption(currentLanguageElement, isInit);
+    }
+
+    const currentUnits = localStorage.getItem('pageUnits');
+
+    if (currentUnits) {
+      // Restore Units State
+      const {
+        UNITS_SWITCHER_UNIT_TEMP_FAHRENHEIT,
+        UNITS_SWITCHER_UNIT_TEMP_CENTIGRADE,
+      } = this.classes;
+      const { unitsSwitcher } = this.elements;
+      const { children: [...unitsElements] } = unitsSwitcher;
+      const isFahrenheit = currentUnits === 'fahrenheit';
+      const classNameToFind = isFahrenheit
+        ? UNITS_SWITCHER_UNIT_TEMP_FAHRENHEIT
+        : UNITS_SWITCHER_UNIT_TEMP_CENTIGRADE;
+      const currentUnitElement = unitsElements.find((unit) => {
+        const isTargetUnit = unit.classList.contains(classNameToFind);
+
+        return isTargetUnit;
+      });
+
+      this.forecast.changeUnits(currentUnitElement, isFahrenheit);
     }
   }
 }

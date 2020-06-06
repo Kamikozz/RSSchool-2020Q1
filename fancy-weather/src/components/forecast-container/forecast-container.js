@@ -26,21 +26,35 @@ class ForecastContainer {
       FORECAST_WIND_VALUE: 'forecast-container__wind-value',
       FORECAST_HUMIDITY_VALUE: 'forecast-container__humidity-value',
       FORECAST_WEEK_DAY_TITLE: 'forecast-container__week-day-title',
+      UNITS_SWITCHER_UNIT_ACTIVE: 'units-switcher__unit_active',
+      UNITS_SWITCHER_UNIT_TEMP_FAHRENHEIT: 'units-switcher__unit_temp_fahrenheit',
     };
     this.elements = {};
     this.i18n = props.i18n;
     this.map = props.map;
+    this.localStorageKeyPageUnits = props.localStorageKeyPageUnits;
     this.dateTime = {
       date: null, // Date object which will store current time: Date
       timeZoneOffset: null, // number of milliseconds (eg. 10800000): Number
       timestamp: null, // time in UNIX-format: Number
     };
     this.timerId = null;
-    this.isFahrenheit = false;
+    this.isFahrenheit = null;
   }
 
   async init() {
     this.initElements();
+
+    const pageUnits = localStorage.getItem(this.localStorageKeyPageUnits);
+    const isUndefined = pageUnits === undefined;
+
+    if (isUndefined) {
+      this.isFahrenheit = false;
+    } else {
+      const isFahrenheit = pageUnits === 'fahrenheit';
+
+      this.isFahrenheit = isFahrenheit;
+    }
 
     await this.getForecast();
   }
@@ -331,6 +345,26 @@ class ForecastContainer {
       weekDayTemperatureEl.textContent = temperatureItem;
       weekDayStatusIconEl.data = weatherIconPathItem;
     });
+  }
+
+  changeUnits(targetUnitsElement, toFahrenheit) {
+    const {
+      UNITS_SWITCHER_UNIT_ACTIVE,
+    } = this.classes;
+    const isActiveUnit = targetUnitsElement.classList.contains(UNITS_SWITCHER_UNIT_ACTIVE);
+
+    if (!isActiveUnit) {
+      const unitsSwitcher = targetUnitsElement.parentElement;
+      const { children: units } = unitsSwitcher;
+
+      units.forEach((el) => el.classList.toggle(UNITS_SWITCHER_UNIT_ACTIVE));
+
+      this.isFahrenheit = toFahrenheit;
+
+      const pageUnitsToSet = toFahrenheit ? 'fahrenheit' : 'centigrade';
+
+      localStorage.setItem('pageUnits', pageUnitsToSet);
+    }
   }
 }
 
