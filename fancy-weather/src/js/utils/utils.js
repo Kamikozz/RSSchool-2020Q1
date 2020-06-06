@@ -121,6 +121,37 @@ const dateTimeFormatter = {
   },
 };
 
+const isSouthernHemisphere = (latitude) => latitude < 0;
+const getDayTime = (date, formatter) => {
+  const hours = date.getUTCHours();
+
+  const START_DAYTIME = 6;
+  const END_DAYTIME = 21;
+  const isDayTime = hours >= START_DAYTIME && hours < END_DAYTIME;
+
+  return formatter(isDayTime);
+};
+
+const getSeasonOfYear = (date, latitude = 0) => {
+  const SEASONS = ['winter', 'spring', 'summer', 'fall'];
+  const MONTHS_IN_SEASON = 3;
+  const month = date.getUTCMonth() + 1; // get month index and normalize him into human readable idx
+  // normalize number into seasons' order and normalize this data into SEASONS' array index
+  let seasonIndex = Math.floor(month / MONTHS_IN_SEASON) % SEASONS.length;
+
+  if (isSouthernHemisphere(latitude)) {
+    // fall = spring, summer = winter
+    const MONTHS_SOUTHERN_SHIFT = 2;
+
+    // shift months & get normalized SEASONS' array index
+    seasonIndex = (seasonIndex + MONTHS_SOUTHERN_SHIFT) % SEASONS.length;
+  }
+
+  const season = SEASONS[seasonIndex];
+
+  return season;
+};
+
 module.exports = {
   getWeatherIconPathById,
   getWeatherDescriptionById,
@@ -128,4 +159,7 @@ module.exports = {
   temperatureUnitsConverter,
   milesPerHourToMetersPerSecond,
   converterDMS,
+  isSouthernHemisphere,
+  getDayTime,
+  getSeasonOfYear,
 };

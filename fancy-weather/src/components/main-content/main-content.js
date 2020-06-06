@@ -1,6 +1,7 @@
 import ForecastContainer from '../forecast-container/forecast-container';
 import MapContainer from '../map-container/map-container';
-import { temperatureUnitsConverter } from '../../js/utils/utils';
+import utils from '../../js/utils/utils';
+import background from '../../js/background';
 
 class MainContent {
   constructor(props) {
@@ -53,6 +54,14 @@ class MainContent {
 
     await this.forecast.init();
     this.forecast.updateCity(this.map.city);
+
+    const { dateTime, map: { latitude } } = this.forecast;
+    const query = background.getBackgroundSearchQuery({
+      dateTime,
+      latitude,
+    });
+
+    await background.changeBackground(query);
 
     await this.restoreState(true);
 
@@ -125,10 +134,16 @@ class MainContent {
 
     // Refresh Button Component
     refreshButton.addEventListener('click', async () => {
+      const { dateTime, map: { latitude } } = this.forecast;
+      const query = background.getBackgroundSearchQuery({
+        dateTime,
+        latitude,
+      });
+
       const svgIconElement = refreshButton.firstElementChild;
 
       svgIconElement.classList.toggle(REFRESH_BUTTON_ICON_ACTIVE);
-      await this.forecast.getForecast();
+      await background.changeBackground(query);
       svgIconElement.classList.toggle(REFRESH_BUTTON_ICON_ACTIVE);
     });
 
@@ -175,7 +190,7 @@ class MainContent {
           const element = el;
           const { textContent: temperature } = element;
 
-          element.textContent = temperatureUnitsConverter(temperature, isFahrenheit, 0);
+          element.textContent = utils.temperatureUnitsConverter(temperature, isFahrenheit, 0);
         });
       }
     });
