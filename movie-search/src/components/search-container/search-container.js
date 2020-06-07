@@ -99,7 +99,8 @@ class SearchContainer {
     const [speechRecognitionButton] = root.getElementsByClassName(SPEECH_RECOGNITION_BUTTON);
     const [searchInfoMessage] = root.getElementsByClassName(SEARCH_INFO_MESSAGE);
 
-    Object.assign(this.elements, {
+    this.elements = {
+      ...this.elements,
       searchField,
       searchBox,
       searchButton,
@@ -107,13 +108,16 @@ class SearchContainer {
       clearButton,
       keyboardButton,
       speechRecognitionButton,
-    });
+    };
   }
 
   initHandlers() {
     const {
       searchField,
-      searchButton, clearButton, keyboardButton, speechRecognitionButton,
+      searchButton,
+      clearButton,
+      keyboardButton,
+      speechRecognitionButton,
     } = this.elements;
 
     searchField.focus(); // trigger focus on component load

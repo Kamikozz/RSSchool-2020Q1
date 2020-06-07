@@ -71,11 +71,12 @@ class Footer {
     const [logoRotatingText] = logoRss.getElementsByClassName(this.classes.IMAGE_ACTIVE);
     const [logoGithub] = el.root.getElementsByClassName(this.classes.GITHUB_LOGO_CONTAINER);
 
-    Object.assign(this.elements, {
+    this.elements = {
+      ...this.elements,
       logoRss,
       logoRotatingText,
       logoGithub,
-    });
+    };
   }
 
   initHandlers() {

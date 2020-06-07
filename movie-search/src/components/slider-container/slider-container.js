@@ -90,9 +90,10 @@ class SliderContainer {
     } = this.classes;
     const [sliderPreloader] = root.getElementsByClassName(SLIDER_PRELOADER);
 
-    Object.assign(this.elements, {
+    this.elements = {
+      ...this.elements,
       sliderPreloader,
-    });
+    };
   }
 
   initHandlers() {

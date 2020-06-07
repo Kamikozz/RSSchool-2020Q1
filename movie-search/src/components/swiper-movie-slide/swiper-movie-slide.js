@@ -33,10 +33,18 @@ class SwiperMovieSlide {
     // get manually the image (to prevent 404 not found, and at least to set the default image)
     const { defaultPosterImage: noPoster } = this.data;
     const imageSrc = hasData(poster, 'N/A') ? await getImage(poster, noPoster) : noPoster;
+    const coloredRating = getRatingColor(imdbRating);
 
-    Object.assign(this.data, {
-      title, year, imageSrc, imdbID, genre, imdbRating, ratingColor: getRatingColor(imdbRating),
-    });
+    this.data = {
+      ...this.data,
+      title,
+      year,
+      imageSrc,
+      imdbID,
+      genre,
+      imdbRating,
+      ratingColor: coloredRating,
+    };
   }
 
   render() {
@@ -44,7 +52,13 @@ class SwiperMovieSlide {
 
     const { ROOT } = this.classes;
     const {
-      imdbID, title, imageSrc, year, genre, imdbRating, ratingColor,
+      imdbID,
+      title,
+      imageSrc,
+      year,
+      genre,
+      imdbRating,
+      ratingColor,
     } = this.data;
 
     template.innerHTML = `
@@ -81,10 +95,11 @@ class SwiperMovieSlide {
     const [slideImage] = root.getElementsByClassName(SLIDE_IMAGE);
     const [preloader] = root.getElementsByClassName(SLIDE_PRELOADER);
 
-    Object.assign(this.elements, {
+    this.elements = {
+      ...this.elements,
       slideImage,
       preloader,
-    });
+    };
   }
 
   initHandlers() {
