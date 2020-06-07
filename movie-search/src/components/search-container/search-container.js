@@ -127,14 +127,14 @@ class SearchContainer {
     clearButton.addEventListener('click', this.handlerClearInputButton.bind(this));
     keyboardButton.addEventListener('click', this.handlerKeyboardButton.bind(this));
     searchField.addEventListener('keydown', (event) => {
-      const isEnter = event.code === 'Enter';
+      const isEnter = event.key === 'Enter';
 
       if (isEnter) {
         event.preventDefault();
       }
     });
     searchField.addEventListener('keyup', (event) => {
-      const isEnter = event.code === 'Enter';
+      const isEnter = event.key === 'Enter';
 
       if (isEnter) {
         this.handlerSearchButton();
