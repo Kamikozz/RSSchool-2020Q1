@@ -124,15 +124,17 @@
       opacity: 1;
       transition: opacity 0.2s ease-out;
     }
+
+    &_disabled {
+      opacity: 0.35;
+    }
   }
 }
 
 .clear-button {
   & {
-    padding: {
-      right: 5px;
-      left: 5px;
-    }
+    padding: 0 5px;
+    fill: rgba(255, 255, 255, 0.4);
   }
 }
 
@@ -144,23 +146,15 @@
   }
 }
 
-.keyboard-button {
-  & {
-    padding: {
-      right: 5px;
-      left: 5px;
-    }
-  }
-}
-
 .search-button {
   & {
     position: initial;
 
-    padding: {
-      right: 15px;
-      left: 15px;
-    }
+    padding: 0 15px;
+
+    fill: rgba(255, 255, 255, 1);
+
+    border: 1px solid rgba(228,227,227,.2);
 
     border: {
       left: 1px solid rgba(0, 0, 0, 0.35);

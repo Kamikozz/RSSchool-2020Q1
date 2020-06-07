@@ -1,5 +1,6 @@
 import ForecastContainer from '../forecast-container/forecast-container';
 import MapContainer from '../map-container/map-container';
+import SearchContainer from '../search-container/search-container';
 import utils from '../../js/utils/utils';
 import background from '../../js/background';
 
@@ -60,24 +61,13 @@ class MainContent {
 
     await this.restoreState(true);
 
-    const [searchButton] = document
-      .getElementsByClassName('search-box__button speech-recognition-button');
-    const [searchField] = document
-      .getElementsByClassName('search-box__search-field');
-
-    searchButton.addEventListener('click', async (e) => {
-      e.preventDefault();
-
-      const { value: text } = searchField;
-
-      this.forecast.data = {
-        timeZone: text,
-      };
-
-      await myMapContainer.searchCity(text, this.i18n.currentLanguage);
-      this.forecast.updateCity(this.map.city);
-      await this.forecast.getForecast();
+    const searchContainer = new SearchContainer({
+      parent: this,
+      // parentEl: this.elements.root.firstElementChild,
     });
+
+    searchContainer.init();
+    this.search = searchContainer;
   }
 
   initElements() {
