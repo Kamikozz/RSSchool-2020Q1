@@ -1,5 +1,6 @@
 import I18N from '../js/i18n';
 import MainContent from './main-content/main-content';
+import { performRequests } from '../js/utils/perform-requests';
 
 // i18n initialization
 const i18n = new I18N();
@@ -32,12 +33,11 @@ const mainContent = new MainContent({ i18n });
 const mainContentInitializationPromise = mainContent.init();
 
 // Wait until all of the classes/elements/map/search/etc. loaded & then remove loader
-Promise
-  .all([
-    i18nInitializationPromise, mainContentInitializationPromise,
-  ])
-  .then(() => {
-    document.body.style.removeProperty('pointer-events');
+performRequests({
+  promises: [i18nInitializationPromise, mainContentInitializationPromise],
+  preloaderEl: document.getElementsByClassName('preloader')[0],
+  callback: () => {
     document.body.style.removeProperty('overflow');
-    document.body.style.opacity = '1';
-  });
+    mainContent.elements.root.classList.remove('main-content_loading');
+  },
+});

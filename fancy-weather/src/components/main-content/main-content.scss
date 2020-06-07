@@ -3,6 +3,12 @@
     padding: 40px 0;
   }
 
+  &_loading {
+    opacity: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
   &__main-container {
     @include for-small-phone {
       flex-direction: column;
