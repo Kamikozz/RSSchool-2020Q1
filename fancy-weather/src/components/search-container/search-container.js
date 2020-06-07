@@ -19,6 +19,7 @@ class SearchContainer {
       searchQuery: '',
     };
     this.speechRecognition = null;
+    this.isSpeechRecognitionStarted = null;
   }
 
   async init() {
@@ -26,8 +27,10 @@ class SearchContainer {
     const SpeechRecognition = window.webkitSpeechRecognition;
 
     this.speechRecognition = new SpeechRecognition();
-    this.speechRecognition.lang = 'ru-RU'; // en-US
+    this.speechRecognition.lang = 'en-US'; // en-US
     this.speechRecognition.maxAlternatives = 1;
+    this.speechRecognition.continuous = true;
+    this.isSpeechRecognitionStarted = false;
 
     this.initElements();
     this.initHandlers();
@@ -88,10 +91,7 @@ class SearchContainer {
     );
     this.speechRecognition.addEventListener('result', this.speechRecognize.bind(this));
     this.speechRecognition.addEventListener('end', () => {
-      const { DISABLED_BUTTON_ICON } = this.classes;
-
-      speechRecognitionButton.removeAttribute('disabled');
-      speechRecognitionButton.firstElementChild.classList.remove(DISABLED_BUTTON_ICON);
+      console.log('END RECOGNITION', this);
     });
   }
 
@@ -104,13 +104,24 @@ class SearchContainer {
     const { DISABLED_BUTTON, ACTIVE_BUTTON, HIDDEN_BUTTON } = this.classes;
     const isEmptyField = searchField && !searchField.value.length;
 
+    const toggleAttribute = (element, property, value = '') => {
+      const hasProperty = element.hasAttribute(property);
+
+      if (hasProperty) {
+        element.removeAttribute(property);
+      } else {
+        element.setAttribute(property, value);
+      }
+    };
     const disableButton = (button) => {
-      button.setAttribute('disabled', '');
+      toggleAttribute(button, 'disabled');
+
       button.classList.remove(ACTIVE_BUTTON);
       button.classList.add(DISABLED_BUTTON);
     };
     const activateButton = (button) => {
-      button.removeAttribute('disabled');
+      toggleAttribute(button, 'disabled');
+
       button.classList.add(ACTIVE_BUTTON);
       button.classList.remove(DISABLED_BUTTON);
     };
@@ -159,31 +170,137 @@ class SearchContainer {
     }
   }
 
+  startSpeechRecognition() {
+    const { DISABLED_BUTTON_ICON } = this.classes;
+    const { speechRecognitionButton } = this.elements;
+
+    this.speechRecognition.start();
+
+    speechRecognitionButton.firstElementChild.classList.add(DISABLED_BUTTON_ICON);
+  }
+
+  stopSpeechRecognition() {
+    const { DISABLED_BUTTON_ICON } = this.classes;
+    const { speechRecognitionButton } = this.elements;
+
+    this.speechRecognition.stop();
+
+    speechRecognitionButton.firstElementChild.classList.remove(DISABLED_BUTTON_ICON);
+    speechRecognitionButton.blur();
+  }
+
+  toggleSpeechRecognition() {
+    const { DISABLED_BUTTON_ICON } = this.classes;
+    const { speechRecognitionButton } = this.elements;
+
+    if (this.isSpeechRecognitionStarted) {
+      this.speechRecognition.stop();
+
+      speechRecognitionButton.firstElementChild.classList.remove(DISABLED_BUTTON_ICON);
+      speechRecognitionButton.blur();
+    } else {
+      this.speechRecognition.start();
+
+      speechRecognitionButton.firstElementChild.classList.add(DISABLED_BUTTON_ICON);
+    }
+
+    this.isSpeechRecognitionStarted = !this.isSpeechRecognitionStarted;
+  }
+
   handlerSpeechRecognitionButton(event) {
     if (event) {
       event.preventDefault();
     }
 
-    this.speechRecognition.start();
-
-    const { speechRecognitionButton } = this.elements;
-    const { DISABLED_BUTTON_ICON } = this.classes;
-
-    speechRecognitionButton.setAttribute('disabled', '');
-    speechRecognitionButton.firstElementChild.classList.add(DISABLED_BUTTON_ICON);
+    this.toggleSpeechRecognition();
   }
 
   speechRecognize(event) {
-    console.log(event);
-    const [translationAlternatives] = [...event.results];
-    const [translations] = [...translationAlternatives]
-      .map(({ transcript }) => transcript.toLowerCase());
-    const { searchField } = this.elements;
+    const { resultIndex, results } = event;
+    const [speechRecognitionResult] = results[resultIndex];
+    let { transcript } = speechRecognitionResult;
 
-    searchField.value = translations;
+    transcript = transcript.toLowerCase();
 
-    this.handlerSearchButton();
-    this.handlerSearchInputChange();
+    console.log('SPEECH_RECOGNIZED: ', transcript);
+
+    const CHANGE_LANGUAGE = 'change language';
+    const SEARCH = 'search';
+    const CHANGE_BACKGROUND = 'change background';
+    const CHANGE_UNITS = 'change units';
+    const STOP = 'stop';
+    const grammar = [CHANGE_LANGUAGE, SEARCH, CHANGE_BACKGROUND, CHANGE_UNITS, STOP];
+
+    const getCommand = (text, commands) => {
+      const result = commands.find((command) => text.includes(command));
+
+      return result;
+    };
+    const processString = (dirtyString, splitter) => dirtyString.split(splitter).join('').trim();
+    const getCallback = {
+      [CHANGE_LANGUAGE]: () => {
+        console.log('CHANGE LANGUAGE handler!');
+        const parsedString = processString(transcript, CHANGE_LANGUAGE);
+
+        const mapper = [{
+          language: 'be',
+          options: ['belaruski', 'belarusian'],
+        }, {
+          language: 'ru',
+          options: ['russian', 'to russian'],
+        }, {
+          language: 'en',
+          options: ['english', 'to english'],
+        }];
+
+        const result = mapper.find((item) => {
+          const { options } = item;
+          const isThisLanguage = options.some((option) => option === parsedString);
+
+          return isThisLanguage;
+        });
+
+        console.log(parsedString);
+
+        if (result) {
+          this.parent.changeLanguage(result.language);
+        }
+      },
+
+      [SEARCH]: () => {
+        console.log('SEARCH handler!');
+        const { searchField } = this.elements;
+        const parsedString = processString(transcript, SEARCH);
+
+        searchField.value = parsedString;
+
+        this.handlerSearchButton();
+        this.handlerSearchInputChange();
+      },
+
+      [CHANGE_BACKGROUND]: () => {
+        this.parent.changeBackgroundImage();
+      },
+
+      [CHANGE_UNITS]: () => {
+        this.parent.changeUnits();
+      },
+
+      [STOP]: () => {
+        console.log('Shutting down the Speech Recognition');
+        this.toggleSpeechRecognition();
+      },
+    };
+
+    let callback = getCallback[getCommand(transcript, grammar)];
+
+    if (!callback) {
+      callback = () => {
+        console.log('Default callback: ', transcript);
+      };
+    }
+
+    callback();
   }
 }
 

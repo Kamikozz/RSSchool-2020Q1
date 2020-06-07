@@ -63,7 +63,6 @@ class MainContent {
 
     const searchContainer = new SearchContainer({
       parent: this,
-      // parentEl: this.elements.root.firstElementChild,
     });
 
     searchContainer.init();
@@ -114,7 +113,7 @@ class MainContent {
     const {
       REFRESH_BUTTON_ICON_ACTIVE,
       SELECT_BOX_DROP_MENU_ACTIVATOR_ACTIVE, SELECT_BOX_OPTIONS_ACTIVE,
-      UNITS_SWITCHER_UNIT_ACTIVE, UNITS_SWITCHER_UNIT_TEMP_FAHRENHEIT,
+      UNITS_SWITCHER_UNIT_ACTIVE,
     } = this.classes;
 
     // Refresh Button Component
@@ -161,24 +160,7 @@ class MainContent {
       const isActive = target.classList.contains(UNITS_SWITCHER_UNIT_ACTIVE);
 
       if (!isActive) {
-        const isFahrenheit = target.classList.contains(UNITS_SWITCHER_UNIT_TEMP_FAHRENHEIT);
-
-        this.forecast.changeUnits(target, isFahrenheit);
-
-        const {
-          FORECAST_CONTAINER_TEMPERATURE_VALUE, FORECAST_CONTAINER_FEELS_LIKE_VALUE,
-        } = this.classes;
-        const temperatureElementsArray = [
-          ...document.getElementsByClassName(FORECAST_CONTAINER_TEMPERATURE_VALUE),
-          ...document.getElementsByClassName(FORECAST_CONTAINER_FEELS_LIKE_VALUE),
-        ];
-
-        temperatureElementsArray.forEach((el) => {
-          const element = el;
-          const { textContent: temperature } = element;
-
-          element.textContent = utils.temperatureUnitsConverter(temperature, isFahrenheit, 0);
-        });
+        this.changeUnits(target);
       }
     });
   }
@@ -194,6 +176,19 @@ class MainContent {
     });
 
     await background.changeBackground(query);
+  }
+
+  async changeLanguage(language) {
+    const { selectBoxOptions } = this.elements;
+    const { children: [...optionsElements] } = selectBoxOptions;
+    const currentLanguageElement = optionsElements.find((option) => {
+      const { dataset: { lang } } = option; // get 'lang' data-attribute
+      const isLanguageEqual = lang === language;
+
+      return isLanguageEqual;
+    });
+
+    await this.changeSelectedOption(currentLanguageElement);
   }
 
   async changeSelectedOption(selectedOption, isInit = false) {
@@ -237,6 +232,45 @@ class MainContent {
     }
 
     return isDifferentLanguage;
+  }
+
+  changeUnits(target) {
+    const {
+      UNITS_SWITCHER_UNIT_ACTIVE,
+    } = this.classes;
+
+    let currentUnitElement = target;
+
+    if (!currentUnitElement) {
+      const { unitsSwitcher } = this.elements;
+      const { children: [...unitsElements] } = unitsSwitcher;
+
+      currentUnitElement = unitsElements.find((unit) => {
+        const isNotActive = !unit.classList.contains(UNITS_SWITCHER_UNIT_ACTIVE);
+
+        return isNotActive;
+      });
+    }
+
+    const { UNITS_SWITCHER_UNIT_TEMP_FAHRENHEIT } = this.classes;
+    const isFahrenheit = currentUnitElement.classList.contains(UNITS_SWITCHER_UNIT_TEMP_FAHRENHEIT);
+
+    this.forecast.changeUnits(currentUnitElement, isFahrenheit);
+
+    const {
+      FORECAST_CONTAINER_TEMPERATURE_VALUE, FORECAST_CONTAINER_FEELS_LIKE_VALUE,
+    } = this.classes;
+    const temperatureElementsArray = [
+      ...document.getElementsByClassName(FORECAST_CONTAINER_TEMPERATURE_VALUE),
+      ...document.getElementsByClassName(FORECAST_CONTAINER_FEELS_LIKE_VALUE),
+    ];
+
+    temperatureElementsArray.forEach((el) => {
+      const element = el;
+      const { textContent: temperature } = element;
+
+      element.textContent = utils.temperatureUnitsConverter(temperature, isFahrenheit, 0);
+    });
   }
 
   /**
