@@ -55,13 +55,8 @@ class MainContent {
     await this.forecast.init();
     this.forecast.updateCity(this.map.city);
 
-    const { dateTime, map: { latitude } } = this.forecast;
-    const query = background.getBackgroundSearchQuery({
-      dateTime,
-      latitude,
-    });
-
-    await background.changeBackground(query);
+    // Get query for search background and change background
+    await this.changeBackgroundImage();
 
     await this.restoreState(true);
 
@@ -196,6 +191,19 @@ class MainContent {
         });
       }
     });
+  }
+
+  /**
+   * Get query for search background and change background.
+   */
+  async changeBackgroundImage() {
+    const { dateTime, map: { latitude } } = this.forecast;
+    const query = background.getBackgroundSearchQuery({
+      dateTime,
+      latitude,
+    });
+
+    await background.changeBackground(query);
   }
 
   async changeSelectedOption(selectedOption, isInit = false) {
