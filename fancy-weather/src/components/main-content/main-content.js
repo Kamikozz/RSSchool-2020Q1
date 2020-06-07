@@ -3,6 +3,7 @@ import MapContainer from '../map-container/map-container';
 import SearchContainer from '../search-container/search-container';
 import utils from '../../js/utils/utils';
 import background from '../../js/background';
+import SpeechSynthesis from '../../js/synthesis-speech';
 
 class MainContent {
   constructor(props) {
@@ -24,6 +25,7 @@ class MainContent {
       UNITS_SWITCHER_UNIT_TEMP_CENTIGRADE: 'units-switcher__unit_temp_centigrade',
       FORECAST_CONTAINER_TEMPERATURE_VALUE: 'forecast-container__temperature-value',
       FORECAST_CONTAINER_FEELS_LIKE_VALUE: 'forecast-container__feels-like-value',
+      SPEECH_SYNTHESIS: 'controls-container__speaker',
     };
     this.elements = {};
     this.data = {};
@@ -67,6 +69,11 @@ class MainContent {
 
     searchContainer.init();
     this.search = searchContainer;
+
+    // SpeechSynthesis
+    const speechSynthesis = new SpeechSynthesis();
+
+    this.speechSynthesis = speechSynthesis;
   }
 
   initElements() {
@@ -79,6 +86,7 @@ class MainContent {
       SELECT_BOX_SELECTED_VALUE,
       SELECT_BOX_SELECTED_ICON,
       UNITS_SWITCHER,
+      SPEECH_SYNTHESIS,
     } = this.classes;
     const [root] = document.getElementsByClassName(ROOT);
     const [refreshButton] = root.getElementsByClassName(REFRESH_BUTTON);
@@ -90,6 +98,7 @@ class MainContent {
       selectBoxSelectedIcon,
     ] = selectBoxActivator.getElementsByClassName(SELECT_BOX_SELECTED_ICON);
     const [unitsSwitcher] = root.getElementsByClassName(UNITS_SWITCHER);
+    const [speechSynthesis] = root.getElementsByClassName(SPEECH_SYNTHESIS);
 
     this.elements = {
       ...this.elements,
@@ -101,6 +110,7 @@ class MainContent {
       selectBoxSelected,
       selectBoxSelectedIcon,
       unitsSwitcher,
+      speechSynthesis,
     };
   }
 
@@ -109,6 +119,7 @@ class MainContent {
       refreshButton,
       selectBoxActivator, selectBoxOptions,
       unitsSwitcher,
+      speechSynthesis,
     } = this.elements;
     const {
       REFRESH_BUTTON_ICON_ACTIVE,
@@ -162,6 +173,11 @@ class MainContent {
       if (!isActive) {
         this.changeUnits(target);
       }
+    });
+
+    // Speech Synthesis Component
+    speechSynthesis.addEventListener('click', () => {
+      this.speechSynthesis.speakIt();
     });
   }
 

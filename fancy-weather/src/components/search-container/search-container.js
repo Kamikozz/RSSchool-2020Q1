@@ -228,8 +228,16 @@ class SearchContainer {
     const SEARCH = 'search';
     const CHANGE_BACKGROUND = 'change background';
     const CHANGE_UNITS = 'change units';
+    const WEATHER = 'weather';
+    const FORECAST = 'forecast';
+    const DECREASE_VOLUME = 'decrease volume';
+    const INCREASE_VOLUME = 'increase volume';
     const STOP = 'stop';
-    const grammar = [CHANGE_LANGUAGE, SEARCH, CHANGE_BACKGROUND, CHANGE_UNITS, STOP];
+    const grammar = [
+      CHANGE_LANGUAGE, SEARCH, CHANGE_BACKGROUND, CHANGE_UNITS,
+      WEATHER, FORECAST, DECREASE_VOLUME, INCREASE_VOLUME,
+      STOP,
+    ];
 
     const getCommand = (text, commands) => {
       const result = commands.find((command) => text.includes(command));
@@ -284,6 +292,22 @@ class SearchContainer {
 
       [CHANGE_UNITS]: () => {
         this.parent.changeUnits();
+      },
+
+      [FORECAST]: () => {
+        this.parent.speechSynthesis.speakIt();
+      },
+
+      [WEATHER]: () => {
+        this.parent.speechSynthesis.speakIt();
+      },
+
+      [DECREASE_VOLUME]: () => {
+        this.parent.speechSynthesis.decreaseVolume();
+      },
+
+      [INCREASE_VOLUME]: () => {
+        this.parent.speechSynthesis.increaseVolume();
       },
 
       [STOP]: () => {
