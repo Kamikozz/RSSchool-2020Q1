@@ -13,6 +13,8 @@ html {
 
 body {
   min-width: $small-phone-width;
+  min-height: 100vh;
+  height: 100%;
 
   font: {
     family: $main-font;
@@ -23,14 +25,6 @@ body {
   overflow-x: hidden;
 
   background-color: $primary-color; // #226912;
-
-  @include for-small-phone {
-    height: 100%;
-  }
-
-  @include for-big-desktop {
-    height: 100vh;
-  }
 }
 
 .wrapper {
