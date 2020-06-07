@@ -42,6 +42,7 @@ class MainContent {
     // Create the instance (for example)
     const myMapContainer = new MapContainer({
       isInit: true,
+      parent: this,
     });
 
     await myMapContainer.init();

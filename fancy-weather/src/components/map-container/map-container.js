@@ -6,6 +6,7 @@ import errorHandler from '../../js/error-handler';
 class MyMap {
   constructor(props = {}) {
     this.props = props;
+    this.parent = props.parent;
     this.classes = {
       ROOT: 'map-container',
       MAP_CONTAINER_MAP: 'map-container__map',
@@ -60,6 +61,22 @@ class MyMap {
     };
   }
 
+  initHandlers() {
+    // Слушаем клик на карте.
+    this.map.events.add('click', async (e) => {
+      const coords = e.get('coords');
+
+      console.log('Координаты из Яндекс.Карт (доп. функционал)', coords);
+
+      const coordsString = coords.join(','); // создать строку вида '56.23232,12.2244'
+
+      await this.parent.map.searchCity(coordsString, this.parent.i18n.currentLanguage);
+      this.parent.forecast.updateCity(this.parent.map.city);
+      await this.parent.forecast.getForecast();
+      await this.parent.changeBackgroundImage();
+    });
+  }
+
   async yandexMapsInit() {
     const userCoordinates = await this.getLocation({ isInit: true });
 
@@ -86,7 +103,7 @@ class MyMap {
       // Уровень масштабирования. Допустимые значения:
       // от 0 (весь мир) до 19.
       zoom: this.zoom,
-      controls: [],
+      controls: ['fullscreenControl'],
     }, {
       // Нужно ли скрывать предложение открыть текущую карту в Яндекс.Картах,
       // максимально сохранив всю имеющуюся информацию о ней. True - скрывать, false - не скрывать.
@@ -102,6 +119,8 @@ class MyMap {
 
     // 2. Добавляем наш маркер на карту и перемещаем область видимости к нашему маркеру
     this.addMarker(myGeoLocationObject, userCoordinates);
+
+    this.initHandlers();
   }
 
   /**
