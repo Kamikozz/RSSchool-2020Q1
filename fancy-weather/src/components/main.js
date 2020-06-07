@@ -2,6 +2,21 @@ import I18N from '../js/i18n';
 import MainContent from './main-content/main-content';
 import { performRequests } from '../js/utils/perform-requests';
 
+alert(`
+  Привет! Работа всё ещё дорабатывается.
+
+  Реализовано голосовое управление:
+  1) 'change background' (сменить изображение);
+  2) 'search Moscow' (или любой другой запрос с ключевым словом search);
+  3) 'change units' (поменять единицы измерения F/C);
+  4) 'change language english' (ключевое слово 'change language' и за ним название языка);
+  5) 'stop' (выключить микрофон);
+
+  Иконка микрофона подсвечивается (тускло, но подсвечивается).a1
+
+  TODO: Уведомление о погоде до 12 часов дня
+`);
+
 // i18n initialization
 const i18n = new I18N();
 const i18nOptions = {
