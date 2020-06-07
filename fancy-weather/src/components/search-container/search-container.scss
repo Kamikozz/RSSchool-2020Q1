@@ -74,7 +74,6 @@
       & {
         opacity: 0.35;
         cursor: not-allowed;
-        // pointer-events: none;
       }
     }
 
@@ -174,62 +173,5 @@
 
   &:active:not(.search-box__button_disabled) {
     filter: drop-shadow(0px 0px 5px black);
-  }
-}
-
-// Do not score this, because it's necessary hard code due to errors in the virtual-keyboard lib :D
-.section-keyboard {
-  & {
-    position: absolute;
-    bottom: 95px;
-    z-index: 2;
-  }
-
-  &__note {
-    & {
-      position: absolute;
-
-      display: flex;
-      flex-direction: column;
-      text-align: center;
-      padding: 5px;
-      width: 40%;
-
-      font-size: 1.2rem;
-
-      background-color: white;
-      border-radius: 5px;
-
-      transform: translateX(50%);
-    }
-  }
-}
-
-@media (min-width: 1400px) {
-  .section-keyboard .keyboard .row-a,
-  .section-keyboard .keyboard .row-b,
-  .section-keyboard .keyboard .row-c,
-  .section-keyboard .keyboard .row-d,
-  .section-keyboard .keyboard .row-e,
-  .section-keyboard .keyboard .row-k {
-      display: flex;
-      justify-content: center;
-  }
-
-  .section-keyboard .keyboard .row-k .key:nth-last-child(-n + 4),
-  .section-keyboard .keyboard .row-e .key:nth-last-child(-n + 4),
-  .section-keyboard .keyboard .row-d .key:nth-last-child(-n + 4),
-  .section-keyboard .keyboard .row-c .key:nth-last-child(-n + 3),
-  .section-keyboard .keyboard .row-b .key:nth-last-child(-n + 4),
-  .section-keyboard .keyboard .row-a .key:nth-last-child(-n + 2) {
-    display: none;
-  }
-}
-
-.section-keyboard .keyboard .row-a .key[data-keycode="Fn"] {
-  background: {
-    repeat: no-repeat;
-    position: center;
-    size: 130%;
   }
 }

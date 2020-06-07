@@ -125,7 +125,6 @@ class ForecastContainer {
 
     // Options for request
     const { latitude, longitude } = this.map;
-    console.log(this.map, this.map.latitude, this.map.longitude);
     const { currentLanguage: language } = this.i18n;
     const units = this.isFahrenheit ? 'imperial' : 'metric';
 

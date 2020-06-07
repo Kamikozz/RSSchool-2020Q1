@@ -36,7 +36,7 @@ class MainContent {
     this.initHandlers();
 
     // Initialization
-    // Создание экземпляра примера ради
+    // Create the instance (for example)
     const myMapContainer = new MapContainer({
       isInit: true,
     });
@@ -142,9 +142,11 @@ class MainContent {
 
       const svgIconElement = refreshButton.firstElementChild;
 
+      refreshButton.setAttribute('disable', '');
       svgIconElement.classList.toggle(REFRESH_BUTTON_ICON_ACTIVE);
       await background.changeBackground(query);
       svgIconElement.classList.toggle(REFRESH_BUTTON_ICON_ACTIVE);
+      refreshButton.removeAttribute('disable');
     });
 
     // Select Box Component

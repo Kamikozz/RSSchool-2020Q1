@@ -91,6 +91,7 @@
   }
 
   &_active {
+    pointer-events: none;
     animation: rotate 1s linear infinite;
   }
 }
