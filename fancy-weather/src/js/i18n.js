@@ -50,7 +50,6 @@ class I18N {
   }
 
   async changeLanguage(language) {
-    console.log('Change Language');
     const processedLanguage = processValue(language);
     const hasLanguage = this.hasLanguage(processedLanguage);
 

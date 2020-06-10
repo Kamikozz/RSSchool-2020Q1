@@ -230,11 +230,6 @@ class SearchContainer {
       STOP,
     ];
 
-    const getCommand = (text, commands) => {
-      const result = commands.find((command) => text.includes(command));
-
-      return result;
-    };
     const processString = (dirtyString, splitter) => dirtyString.split(splitter).join('').trim();
     const getCallback = {
       [CHANGE_LANGUAGE]: () => {
@@ -284,7 +279,6 @@ class SearchContainer {
       [CHANGE_UNITS]: () => {
         this.parent.changeUnits();
       },
-
       [FORECAST]: () => {
         this.parent.speechSynthesis.speakIt();
       },
@@ -307,7 +301,13 @@ class SearchContainer {
       },
     };
 
-    let callback = getCallback[getCommand(transcript, grammar)];
+    const getCommand = (text, commands) => {
+      const result = commands.find((command) => text.includes(command));
+
+      return result;
+    };
+    const command = getCommand(transcript, grammar);
+    let callback = getCallback[command];
 
     if (!callback) {
       callback = () => {

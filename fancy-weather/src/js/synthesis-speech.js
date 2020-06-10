@@ -1,8 +1,14 @@
 const parseString = () => {
-  const [today] = document.getElementsByClassName('forecast-container__today');
-  const [week] = document.getElementsByClassName('forecast-container__week');
+  const classes = {
+    TODAY: 'forecast-container__today',
+    WEEK: 'forecast-container__week',
+  };
+  const elements = {
+    today: document.getElementsByClassName(classes.TODAY)[0],
+    week: document.getElementsByClassName(classes.WEEK)[0],
+  };
 
-  let text = `${today.textContent} ${week.textContent}`;
+  let text = `${elements.today.textContent} ${elements.week.textContent}`;
   text = text.trim().replace(/Your browser does not support SVGs/g, ' ');
   text = text.replace(/\s/g, ' ');
   text = text.split(' ').filter((item) => item).join(' ');

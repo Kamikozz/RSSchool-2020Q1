@@ -49,18 +49,6 @@ const Background = {
 
     return promise;
   },
-
-  // getBackgroundSearchQuery({ dateTime, latitude }) {
-  //   const { date } = dateTime;
-  //   const dayTime = utils.getDayTime(date, (isDayTime) => {
-  //     const dayTimeString = isDayTime ? 'day' : 'evening';
-
-  //     return dayTimeString;
-  //   });
-  //   const seasonOfYear = utils.getSeasonOfYear(date, latitude);
-
-  //   return `${seasonOfYear} ${dayTime} nature`;
-  // },
 };
 
 const getBackgroundSearchQuery = ({ dateTime, latitude }) => {
@@ -76,7 +64,7 @@ const getBackgroundSearchQuery = ({ dateTime, latitude }) => {
 };
 
 const changeBackground = async (query) => {
-  // Цитата: "данные о параметрах запроса фонового изображения для удобства
+  // Quote: "данные о параметрах запроса фонового изображения для удобства
   //          в ходе проверки ментором или в процессе кросс чека выведите в консоль +10"
   console.log('Search image tags: ', query);
 

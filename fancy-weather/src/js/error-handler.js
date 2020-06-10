@@ -1,4 +1,6 @@
-const [errorInfoElement] = document.getElementsByClassName('search-container__info-message');
+const INFO_MESSAGE_CLASS = 'search-container__info-message';
+const [errorInfoElement] = document.getElementsByClassName(INFO_MESSAGE_CLASS);
+const I18N_DATA_ATTRIBUTE = 'data-i18n';
 
 let timerId = null;
 
@@ -11,13 +13,13 @@ const errorHandler = {
   },
 
   handle(err) {
-    console.log('Ошибка: ', err);
+    console.log('MyError: ', err);
 
     const hasErrorStatus = this.hasErrorStatus(err);
 
     // If it's unhandled error then display the original error.message
     if (!hasErrorStatus) {
-      errorInfoElement.removeAttribute('data-i18n');
+      errorInfoElement.removeAttribute(I18N_DATA_ATTRIBUTE);
       errorInfoElement.textContent = err;
     } else {
       errorInfoElement.dataset.i18n = err;
@@ -39,11 +41,10 @@ const errorHandler = {
 
   removeErrorMessage({ delay }) {
     return setTimeout(() => {
-      errorInfoElement.removeAttribute('data-i18n');
+      errorInfoElement.removeAttribute(I18N_DATA_ATTRIBUTE);
       errorInfoElement.textContent = '';
     }, delay);
   },
 };
-
 
 export default errorHandler;
