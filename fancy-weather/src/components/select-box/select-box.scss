@@ -2,7 +2,7 @@
   & {
     position: relative;
 
-    min-width: 160px;
+    min-width: 100px;
     max-width: 160px;
     margin-right: 10px;
   }
@@ -142,5 +142,6 @@
     width: 65%;
 
     text-align: center;
+    overflow: hidden;
   }
 }
