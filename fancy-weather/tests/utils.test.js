@@ -54,4 +54,14 @@ describe('Utils module', () => {
       expect(utils.getSeasonOfYear(summerDate, southernHemisphereLatitude)).toBe(WINTER);
     });
   });
+
+  describe('converterDMS', () => {
+    it('should return valid string with correct data', () => {
+      expect(utils.converterDMS(50.123112, 0)).toBe('50° 7\' 23"');
+    });
+
+    it('should return valid string with correct negative data', () => {
+      expect(utils.converterDMS(-50.123112, 0)).toBe('-51° 53\' -23"');
+    });
+  });
 });

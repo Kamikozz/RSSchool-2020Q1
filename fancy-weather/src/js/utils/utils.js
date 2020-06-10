@@ -81,7 +81,7 @@ const converterDMS = (decimalDegrees, precision = 4) => {
   const minutes = Math.round((decimalDegrees - degrees) * 60);
   const seconds = (decimalDegrees - degrees - (minutes / 60)) * 3600;
 
-  const roundSeconds = precision ? Number(seconds).toFixed(precision) : seconds;
+  const roundSeconds = Number(seconds).toFixed(precision);
 
   return `${degrees}° ${minutes}' ${roundSeconds}"`;
 };
