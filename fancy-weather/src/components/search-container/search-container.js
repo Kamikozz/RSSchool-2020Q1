@@ -104,23 +104,14 @@ class SearchContainer {
     const { DISABLED_BUTTON, ACTIVE_BUTTON, HIDDEN_BUTTON } = this.classes;
     const isEmptyField = searchField && !searchField.value.length;
 
-    const toggleAttribute = (element, property, value = '') => {
-      const hasProperty = element.hasAttribute(property);
-
-      if (hasProperty) {
-        element.removeAttribute(property);
-      } else {
-        element.setAttribute(property, value);
-      }
-    };
     const disableButton = (button) => {
-      toggleAttribute(button, 'disabled');
+      button.setAttribute('disabled', '');
 
       button.classList.remove(ACTIVE_BUTTON);
       button.classList.add(DISABLED_BUTTON);
     };
     const activateButton = (button) => {
-      toggleAttribute(button, 'disabled');
+      button.removeAttribute('disabled');
 
       button.classList.add(ACTIVE_BUTTON);
       button.classList.remove(DISABLED_BUTTON);
