@@ -47,24 +47,11 @@ module.exports = {
       exclude: [
         /(node_modules|dist|public)/,
       ],
-      use: [
-        {
-          loader: 'babel-loader',
-          options: {
-            presets: [
-              [
-                '@babel/preset-env',
-                {
-                  exclude: ['transform-typeof-symbol'], // to prevent IE 11 error
-                },
-              ],
-            ],
-          },
-        },
-        {
-          loader: 'eslint-loader',
-        },
-      ],
+      use: [{
+        loader: 'babel-loader',
+      }, {
+        loader: 'eslint-loader',
+      }],
     }, {
       test: /\.scss$/,
       use: [
