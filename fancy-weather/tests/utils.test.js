@@ -63,5 +63,45 @@ describe('Utils module', () => {
     it('should return valid string with correct negative data', () => {
       expect(utils.converterDMS(-50.123112, 0)).toBe('-51° 53\' -23"');
     });
+
+    it('should return valid string with precision of 4 without precision arg', () => {
+      expect(utils.converterDMS(-50.123112)).toBe('-51° 53\' -23.2032"');
+    });
+  });
+
+  describe('dateTimeFormatter', () => {
+    describe('getWeekDayByIndex', () => {
+      it('should return valid string with correct data', () => {
+        expect(utils.converterDMS(50.123112, 0)).toBe('50° 7\' 23"');
+      });
+
+      it('should return valid string with correct negative data', () => {
+        expect(utils.converterDMS(-50.123112, 0)).toBe('-51° 53\' -23"');
+      });
+    });
+  });
+
+  describe('temperatureUnitsConverter', () => {
+    const temperature = 40.50;
+
+    it('should return valid temperature in fahrenheit', () => {
+      const toFahrenheit = true;
+
+      expect(utils.temperatureUnitsConverter(temperature, toFahrenheit)).toEqual('104.9');
+    });
+
+    it('should return valid temperature in celsius', () => {
+      const toFahrenheit = false;
+
+      expect(utils.temperatureUnitsConverter(temperature, toFahrenheit)).toEqual('4.7');
+    });
+  });
+
+  describe('milesPerHourToMetersPerSecond', () => {
+    const mph = 70.5;
+
+    it('should return valid meters per second', () => {
+      expect(utils.milesPerHourToMetersPerSecond(mph)).toEqual('32');
+    });
   });
 });
