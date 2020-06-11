@@ -109,8 +109,6 @@ class ForecastContainer {
 
   async getForecastData() {
     const onSuccess = async (result) => {
-      console.log(result);
-
       const { cod } = result;
       const isSuccessRequest = Number(cod) === 200;
 

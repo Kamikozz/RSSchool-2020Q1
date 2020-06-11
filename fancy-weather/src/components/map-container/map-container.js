@@ -73,9 +73,6 @@ class MyMap {
     // Listen to the click on the map
     this.map.events.add('click', async (e) => {
       const coords = e.get('coords');
-
-      console.log('Координаты из Яндекс.Карт (доп. функционал)', coords);
-
       const coordsString = coords.join(','); // create the string (e.g. '56.23232,12.2244')
 
       await this.parent.map.searchCity(coordsString, this.parent.i18n.currentLanguage);

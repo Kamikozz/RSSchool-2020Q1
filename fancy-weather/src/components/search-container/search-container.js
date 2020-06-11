@@ -90,9 +90,6 @@ class SearchContainer {
       'click', this.handlerSpeechRecognitionButton.bind(this),
     );
     this.speechRecognition.addEventListener('result', this.speechRecognize.bind(this));
-    this.speechRecognition.addEventListener('end', () => {
-      console.log('END RECOGNITION', this);
-    });
   }
 
   getSearchQuery() {
@@ -213,8 +210,6 @@ class SearchContainer {
 
     transcript = transcript.toLowerCase();
 
-    console.log('SPEECH_RECOGNIZED: ', transcript);
-
     const CHANGE_LANGUAGE = 'change language';
     const SEARCH = 'search';
     const CHANGE_BACKGROUND = 'change background';
@@ -233,7 +228,6 @@ class SearchContainer {
     const processString = (dirtyString, splitter) => dirtyString.split(splitter).join('').trim();
     const getCallback = {
       [CHANGE_LANGUAGE]: () => {
-        console.log('CHANGE LANGUAGE handler!');
         const parsedString = processString(transcript, CHANGE_LANGUAGE);
 
         const mapper = [{
@@ -254,15 +248,12 @@ class SearchContainer {
           return isThisLanguage;
         });
 
-        console.log(parsedString);
-
         if (result) {
           this.parent.changeLanguage(result.language);
         }
       },
 
       [SEARCH]: () => {
-        console.log('SEARCH handler!');
         const { searchField } = this.elements;
         const parsedString = processString(transcript, SEARCH);
 
@@ -296,7 +287,6 @@ class SearchContainer {
       },
 
       [STOP]: () => {
-        console.log('Shutting down the Speech Recognition');
         this.toggleSpeechRecognition();
       },
     };
@@ -310,9 +300,7 @@ class SearchContainer {
     let callback = getCallback[command];
 
     if (!callback) {
-      callback = () => {
-        console.log('Default callback: ', transcript);
-      };
+      callback = () => {};
     }
 
     callback();
