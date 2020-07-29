@@ -27,6 +27,19 @@ body {
   background-color: $primary-color; // #226912;
 }
 
+.bg {
+  & {
+    background: linear-gradient(rgba(0, 0, 0, 0.3) 0%, rgba(0,0,0, 0.3) 100%) center center / cover fixed;
+    transition: opacity 0.35s ease-out;
+  }
+
+  &_overflow {
+    &_hidden {
+      overflow: hidden;
+    }
+  }
+}
+
 .wrapper {
   margin: 0 auto;
 

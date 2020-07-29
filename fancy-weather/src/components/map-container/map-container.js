@@ -184,7 +184,7 @@ class MyMap {
   }
 
   createMarker(coordinates = [this.latitude, this.longitude]) {
-    let newGeoObject = new ymaps.GeoObject({
+    const newGeoObject = new ymaps.GeoObject({
       // Defining the geometry of 'Point'
       geometry: {
         type: 'Point',
@@ -192,9 +192,7 @@ class MyMap {
       },
     });
 
-    newGeoObject = setVisualAppearance(newGeoObject);
-
-    return newGeoObject;
+    return setVisualAppearance(newGeoObject);
   }
 
   /**

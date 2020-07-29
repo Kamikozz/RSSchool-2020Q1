@@ -61,7 +61,7 @@ performRequests({
   promises: [i18nInitializationPromise, mainContentInitializationPromise],
   preloaderEl: document.getElementsByClassName('preloader')[0],
   callback: () => {
-    document.body.style.removeProperty('overflow');
+    document.body.classList.remove('bg_overflow_hidden');
     mainContent.elements.root.classList.remove('main-content_loading');
   },
 });

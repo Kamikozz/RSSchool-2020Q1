@@ -7,29 +7,31 @@ import {
 } from '../../js/utils/utils';
 import errorHandler from '../../js/error-handler';
 
+const classes = {
+  ROOT: 'forecast-container',
+  FORECAST_CITY: 'forecast-container__city',
+  FORECAST_DATE_WEEK_DAY: 'forecast-container__date-week-day',
+  FORECAST_DATE_DAY: 'forecast-container__date-day',
+  FORECAST_DATE_MONTH: 'forecast-container__date-month',
+  FORECAST_TIME: 'forecast-container__time',
+  FORECAST_TODAY: 'forecast-container__today',
+  FORECAST_WEEK: 'forecast-container__week',
+  FORECAST_TEMPERATURE_VALUE: 'forecast-container__temperature-value',
+  FORECAST_STATUS_ICON: 'forecast-container__weather-status-icon',
+  FORECAST_STATUS_SMALL_ICON: 'forecast-container__weather-status-small-icon',
+  FORECAST_STATUS_DESCRIPTION: 'forecast-container__weather-status-description',
+  FORECAST_FEELS_LIKE_VALUE: 'forecast-container__feels-like-value',
+  FORECAST_WIND_VALUE: 'forecast-container__wind-value',
+  FORECAST_HUMIDITY_VALUE: 'forecast-container__humidity-value',
+  FORECAST_WEEK_DAY_TITLE: 'forecast-container__week-day-title',
+  UNITS_SWITCHER_UNIT_ACTIVE: 'units-switcher__unit_active',
+  UNITS_SWITCHER_UNIT_TEMP_FAHRENHEIT: 'units-switcher__unit_temp_fahrenheit',
+};
+
 class ForecastContainer {
   constructor(props) {
     this.props = props;
-    this.classes = {
-      ROOT: 'forecast-container',
-      FORECAST_CITY: 'forecast-container__city',
-      FORECAST_DATE_WEEK_DAY: 'forecast-container__date-week-day',
-      FORECAST_DATE_DAY: 'forecast-container__date-day',
-      FORECAST_DATE_MONTH: 'forecast-container__date-month',
-      FORECAST_TIME: 'forecast-container__time',
-      FORECAST_TODAY: 'forecast-container__today',
-      FORECAST_WEEK: 'forecast-container__week',
-      FORECAST_TEMPERATURE_VALUE: 'forecast-container__temperature-value',
-      FORECAST_STATUS_ICON: 'forecast-container__weather-status-icon',
-      FORECAST_STATUS_SMALL_ICON: 'forecast-container__weather-status-small-icon',
-      FORECAST_STATUS_DESCRIPTION: 'forecast-container__weather-status-description',
-      FORECAST_FEELS_LIKE_VALUE: 'forecast-container__feels-like-value',
-      FORECAST_WIND_VALUE: 'forecast-container__wind-value',
-      FORECAST_HUMIDITY_VALUE: 'forecast-container__humidity-value',
-      FORECAST_WEEK_DAY_TITLE: 'forecast-container__week-day-title',
-      UNITS_SWITCHER_UNIT_ACTIVE: 'units-switcher__unit_active',
-      UNITS_SWITCHER_UNIT_TEMP_FAHRENHEIT: 'units-switcher__unit_temp_fahrenheit',
-    };
+    this.classes = classes;
     this.elements = {};
     this.i18n = props.i18n;
     this.map = props.map;
@@ -110,7 +112,10 @@ class ForecastContainer {
   async getForecastData() {
     const onSuccess = async (result) => {
       const { cod } = result;
-      const isSuccessRequest = Number(cod) === 200;
+      const requestStatus = {
+        SUCCESS: 200,
+      };
+      const isSuccessRequest = Number(cod) === requestStatus.SUCCESS;
 
       if (!isSuccessRequest) {
         throw new Error(result.message);
@@ -122,10 +127,6 @@ class ForecastContainer {
     };
 
     // Options for request
-    const { latitude, longitude } = this.map;
-    const { currentLanguage: language } = this.i18n;
-    const units = this.isFahrenheit ? 'imperial' : 'metric';
-
     let error;
     let weatherData;
 
@@ -134,7 +135,12 @@ class ForecastContainer {
         throw new Error(errorHandler.ERROR_STATUSES.NO_CONNECTION);
       }
 
-      const result = await getWeatherData(latitude, longitude, language, units);
+      const result = await getWeatherData({
+        latitude: this.map.latitude,
+        longitude: this.map.longitude,
+        language: this.i18n.currentLanguage,
+        units: this.isFahrenheit ? 'imperial' : 'metric',
+      });
 
       weatherData = await onSuccess(result);
     } catch (err) {
@@ -158,6 +164,12 @@ class ForecastContainer {
         return isDayPassed;
       });
 
+      /**
+       * Formats source raw object retrieved from service API.
+       * @param {Object} dirtyData raw object with fields retrieved from backend
+       * @param {Number} precision digits after comma
+       * @returns {Object} formatted object with human-readable fields
+       */
       const formatWeatherData = (dirtyData, precision = 0) => {
         const {
           dt,
